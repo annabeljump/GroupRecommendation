@@ -66,13 +66,13 @@ public class RecommenderTest implements Runnable {
         // * on top of a database of some kind
         EventDAO dao;
         //try {
-            EventDAO data;
-            data = new SimpleFileRatingDAO(new File(dataFile), ",");
-            //* get the data from the DAO
-            dao = data;
-       // } catch (IOException e) {
-            //logger.error("cannot load data", e);
-            //TODO - look this up - what is this particular Throwable
+        EventDAO data;
+        data = new SimpleFileRatingDAO(new File(dataFile), ",");
+        //* get the data from the DAO
+        dao = data;
+        // } catch (IOException e) {
+        //logger.error("cannot load data", e);
+        //TODO - look this up - what is this particular Throwable
         //    System.out.println("cannot load data");
         //    e.printStackTrace();
         //    throw Throwables.propagate(e);
@@ -92,12 +92,38 @@ public class RecommenderTest implements Runnable {
         config.bind(EventDAO.class).to(new SimpleFileRatingDAO(new File(dataFile), "/t"));
 
 
+        LenskitRecommenderEngine rec;
         try {
-            LenskitRecommenderEngine rec = LenskitRecommenderEngine.build(config);
+            rec = null;
+            rec = LenskitRecommenderEngine.build(config);
         } catch (RecommenderBuildException e) {
             e.printStackTrace();
-            throw new RuntimeException("could not build recomennder engine");
+            throw new RuntimeException("could not build recommender engine");
         }
+
+        LenskitRecommender reco = null;
+
+        try {
+            reco = rec.createRecommender(config);
+        } catch (RecommenderConfigurationException e) {
+            e.printStackTrace();
+        }
+// we want to recommend items
+//          ItemRecommender irec = rec.getItemRecommender();
+//          assert irec != null; // not null because we configured one
+// for users
+//          for (long user : users) {
+// get 10 recommendation for the user
+//              ResultList recs = irec.recommendWithDetails(user, 10, null, null);
+//              System.out.format("Recommendations for user %d:\n", user);
+//              for (Result item : recs) {
+//                  Entity itemData = dao.lookupEntity(CommonTypes.ITEM, item.getId());
+//                  String name = null;
+//                  if (itemData != null) {
+//                      name = itemData.maybeGet(CommonAttributes.NAME);
+//                  }
+//                  System.out.format("\t%d (%s): %.2f\n", item.getId(), name, item.getScore());
+//              }
     }
 }
 
