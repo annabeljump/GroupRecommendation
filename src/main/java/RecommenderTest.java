@@ -85,6 +85,9 @@ public class RecommenderTest implements Runnable {
             e.printStackTrace();
         }
 
+        config.bind(EventDAO.class).to(new SimpleFileRatingDAO(new File(dataFile), "/t"));
+)
+
     }
 }
 
