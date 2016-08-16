@@ -9,6 +9,14 @@ Using HelloLenskit basic code - in comment at bottom
 */
 
 
+import com.google.common.base.Throwables;
+import org.grouplens.lenskit.config.ConfigHelpers;
+import org.grouplens.lenskit.core.LenskitConfiguration;
+import org.grouplens.lenskit.core.RecommenderConfigurationException;
+import org.grouplens.lenskit.data.dao.EventDAO;
+import org.grouplens.lenskit.data.dao.SimpleFileRatingDAO;
+import org.grouplens.lenskit.eval.data.CSVDataSourceBuilder;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -37,7 +45,7 @@ public class RecommenderTest implements Runnable {
     }
 
     //this path is to the data file - bound in config file. Remove from config.
-    private Path dataFile = Paths.get("~/IdeaProjects/GroupRec/ml-100k/u.data");
+    private String dataFile = "~/Documents/GroupRecommendation/src/ml-100k/u.data";
     private List<Long> users;
 
 
@@ -56,9 +64,9 @@ public class RecommenderTest implements Runnable {
         EventDAO dao;
         try {
             EventDAO data;
-            data = new CSVDataSourceBuilder("~/IdeaProjects/GroupRec/ml-100k/u.data");
+            data = new SimpleFileRatingDAO(new File(dataFile), ",");
             //* get the data from the DAO
-            dao = data.get();
+            dao = data;
         } catch (IOException e) {
             //logger.error("cannot load data", e);
             //TODO - look this up - what is this particular Throwable
@@ -72,6 +80,8 @@ public class RecommenderTest implements Runnable {
             config = ConfigHelpers.load(new File("~/Documents/GroupRecommendation/etc/LenskitConfiguration.groovy"));
         } catch (IOException e) {
             throw new RuntimeException("could not load configuration", e);
+        } catch (RecommenderConfigurationException e) {
+            e.printStackTrace();
         }
 
     }
