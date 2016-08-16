@@ -62,17 +62,18 @@ public class RecommenderTest implements Runnable {
         // * We will load data from a static data source; you could implement your own DAO
         // * on top of a database of some kind
         EventDAO dao;
-        try {
+        //try {
             EventDAO data;
             data = new SimpleFileRatingDAO(new File(dataFile), ",");
             //* get the data from the DAO
             dao = data;
-        } catch (IOException e) {
+       // } catch (IOException e) {
             //logger.error("cannot load data", e);
             //TODO - look this up - what is this particular Throwable
-            System.out.println("cannot load data");
-            throw Throwables.propagate(e);
-        }
+        //    System.out.println("cannot load data");
+        //    e.printStackTrace();
+        //    throw Throwables.propagate(e);
+        //}
 
         //* Next: load the LensKit algorithm configuration
         LenskitConfiguration config = null;
