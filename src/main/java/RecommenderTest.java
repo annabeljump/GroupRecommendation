@@ -10,8 +10,11 @@ Using HelloLenskit basic code - in comment at bottom
 
 
 import com.google.common.base.Throwables;
+import org.grouplens.lenskit.RecommenderBuildException;
 import org.grouplens.lenskit.config.ConfigHelpers;
 import org.grouplens.lenskit.core.LenskitConfiguration;
+import org.grouplens.lenskit.core.LenskitRecommender;
+import org.grouplens.lenskit.core.LenskitRecommenderEngine;
 import org.grouplens.lenskit.core.RecommenderConfigurationException;
 import org.grouplens.lenskit.data.dao.EventDAO;
 import org.grouplens.lenskit.data.dao.SimpleFileRatingDAO;
@@ -80,14 +83,21 @@ public class RecommenderTest implements Runnable {
         try {
             config = ConfigHelpers.load(new File("~/Documents/GroupRecommendation/etc/LenskitConfiguration.groovy"));
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException("could not load configuration", e);
         } catch (RecommenderConfigurationException e) {
             e.printStackTrace();
         }
 
         config.bind(EventDAO.class).to(new SimpleFileRatingDAO(new File(dataFile), "/t"));
-)
 
+
+        try {
+            LenskitRecommenderEngine rec = LenskitRecommenderEngine.build(config);
+        } catch (RecommenderBuildException e) {
+            e.printStackTrace();
+            throw new RuntimeException("could not build recomennder engine");
+        }
     }
 }
 
