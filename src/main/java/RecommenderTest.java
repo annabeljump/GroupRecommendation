@@ -10,6 +10,7 @@ Using HelloLenskit basic code - in comment at bottom
 
 
 import com.google.common.base.Throwables;
+import org.grouplens.lenskit.ItemRecommender;
 import org.grouplens.lenskit.RecommenderBuildException;
 import org.grouplens.lenskit.config.ConfigHelpers;
 import org.grouplens.lenskit.core.LenskitConfiguration;
@@ -24,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -55,7 +57,7 @@ public class RecommenderTest implements Runnable {
     //Constructor - but where does the args come from?
     public RecommenderTest(String[] args) {
         users = new ArrayList<>(args.length);
-        for (String arg: args) {
+        for (String arg : args) {
             users.add(Long.parseLong(arg));
         }
     }
@@ -108,22 +110,28 @@ public class RecommenderTest implements Runnable {
         } catch (RecommenderConfigurationException e) {
             e.printStackTrace();
         }
-// we want to recommend items
-//          ItemRecommender irec = rec.getItemRecommender();
-//          assert irec != null; // not null because we configured one
+
+
+        //Make recommendations for Items
+        ItemRecommender irec = reco.getItemRecommender();
+
+        //TODO check configuration of hello lenskit and compare
+        assert irec != null; // not null because we configured one
+
 // for users
-//          for (long user : users) {
+        for (long user : users) {
 // get 10 recommendation for the user
-//              ResultList recs = irec.recommendWithDetails(user, 10, null, null);
-//              System.out.format("Recommendations for user %d:\n", user);
-//              for (Result item : recs) {
-//                  Entity itemData = dao.lookupEntity(CommonTypes.ITEM, item.getId());
-//                  String name = null;
-//                  if (itemData != null) {
-//                      name = itemData.maybeGet(CommonAttributes.NAME);
-//                  }
-//                  System.out.format("\t%d (%s): %.2f\n", item.getId(), name, item.getScore());
-//              }
+            ResultSet recs = irec.recommend(user, 10, null, null);
+            System.out.format("Recommendations for user %d:\n", user);
+            for (Result item : recs) {
+                Entity itemData = dao.lookupEntity(CommonTypes.ITEM, item.getId());
+                String name = null;
+                if (itemData != null) {
+                    name = itemData.maybeGet(CommonAttributes.NAME);
+                }
+                System.out.format("\t%d (%s): %.2f\n", item.getId(), name, item.getScore());
+            }
+        }
     }
 }
 

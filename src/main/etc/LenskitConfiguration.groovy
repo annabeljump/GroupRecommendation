@@ -37,7 +37,7 @@ set NeighborhoodSize to 30
 
 //bind the data source -REMOVED (bound in Recommender.java)
 //config.bind(EventDAO.class).to(new SimpleFileRatingDAO(new File(""), ","));
-bind EventDAO to new SimpleFileRatingDAO("~/IdeaProjects/GroupRec/ml-100k/u.data", "/t");
+//bind EventDAO to new SimpleFileRatingDAO("~/IdeaProjects/GroupRec/ml-100k/u.data", "/t");
 
 
 
