@@ -34,7 +34,7 @@ public class NewRecommender implements Runnable {
 
 
     public static void main(String[] args) {
-        NewRecommender hi = new NewRecommender(args);
+        NewRecommender hi = new NewRecommender();
         try {
             hi.run();
         } catch (RuntimeException e) {
@@ -50,11 +50,8 @@ public class NewRecommender implements Runnable {
 
 
     //Constructor - but where does the args come from?
-    public NewRecommender(String[] args) {
-        users = new ArrayList<>(args.length);
-        for (String arg : args) {
-            users.add(Long.parseLong(arg));
-        }
+    public NewRecommender() {
+        users = new ArrayList<>();
     }
 
     public void run() {
