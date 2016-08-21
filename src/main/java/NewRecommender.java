@@ -7,8 +7,8 @@ import org.grouplens.lenskit.core.RecommenderConfigurationException;
 import org.grouplens.lenskit.data.dao.EventDAO;
 import org.grouplens.lenskit.data.dao.SimpleFileRatingDAO;
 import org.grouplens.lenskit.scored.ScoredId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class NewRecommender implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(RecommenderTest.class);
+    //private static final Logger logger = LoggerFactory.getLogger(NewRecommender.class);
 
 
     public static void main(String[] args) {
@@ -37,7 +37,7 @@ public class NewRecommender implements Runnable {
         }
     }
 
-    private String dataFile = "~/Documents/GroupRecommendation/src/ml-100k/u.data";
+    private String dataFile = "src/ml-100k/u.data";
     private List<Long> users;
 
 
@@ -51,14 +51,14 @@ public class NewRecommender implements Runnable {
 
     public void run() {
         LenskitConfiguration config = null;
-        try {
-            config = ConfigHelpers.load(new File("~/Documents/GroupRecommendation/etc/LenskitConfiguration.groovy"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("could not load configuration", e);
-        } catch (RecommenderConfigurationException e) {
-            e.printStackTrace();
-        }
+        //try {
+        //    config = ConfigHelpers.load(new File("src/main/etc/LenskitConfiguration.groovy"));
+        //} catch (IOException e) {
+        //    e.printStackTrace();
+        //    throw new RuntimeException("could not load configuration", e);
+        //} catch (RecommenderConfigurationException e) {
+        //    e.printStackTrace();
+        //}
 
         config.bind(EventDAO.class).to(new SimpleFileRatingDAO(new File(dataFile), "/t"));
 
@@ -73,9 +73,14 @@ public class NewRecommender implements Runnable {
 
         ItemRecommender itemRec = newRec.getItemRecommender();
 
-        //generates recommendations to users. Iterate along users list to generate for all.
+        //generates recommendations to users.
+        //Iterate along users list to generate for all? Next impl.
 
-        List<ScoredId> actualRecs = itemRec.recommend(user, 10);
+
+        //Insert random User to generate recs.
+        List<ScoredId> actualRecs = itemRec.recommend(168, 10);
+
+        System.out.println(actualRecs);
 
     }
 }
