@@ -80,7 +80,10 @@ public class NewRecommender implements Runnable {
         config.bind(UserVectorNormalizer.class)
                 .to(BaselineSubtractingUserVectorNormalizer.class);
 
-        config.bind(EventDAO.class).to(new SimpleFileRatingDAO(new File(dataFile), ","));
+        //config.bind(EventDAO.class).to(new SimpleFileRatingDAO(new File(dataFile), ","));
+
+        EventDAO dao = SimpleFileRatingDAO.create(new File(dataFile), ",");
+        config.bind(EventDAO.class).to(dao);
 
         LenskitRecommender newRec = null;
         try {
