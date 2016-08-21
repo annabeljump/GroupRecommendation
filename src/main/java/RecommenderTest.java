@@ -120,6 +120,9 @@ public class RecommenderTest implements Runnable {
         //TODO check configuration of hello lenskit and compare
         assert irec != null; // not null because we configured one
         String name;
+
+        //The below code I cannot get to work. Scrapping and restarting.
+
 // for users
        // for (long user : users) {
 // get 10 recommendation for the user
