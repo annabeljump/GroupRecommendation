@@ -1,5 +1,6 @@
 import org.grouplens.lenskit.ItemRecommender;
 import org.grouplens.lenskit.ItemScorer;
+import org.grouplens.lenskit.RatingPredictor;
 import org.grouplens.lenskit.RecommenderBuildException;
 import org.grouplens.lenskit.baseline.BaselineScorer;
 import org.grouplens.lenskit.baseline.ItemMeanRatingItemScorer;
@@ -99,7 +100,16 @@ public class NewRecommender implements Runnable {
         //Insert random User to generate recs.
         List<ScoredId> actualRecs = itemRec.recommend(168, 10);
 
-        System.out.println(actualRecs);
+        System.out.println("Now Printing Recommended Items:");
+        for (int i = 0; i < actualRecs.size(); i++) {
+            System.out.println(actualRecs.get(i));
+        }
+        System.out.println("Finished");
+
+        //Test Rating Predictor
+        RatingPredictor pred = newRec.getRatingPredictor();
+        double score = pred.predict(42, 17);
+        System.out.println("Now predicting rating for movie 17:" + score);
 
     }
 }
