@@ -10,6 +10,7 @@ Using HelloLenskit basic code - in comment at bottom
 
 
 import com.google.common.base.Throwables;
+import groovy.xml.Entity;
 import org.grouplens.lenskit.ItemRecommender;
 import org.grouplens.lenskit.RecommenderBuildException;
 import org.grouplens.lenskit.config.ConfigHelpers;
@@ -20,21 +21,22 @@ import org.grouplens.lenskit.core.RecommenderConfigurationException;
 import org.grouplens.lenskit.data.dao.EventDAO;
 import org.grouplens.lenskit.data.dao.SimpleFileRatingDAO;
 import org.grouplens.lenskit.eval.data.CSVDataSourceBuilder;
+import org.grouplens.lenskit.data.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RecommenderTest implements Runnable {
 
     //Initialise a Logger to log progress/errors - doesn't work
-    //private static final Logger logger = LoggerFactory.getLogger(RecommenderTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(RecommenderTest.class);
 
 
     public static void main(String[] args) {
@@ -117,21 +119,20 @@ public class RecommenderTest implements Runnable {
 
         //TODO check configuration of hello lenskit and compare
         assert irec != null; // not null because we configured one
-
+        String name;
 // for users
-        for (long user : users) {
+       // for (long user : users) {
 // get 10 recommendation for the user
-            ResultSet recs = irec.recommend(user, 10, null, null);
-            System.out.format("Recommendations for user %d:\n", user);
-            for (Result item : recs) {
-                Entity itemData = dao.lookupEntity(CommonTypes.ITEM, item.getId());
-                String name = null;
-                if (itemData != null) {
-                    name = itemData.maybeGet(CommonAttributes.NAME);
-                }
-                System.out.format("\t%d (%s): %.2f\n", item.getId(), name, item.getScore());
-            }
-        }
+       //     List recs = irec.recommend(user, 10, null, null);
+       //     System.out.format("Recommendations for user %d:\n", user);
+       //     for (Object item : recs) {
+       //         Entity itemData = dao.lookupEntity(CommonTypes.ITEM, item.getId());
+       //         if (itemData != null) {
+       //             name = itemData.maybeGet(CommonAttributes.NAME);
+       //         }
+       //         System.out.format("\t%d (%s): %.2f\n", item.getId(), name, item.getScore());
+       //     }
+       // }
     }
 }
 

@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="org.grouplens.lenskit:lenskit-core:2.2.1" type="repository">
+    <properties maven-id="org.grouplens.lenskit:lenskit-core:2.2.1" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/grouplens/lenskit/lenskit-core/2.2.1/lenskit-core-2.2.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/net/mikera/vectorz/0.41.2/vectorz-0.41.2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/us/bpsm/edn-java/0.4.4/edn-java-0.4.4.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/net/mikera/randomz/0.3.0/randomz-0.3.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/net/mikera/mathz/0.3.0/mathz-0.3.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/google/guava/guava/18.0/guava-18.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.6/slf4j-api-1.7.6.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-compress/1.8/commons-compress-1.8.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/tukaani/xz/1.5/xz-1.5.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/google/code/findbugs/annotations/2.0.1/annotations-2.0.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/grouplens/grapht/grapht/0.10.0/grapht-0.10.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/javax/inject/javax.inject/1/javax.inject-1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/grouplens/lenskit/lenskit-api/2.2.1/lenskit-api-2.2.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/grouplens/lenskit/lenskit-data-structures/2.2.1/lenskit-data-structures-2.2.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/it/unimi/dsi/fastutil/6.6.1/fastutil-6.6.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

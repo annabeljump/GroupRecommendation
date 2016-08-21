@@ -32,6 +32,8 @@
       <root url="jar://$MAVEN_REPOSITORY$/org/grouplens/lenskit/lenskit-slopeone/2.1-M2/lenskit-slopeone-2.1-M2.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/slf4j-api-1.7.5-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>
