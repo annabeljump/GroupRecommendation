@@ -16,8 +16,8 @@ import org.grouplens.lenskit.knn.item.ItemItemScorer;
 import org.grouplens.lenskit.scored.ScoredId;
 import org.grouplens.lenskit.transform.normalize.BaselineSubtractingUserVectorNormalizer;
 import org.grouplens.lenskit.transform.normalize.UserVectorNormalizer;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 //import java.io.IOException;
@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class NewRecommender implements Runnable {
 
-    //private static final Logger logger = LoggerFactory.getLogger(NewRecommender.class);
+    private static final Logger logger = LoggerFactory.getLogger(NewRecommender.class);
 
 
     public static void main(String[] args) {
@@ -46,7 +46,7 @@ public class NewRecommender implements Runnable {
         }
     }
 
-    private String dataFile = "src/ml-100k/u.data";
+    private String dataFile = "src/ml-latest-small/ratings.csv";
     private List<Long> users;
 
 
@@ -80,7 +80,7 @@ public class NewRecommender implements Runnable {
         config.bind(UserVectorNormalizer.class)
                 .to(BaselineSubtractingUserVectorNormalizer.class);
 
-        config.bind(EventDAO.class).to(new SimpleFileRatingDAO(new File(dataFile), "/t"));
+        config.bind(EventDAO.class).to(new SimpleFileRatingDAO(new File(dataFile), ","));
 
         LenskitRecommender newRec = null;
         try {
