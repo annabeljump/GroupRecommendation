@@ -12,10 +12,14 @@ import org.grouplens.lenskit.core.LenskitRecommender;
 //import org.grouplens.lenskit.core.RecommenderConfigurationException;
 import org.grouplens.lenskit.data.dao.EventDAO;
 import org.grouplens.lenskit.data.dao.SimpleFileRatingDAO;
+import org.grouplens.lenskit.knn.NeighborhoodSize;
 import org.grouplens.lenskit.knn.item.ItemItemScorer;
+import org.grouplens.lenskit.knn.user.UserUserItemScorer;
 import org.grouplens.lenskit.scored.ScoredId;
 import org.grouplens.lenskit.transform.normalize.BaselineSubtractingUserVectorNormalizer;
+import org.grouplens.lenskit.transform.normalize.MeanCenteringVectorNormalizer;
 import org.grouplens.lenskit.transform.normalize.UserVectorNormalizer;
+import org.grouplens.lenskit.transform.normalize.VectorNormalizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +54,7 @@ public class NewRecommender implements Runnable {
     private List<Long> users;
 
 
-    //Constructor - but where does the args come from?
+    //Constructor
     public NewRecommender() {
         users = new ArrayList<>();
     }
@@ -67,18 +71,26 @@ public class NewRecommender implements Runnable {
         //}
 
 // Use item-item CF to score items
-        config.bind(ItemScorer.class).to(ItemItemScorer.class);
+       // config.bind(ItemScorer.class).to(ItemItemScorer.class);
+        config.bind(ItemScorer.class).to(UserUserItemScorer.class);
 // let's use personalized mean rating as the baseline/fallback predictor.
 // 2-step process:
 // First, use the user mean rating as the baseline scorer
-        config.bind(BaselineScorer.class, ItemScorer.class)
-                .to(UserMeanItemScorer.class);
+       // config.bind(BaselineScorer.class, ItemScorer.class)
+       //         .to(UserMeanItemScorer.class);
 // Second, use the item mean rating as the base for user means
-        config.bind(UserMeanBaseline.class, ItemScorer.class)
-                .to(ItemMeanRatingItemScorer.class);
+       // config.bind(UserMeanBaseline.class, ItemScorer.class)
+       //         .to(ItemMeanRatingItemScorer.class);
 // and normalize ratings by baseline prior to computing similarities
-        config.bind(UserVectorNormalizer.class)
-                .to(BaselineSubtractingUserVectorNormalizer.class);
+       // config.bind(UserVectorNormalizer.class)
+       //         .to(BaselineSubtractingUserVectorNormalizer.class);
+
+        config.bind(BaselineScorer.class, ItemScorer.class).to(UserMeanItemScorer.class);
+        config.bind(UserMeanBaseline.class, ItemScorer.class).to(ItemMeanRatingItemScorer.class);
+
+        config.within(UserVectorNormalizer.class).bind(VectorNormalizer.class).to(MeanCenteringVectorNormalizer.class);
+
+        config.set(NeighborhoodSize.class).to(30);
 
         //config.bind(EventDAO.class).to(new SimpleFileRatingDAO(new File(dataFile), ","));
 
