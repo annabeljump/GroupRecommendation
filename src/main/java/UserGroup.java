@@ -26,6 +26,8 @@ public class UserGroup implements GroupCreator {
     @Override
     public void getIndividualRecs() {
 
+        NewRecommender morrison = new NewRecommender();
+        morrison.run();
 
 
     }

@@ -52,11 +52,18 @@ public class NewRecommender implements Runnable {
 
     private String dataFile = "src/ml-latest-small/ratings.csv";
     private List<Long> users;
+    private Long userID;
 
 
     //Constructor
     public NewRecommender() {
-        users = new ArrayList<>();
+        this.userID = null;
+    }
+
+
+    //New constructor so that recommendations can be generated for unspecified user
+    public NewRecommender(Long user) {
+        this.userID = user;
     }
 
     public void run() {
@@ -113,7 +120,7 @@ public class NewRecommender implements Runnable {
 
 
         //Insert random User to generate recs.
-        List<ScoredId> actualRecs = itemRec.recommend(168, 10);
+        List<ScoredId> actualRecs = itemRec.recommend(userID, 10);
 
         System.out.println("Now Printing Recommended Items:");
         for (int i = 0; i < actualRecs.size(); i++) {
@@ -123,7 +130,7 @@ public class NewRecommender implements Runnable {
 
         //Test Rating Predictor
         RatingPredictor pred = newRec.getRatingPredictor();
-        double score = pred.predict(42, 17);
+        double score = pred.predict(userID, 17);
         System.out.println("Now predicting rating for movie 17:" + score);
 
     }
