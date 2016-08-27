@@ -134,4 +134,36 @@ public class NewRecommender implements Runnable {
         System.out.println("Now predicting rating for movie 17:" + score);
 
     }
+    public List recommend() {
+        LenskitConfiguration config = new LenskitConfiguration();
+
+        config.bind(ItemScorer.class).to(UserUserItemScorer.class);
+
+
+        config.bind(BaselineScorer.class, ItemScorer.class).to(UserMeanItemScorer.class);
+        config.bind(UserMeanBaseline.class, ItemScorer.class).to(ItemMeanRatingItemScorer.class);
+
+        config.within(UserVectorNormalizer.class).bind(VectorNormalizer.class).to(MeanCenteringVectorNormalizer.class);
+
+        config.set(NeighborhoodSize.class).to(30);
+
+        EventDAO dao = SimpleFileRatingDAO.create(new File(dataFile), ",");
+        config.bind(EventDAO.class).to(dao);
+
+        LenskitRecommender newRec = null;
+        try {
+            newRec = LenskitRecommender.build(config);
+        } catch (RecommenderBuildException e) {
+            e.printStackTrace();
+        }
+
+        assert newRec != null;
+
+        ItemRecommender itemRec = newRec.getItemRecommender();
+
+        List<ScoredId> actualRecs = itemRec.recommend(userID, 10);
+
+        return actualRecs;
+
+    }
 }

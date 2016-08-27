@@ -9,10 +9,10 @@ import java.util.Map;
  */
 public class UserGroup implements GroupCreator {
 
-    private List userList = new ArrayList<>();
+    private List<Long> userList = new ArrayList();
     private Map userRecs = new HashMap<>();
 
-    public UserGroup(List users) {
+    public UserGroup(List<Long> users) {
         this.userList = users;
     }
 
@@ -26,9 +26,10 @@ public class UserGroup implements GroupCreator {
     @Override
     public void getIndividualRecs() {
 
-        NewRecommender morrison = new NewRecommender();
-        morrison.run();
+        for(Long u : userList) {
+            NewRecommender morrison = new NewRecommender(u);
+            userRecs.put(u, morrison.recommend());
 
-
+        }
     }
 }
