@@ -29,7 +29,6 @@ public class UserGroup implements GroupCreator {
         for(Long u : userList) {
             NewRecommender morrison = new NewRecommender(u);
             userRecs.put(u, morrison.recommend());
-
         }
     }
 }
