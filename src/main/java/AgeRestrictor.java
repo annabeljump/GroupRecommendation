@@ -21,7 +21,8 @@ public class AgeRestrictor implements AgeAppropriator {
     private List<ScoredId> interimList2 = new ArrayList<ScoredId>();
     private List<Long> movieList = new ArrayList<>();
     private List<Long> appropriateMovies = new ArrayList<Long>();
-    private Map userAgeMap = new HashMap<>();
+    private Map<String, String> userAgeMap = new HashMap<>();
+    private List<Long> userAgeList = new ArrayList<Long>();
 
     @Override
     public void retrieveMovies() {
@@ -57,6 +58,8 @@ public class AgeRestrictor implements AgeAppropriator {
      */
     @Override
     public void checkAndRemove() {
+
+        //TODO - can this reading of user file be put in UserGroup?
         BufferedReader buff = null;
         String br = "";
         String split = "|";
@@ -69,11 +72,19 @@ public class AgeRestrictor implements AgeAppropriator {
                 String[] userDetails = br.split(split);
                 this.userAgeMap.put(userDetails[0], userDetails[1]);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //Find and retrieve the ages of the users in the group
+        for(int i = 0; i < userList.size(); i++) {
+            Long u = userList.get(i);
+            this.userAgeList.add(Long.parseLong(userAgeMap.get(Long.toString(u))));
+        }
+
+        //TODO booleans to check ages
+
+        //TODO filter movies by tags/genres to remove inappropriate ones
     }
 
     //Constructors
