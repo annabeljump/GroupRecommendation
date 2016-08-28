@@ -31,4 +31,12 @@ public class UserGroup implements GroupCreator {
             userRecs.put(u, morrison.recommend());
         }
     }
+
+    public Map getUserRecs() {
+        return this.userRecs;
+    }
+
+    public List<Long> getUserList() {
+        return this.userList;
+    }
 }
