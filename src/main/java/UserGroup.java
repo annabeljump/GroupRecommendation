@@ -1,3 +1,5 @@
+import org.grouplens.lenskit.scored.ScoredId;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.Map;
 public class UserGroup implements GroupCreator {
 
     private List<Long> userList = new ArrayList();
-    private Map userRecs = new HashMap<>();
+    private Map<Long, List<ScoredId>> userRecs = new HashMap<>();
 
     public UserGroup(List<Long> users) {
         this.userList = users;
