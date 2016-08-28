@@ -11,7 +11,7 @@ public class AgeRestrictor implements AgeAppropriator {
     private Map userRecs = new HashMap<>();
     private List<Long> userList = new ArrayList<Long>();
     private List<Long> movieList = new ArrayList<Long>();
-    private List<Long> appropriateMovies = new ArrayList<Long>;
+    private List<Long> appropriateMovies = new ArrayList<Long>();
 
     @Override
     public void retrieveMovies() {
