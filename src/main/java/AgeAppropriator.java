@@ -6,5 +6,23 @@
  */
 public interface AgeAppropriator {
 
+    /**
+     * When given a map of recommendations
+     * Retrieve the movies recommended
+     */
+    void retrieveMovies();
+
+    /**
+     * When given a map of recommendations
+     * Retrieve the user IDs
+     */
+    //TODO review if necessary to have this method
+    void retrieveUsers();
+
+    /**
+     * Remove inappropriate movies,
+     * dependent on age of users
+     */
+    void checkAndRemove();
 
 }
