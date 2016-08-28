@@ -16,6 +16,10 @@ public class UserGroup implements GroupCreator {
         this.userList = users;
     }
 
+    public UserGroup() {
+        this.userList = null;
+    }
+
 
     /**
      * getInvididualRecs to generate recommendations for users
