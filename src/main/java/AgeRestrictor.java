@@ -21,6 +21,7 @@ public class AgeRestrictor implements AgeAppropriator {
     private List<ScoredId> interimList2 = new ArrayList<ScoredId>();
     private List<Long> movieList = new ArrayList<>();
     private List<Long> appropriateMovies = new ArrayList<Long>();
+    private Map userAgeMap = new HashMap<>();
 
     @Override
     public void retrieveMovies() {
@@ -65,7 +66,8 @@ public class AgeRestrictor implements AgeAppropriator {
             buff = new BufferedReader(new FileReader(filePath));
             //Read file in line by line, with different fields separated
             while((br = buff.readLine()) != null) {
-
+                String[] userDetails = br.split(split);
+                this.userAgeMap.put(userDetails[0], userDetails[1]);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
