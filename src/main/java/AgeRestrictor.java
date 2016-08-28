@@ -40,8 +40,27 @@ public class AgeRestrictor implements AgeAppropriator {
     public AgeRestrictor(UserGroup u, Map r) {
         this.users = u;
         this.userRecs = r;
-        this.userList = null;
+        this.userList = u.getUserList();
         this.movieList = null;
         this.appropriateMovies = null;
+    }
+
+    public AgeRestrictor(UserGroup u) {
+        this.users = u;
+        u.getIndividualRecs();
+        this.userRecs = u.getUserRecs();
+        this.userList = u.getUserList();
+        this.movieList = null;
+        this.appropriateMovies = null;
+    }
+
+    //Getters
+
+    public List getAppropriateMovies() {
+        return this.appropriateMovies;
+    }
+
+    public List getAllMovies() {
+        return this.movieList;
     }
 }
