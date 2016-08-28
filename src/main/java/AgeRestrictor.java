@@ -13,7 +13,8 @@ public class AgeRestrictor implements AgeAppropriator {
     private Map<Long, List<ScoredId>> userRecs = new HashMap<>();
     private List<Long> userList = new ArrayList<Long>();
     private List interimList = new ArrayList<>();
-    private List<Long> movieList = new ArrayList<Long>();
+    private List interimList2 = new ArrayList<>();
+    private List movieList = new ArrayList<>();
     private List<Long> appropriateMovies = new ArrayList<Long>();
 
     @Override
@@ -24,10 +25,20 @@ public class AgeRestrictor implements AgeAppropriator {
             this.interimList.add(entry.getValue());
         }
 
-        //Retrieve the Movie Id from the ScoredId
+        //Retrieve the scoredIds from the scoredId lists
         for(int i = 0; i < this.interimList.size(); i++) {
-
+            this.interimList2.add(interimList.get(i));
         }
+
+        //Now retrieve the move Ids
+        for(int i = 0; i < this.interimList2.size(); i++) {
+            Object temp = null;
+            temp = interimList2.get(i);
+            this.movieList.add(temp);
+        }
+
+        Object temp2 = this.movieList.get(0);
+        temp2.getClass();
 
     }
 
