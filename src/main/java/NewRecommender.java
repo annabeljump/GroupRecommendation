@@ -120,7 +120,7 @@ public class NewRecommender implements Runnable {
 
 
         //Insert random User to generate recs.
-        List<ScoredId> actualRecs = itemRec.recommend(userID, 10);
+        List<ScoredId> actualRecs = itemRec.recommend(168, 10);
 
         System.out.println("Now Printing Recommended Items:");
         for (int i = 0; i < actualRecs.size(); i++) {
