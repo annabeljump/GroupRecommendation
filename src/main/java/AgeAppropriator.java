@@ -13,7 +13,6 @@ public interface AgeAppropriator {
     void retrieveMovies();
 
     /**
-     * When given a map of recommendations
      * Retrieve the user IDs
      */
     //TODO review if necessary to have this method

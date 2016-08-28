@@ -1,5 +1,9 @@
 import org.grouplens.lenskit.scored.ScoredId;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,13 +41,37 @@ public class AgeRestrictor implements AgeAppropriator {
     }
 
     @Override
-    public void retrieveUsers() {
-
+    public void retrieveUsers() throws NullPointerException {
+        if(users != null) {
+            this.userList = users.getUserList();
+        } else throw new NullPointerException();
     }
 
+    /**
+     * Accesses users.csv (copied from u.user from MK100 dataset
+     * as no user details in ml-latest-small)
+     * Obtains User Ages
+     * Obtains Movie Genres
+     * Filters appropriately
+     */
     @Override
     public void checkAndRemove() {
+        BufferedReader buff = null;
+        String br = "";
+        String split = "|";
+        String filePath = "src/ml-latest-small/users.csv";
 
+        try {
+            buff = new BufferedReader(new FileReader(filePath));
+            //Read file in line by line, with different fields separated
+            while((br = buff.readLine()) != null) {
+
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //Constructors
