@@ -1,3 +1,4 @@
+import org.grouplens.lenskit.scored.PackedScoredIdList;
 import org.grouplens.lenskit.scored.ScoredId;
 
 import java.io.BufferedReader;
@@ -58,6 +59,7 @@ public class AgeRestrictor implements AgeAppropriator {
      * Obtains User Ages
      * Obtains Movie Genres
      * Filters appropriately
+     * It may need to return the movie list
      */
     @Override
     public void checkAndRemove() {
@@ -115,7 +117,7 @@ public class AgeRestrictor implements AgeAppropriator {
         String splitter = ",";
         String moviePath = "src/ml-latest-small/movies.csv";
         Map<String, String> movieDetailMap = new HashMap<>();
-        Map movieRecMap = new HashMap<>();
+        Map<Long, String> movieRecMap = new HashMap<>();
 
         //Read in movie details as with users above
         //Add to map the movie ID and the genre tags
@@ -140,7 +142,30 @@ public class AgeRestrictor implements AgeAppropriator {
             }
         }
 
-
+        String splitting = "|";
+        //TODO Deal with age booleans in reverse so that can break
+        if(under12){
+            //Remove all movies not tagged as "Children"
+            for(Map.Entry<Long, String> entry : movieRecMap.entrySet()) {
+                String hi = entry.getValue();
+                String[] genres = hi.split(splitting);
+                Boolean isChildren = false;
+                for(int i = 0; i < genres.length; i++) {
+                    if(genres[i] == "Children") {
+                        isChildren = true;
+                    }
+                }
+                if(!isChildren){
+                    movieRecMap.remove(entry.getKey());
+                }
+            }
+        } else if(under15) {
+            //remove "Horror" and "Thriller"
+            //break
+        } else if (under18) {
+            //remove "Horror"
+            //break
+        }
     }
 
     //Constructors
