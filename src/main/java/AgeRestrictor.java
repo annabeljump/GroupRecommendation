@@ -107,7 +107,40 @@ public class AgeRestrictor implements AgeAppropriator {
             under15 = true;
             under12 = true;
         }
-        //TODO filter movies by tags/genres to remove inappropriate ones
+
+        //Unfortunately, movies in movies.csv do not carry BBFC (or similar) ratings
+        //Therefore, filtering out will be done by the genre tags on the movies
+        BufferedReader bff = null;
+        String bx = "";
+        String splitter = ",";
+        String moviePath = "src/ml-latest-small/movies.csv";
+        Map<String, String> movieDetailMap = new HashMap<>();
+        Map movieRecMap = new HashMap<>();
+
+        //Read in movie details as with users above
+        //Add to map the movie ID and the genre tags
+        try {
+            bff = new BufferedReader(new FileReader(moviePath));
+            while((bx = bff.readLine()) != null) {
+                String[] movieDetails = bx.split(splitter);
+                movieDetailMap.put(movieDetails[0], movieDetails[2]);
+                movieDetails = null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //Now go through the recommended list of movies and pull their genre details
+        //TODO Does this really need so many nested loops???
+        for(int i = 0; i < movieList.size(); i++) {
+            for(Map.Entry<String, String> entry : movieDetailMap.entrySet()) {
+                if(Long.parseLong(entry.getKey()) == movieList.get(i)) {
+                    movieRecMap.put(Long.parseLong(entry.getKey()), entry.getValue());
+                }
+            }
+        }
+
+
     }
 
     //Constructors
