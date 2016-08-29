@@ -23,6 +23,9 @@ public class AgeRestrictor implements AgeAppropriator {
     private List<Long> appropriateMovies = new ArrayList<Long>();
     private Map<String, String> userAgeMap = new HashMap<>();
     private List<Long> userAgeList = new ArrayList<Long>();
+    private Boolean under18 = false;
+    private Boolean under15 = false;
+    private Boolean under12 = false;
 
     @Override
     public void retrieveMovies() {
@@ -71,6 +74,7 @@ public class AgeRestrictor implements AgeAppropriator {
             while((br = buff.readLine()) != null) {
                 String[] userDetails = br.split(split);
                 this.userAgeMap.put(userDetails[0], userDetails[1]);
+                userDetails = null;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -82,8 +86,27 @@ public class AgeRestrictor implements AgeAppropriator {
             this.userAgeList.add(Long.parseLong(userAgeMap.get(Long.toString(u))));
         }
 
-        //TODO booleans to check ages
+        Long b = 50L;
+        //Check if users under 18, 15, or 12, and set appropriate booleans to true
+        for(int i = 0; i < userAgeList.size(); i++) {
+            Long a = userAgeList.get(i);
+            //Set the youngest age to variable b
+            if(a < b) {
+                b = a;
+            }
+        }
 
+        //Set the booleans according to the youngest age
+        if(b < 18L) {
+            under18 = true;
+        } else if(b < 15L) {
+            under18 = true;
+            under15 = true;
+        } else if(b < 12L) {
+            under18 = true;
+            under15 = true;
+            under12 = true;
+        }
         //TODO filter movies by tags/genres to remove inappropriate ones
     }
 
