@@ -24,6 +24,7 @@ public class AgeRestrictor implements AgeAppropriator {
     private List<Long> appropriateMovies = new ArrayList<Long>();
     private Map<String, String> userAgeMap = new HashMap<>();
     private List<Long> userAgeList = new ArrayList<Long>();
+    public Map<Long, String> movieRecMap = new HashMap<>();
     private Boolean under18 = false;
     private Boolean under15 = false;
     private Boolean under12 = false;
@@ -117,7 +118,6 @@ public class AgeRestrictor implements AgeAppropriator {
         String splitter = ",";
         String moviePath = "src/ml-latest-small/movies.csv";
         Map<String, String> movieDetailMap = new HashMap<>();
-        Map<Long, String> movieRecMap = new HashMap<>();
 
         //Read in movie details as with users above
         //Add to map the movie ID and the genre tags
