@@ -161,10 +161,36 @@ public class AgeRestrictor implements AgeAppropriator {
             }
         } else if(under15) {
             //remove "Horror" and "Thriller"
-            //break
+            for(Map.Entry<Long, String> entry : movieRecMap.entrySet()) {
+                String hey = entry.getValue();
+                String[] genres = hey.split(splitting);
+                Boolean isHorror = false;
+                Boolean isThriller = false;
+                for(int i = 0; i < genres.length; i++) {
+                    if(genres[i] == "Horror") {
+                        isHorror = true;
+                    } else if(genres[i] == "Thriller") {
+                        isThriller = true;
+                    }
+                }
+                if(isHorror || isThriller){
+                    movieRecMap.remove(entry.getKey());
+                }
+            }
         } else if (under18) {
-            //remove "Horror"
-            //break
+            for(Map.Entry<Long, String> entry : movieRecMap.entrySet()) {
+                String hai = entry.getValue();
+                String[] genres = hai.split(splitting);
+                Boolean isHorror = false;
+                for(int i = 0; i < genres.length; i++) {
+                    if(genres[i] == "Horror") {
+                        isHorror = true;
+                    }
+                }
+                if(isHorror){
+                    movieRecMap.remove(entry.getKey());
+                }
+            }
         }
     }
 
