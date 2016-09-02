@@ -1,5 +1,8 @@
 import org.grouplens.lenskit.scored.ScoredId;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +20,7 @@ public class Eliminator {
     private Map<Long, List<ScoredId>> recommendations = new HashMap<>();
     private List<Long> userList = new ArrayList<>();
     private List<Long> movies = new ArrayList<>();
+    private List<Long> seen = new ArrayList<>();
 
 
     /**
@@ -41,6 +45,32 @@ public class Eliminator {
         //Get the IDs
         for(ScoredId item : interimList2) {
             movies.add(item.getId());
+        }
+
+    }
+
+    /**
+     * Reads in the Ratings.csv file and searches for movies rated by each user in userList
+     * Adds these movies to a list, to be used to remove these movies from the recommendation list.
+     */
+    public void getSeenMovies() {
+        BufferedReader buff;
+        String br;
+        String split = ",";
+        String filePath = "src/ml-latest-small/ratings.csv";
+
+        try {
+            buff = new BufferedReader(new FileReader(filePath));
+            //Read file in line by line, with different fields separated
+            while((br = buff.readLine()) != null) {
+                String[] userMovies = br.split(split);
+                if(userList.contains(userMovies[0])) {
+                seen.add(Long.parseLong(userMovies[1]));
+                }
+                userMovies = null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
