@@ -64,6 +64,7 @@ public class Eliminator {
             //Read file in line by line, with different fields separated
             while((br = buff.readLine()) != null) {
                 String[] userMovies = br.split(split);
+                //if the user is in our group, add the rated movie to our list of seen movies
                 if(userList.contains(userMovies[0])) {
                 seen.add(Long.parseLong(userMovies[1]));
                 }
