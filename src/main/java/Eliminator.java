@@ -91,9 +91,21 @@ public class Eliminator {
             //iterate through map of recommendations
             for(Map.Entry<Long, List<ScoredId>> entry : recommendations.entrySet()) {
                 //check each list of recommendations for movie with ID and remove
+                //extract user ID and List of ScoredIds to temp variables
+                Long ux = entry.getKey();
+                List<ScoredId> mx = entry.getValue();
+                //check list of scoredIds for movie in seen list
+                for(int ix = 0; ix < mx.size(); ix++) {
+                    //remove that entry if present
+                    if(mx.get(ix).getId() == u) {
+                        mx.remove(ix);
+                    }
+                }
+                //put new list of movies into new map
+                filteredRecs.put(ux, mx);
             }
         }
-
+        //return the new map of unseen movie recommendations
         return filteredRecs;
     }
 
