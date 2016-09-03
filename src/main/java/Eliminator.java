@@ -21,6 +21,7 @@ public class Eliminator {
     private List<Long> userList = new ArrayList<>();
     private List<Long> movies = new ArrayList<>();
     private List<Long> seen = new ArrayList<>();
+    private Map<Long, List<ScoredId>> filteredRecs = new HashMap<>();
 
 
     /**
@@ -80,10 +81,20 @@ public class Eliminator {
     /**
      * Method that compares the movies which have been seen to the movies which have been
      * recommended and removes them from the recommendations
-     * @return list of recommended *unseen* movies
+     * @return map of recommended *unseen* movies
      */
-    public List removeSeenMovies() {
-        return movies;
+    public Map removeSeenMovies() {
+
+        //Get the movie IDs from the seen list
+        for(int i = 0; i < seen.size(); i++) {
+            Long u = seen.get(i);
+            //iterate through map of recommendations
+            for(Map.Entry<Long, List<ScoredId>> entry : recommendations.entrySet()) {
+                //check each list of recommendations for movie with ID and remove
+            }
+        }
+
+        return filteredRecs;
     }
 
 
