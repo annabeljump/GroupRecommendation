@@ -64,7 +64,7 @@ public class Eliminator {
             //Read file in line by line, with different fields separated
             while((br = buff.readLine()) != null) {
                 String[] userMovies = br.split(split);
-                //if the user is in our group, add the rated movie to our list of seen movies
+                //if the user is in our group, add the rated movie to our list of seen movies=-
                 if(userList.contains(userMovies[0])) {
                 seen.add(Long.parseLong(userMovies[1]));
                 }
@@ -74,6 +74,16 @@ public class Eliminator {
             e.printStackTrace();
         }
 
+    }
+
+
+    /**
+     * Method that compares the movies which have been seen to the movies which have been
+     * recommended and removes them from the recommendations
+     * @return list of recommended *unseen* movies
+     */
+    public List removeSeenMovies() {
+        return movies;
     }
 
 
