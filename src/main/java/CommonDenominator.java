@@ -27,9 +27,17 @@ public class CommonDenominator {
     public Map allRatedAndAverage() {
         begin();
 
+
         return finalRecs;
     }
 
+
+    /**
+     * Method to check if movie contained in all recommendations
+     */
+    public void isAllRecommended() {
+
+    }
 
     /**
      * Method to set up the map and list to search for common movies
