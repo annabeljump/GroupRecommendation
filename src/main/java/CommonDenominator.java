@@ -59,6 +59,7 @@ public class CommonDenominator {
     /**
      * Method to set up the map and list to search for common movies
      */
+
     public void begin() {
         //Pull out first list of recommendations
         Map.Entry<Long, List<ScoredId>> entry = recMap.entrySet().iterator().next();

@@ -100,14 +100,12 @@ public class AgeRestrictor implements AgeAppropriator {
         }
 
         //Set the booleans according to the youngest age
+        //only the lowest age need be set to true
         if(b < 18L) {
             under18 = true;
         } else if(b < 15L) {
-            under18 = true;
             under15 = true;
         } else if(b < 12L) {
-            under18 = true;
-            under15 = true;
             under12 = true;
         }
 
@@ -143,7 +141,7 @@ public class AgeRestrictor implements AgeAppropriator {
         }
 
         String splitting = "|";
-        //TODO Deal with age booleans in reverse so that can break
+        //No need to deal in reverse, only one (if one) will be true
         if(under12){
             //Remove all movies not tagged as "Children"
             for(Map.Entry<Long, String> entry : movieRecMap.entrySet()) {
@@ -190,6 +188,15 @@ public class AgeRestrictor implements AgeAppropriator {
                 if(isHorror){
                     movieRecMap.remove(entry.getKey());
                 }
+            }
+        }
+
+        //this now needs to turn the Map of movies back into a movieList
+        //this movieList will be appropriateMovies.
+
+        for(int i = 0; i < movieList.size(); i++) {
+            if (movieRecMap.containsKey(movieList.get(i))) {
+                appropriateMovies.add(movieList.get(i));
             }
         }
     }
