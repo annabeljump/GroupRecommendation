@@ -103,7 +103,23 @@ public class CommonDenominator {
 
             for(Map.Entry<Long, List<ScoredId>> entry : recMap.entrySet()) {
 
+                List<ScoredId> tempList = new ArrayList<>();
 
+                List alist = entry.getValue();
+
+                tempList = alist;
+
+                for(int j = 0; j < tempList.size(); j++) {
+
+                    if (tempList.get(j).getId() == mID) {
+                        double tempscore = tempList.get(j).getScore();
+                        Double tempscored = new Double(tempscore);
+                        scores.add(tempscored);
+                    }
+                }
+
+                tempList = null;
+                alist = null;
             }
         }
 
