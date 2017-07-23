@@ -44,16 +44,20 @@ public class CommonDenominator {
             Boolean isPresent = true;
 
             //Check if it is present in all other lists
-            //TODO I don't think this will reset the boolean properly
             for(Map.Entry<Long, List<ScoredId>> entry : recMap.entrySet()) {
                 if(!entry.getValue().contains(originalList.get(i))) {
                     isPresent = false;
                 }
+
             }
+
+            //Movie should be added to list here(?)
             if(isPresent) {
                 commonRec.add(originalList.get(i));
             }
         }
+
+        //TODO Call helper method here to assist with generating finalRec list.
     }
 
     /**
@@ -71,6 +75,16 @@ public class CommonDenominator {
         recMap.remove(u);
     }
 
+    /**
+     * Method to return the map of final recommendations
+     * - this will return the map of commonly recommended movies
+     * (with their average predicted rating?)
+     * @return Map of movie IDs and predicted rating
+     */
+    public Map obtainFinalRecs(){
+
+        return finalRecs;
+    }
 
     //Constructor
     public CommonDenominator(Map m) {
