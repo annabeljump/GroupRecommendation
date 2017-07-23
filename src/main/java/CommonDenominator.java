@@ -69,6 +69,7 @@ public class CommonDenominator {
         //Pull out first list of recommendations
         Map.Entry<Long, List<ScoredId>> entry = recMap.entrySet().iterator().next();
         List list = entry.getValue();
+        //TODO do we want to add u's list back to recMap after checking in isAllRecommended() ?
         Long u = entry.getKey();
         this.originalList = list;
 
@@ -84,11 +85,18 @@ public class CommonDenominator {
      */
     public void obtainFinalRecs(){
         //use commonRec and unpack the scores from the user recs for those movies
-        //and then average them
+        //and then average them - return the averaged rating for each common movie
 
-        //is this necessary, can we not return commonRecs instead?
+        //Step 1 - obtain all scores and put in a data structure
+            //Step 1a - get movie ID from commonRec
+            //Step 1b - initialise data structure
+            //Step 1c - search originalList for movie ID and get score
+            //Step 1d - search ... recMap for movie ID and get scores?
+                //pull each list out and search that?
+        //Step 2 - average all scores
+        //Step 3 - put into finalRecs - Long1 = movie ID, Long2 = average predicted score
 
-        //call the age eliminator here?
+        //TODO call the age eliminator here?
 
     }
 
