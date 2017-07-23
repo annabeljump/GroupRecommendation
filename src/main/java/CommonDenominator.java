@@ -1,6 +1,7 @@
 import org.grouplens.lenskit.scored.PackedScoredIdList;
 import org.grouplens.lenskit.scored.ScoredId;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +17,7 @@ public class CommonDenominator {
 
     private Map<Long, List<ScoredId>> recMap = new HashMap<>();
     private List<ScoredId> originalList = new ArrayList<>();
-    private Map<Long, Long> finalRecs = new HashMap<>();
+    private Map<Long, Double> finalRecs = new HashMap<>();
     private List<ScoredId> commonRec = new ArrayList<>();
 
 
@@ -93,9 +94,14 @@ public class CommonDenominator {
                 //pull each list out and search that?
 
         for(int i = 0; i < commonRec.size(); i++) {
+            Long mID = commonRec.get(i).getId();
+            double score1 = commonRec.get(i).getScore();
+            Double scored1 = new Double(score1);
 
+            ArrayList<Double> scores = new ArrayList();
+            scores.add(scored1);
 
-            for (Map.Entry<Long, List<ScoredId>> entry : recMap.entrySet()) {
+            for(Map.Entry<Long, List<ScoredId>> entry : recMap.entrySet()) {
 
 
             }
