@@ -91,41 +91,53 @@ public class CommonDenominator {
             //Step 1b - initialise data structure
             //Step 1c - search originalList for movie ID and get score
             //Step 1d - search ... recMap for movie ID and get scores?
-                //pull each list out and search that?
+                //pull each list out and search that
+                //put each score into a list
 
-        for(int i = 0; i < commonRec.size(); i++) {
-            Long mID = commonRec.get(i).getId();
-            double score1 = commonRec.get(i).getScore();
-            Double scored1 = new Double(score1);
+        for (ScoredId aCommonRec : commonRec) {
+            Long mID = aCommonRec.getId();
+            Double score1 = aCommonRec.getScore();
 
-            ArrayList<Double> scores = new ArrayList();
-            scores.add(scored1);
+            ArrayList<Double> scores = null;
+            scores.add(score1);
 
-            for(Map.Entry<Long, List<ScoredId>> entry : recMap.entrySet()) {
+            for (Map.Entry<Long, List<ScoredId>> entry : recMap.entrySet()) {
 
-                List<ScoredId> tempList = new ArrayList<>();
+                List<ScoredId> tempList;
 
                 List alist = entry.getValue();
 
                 tempList = alist;
 
-                for(int j = 0; j < tempList.size(); j++) {
+                for (ScoredId aTempList : tempList) {
 
-                    if (tempList.get(j).getId() == mID) {
-                        double tempscore = tempList.get(j).getScore();
-                        Double tempscored = new Double(tempscore);
-                        scores.add(tempscored);
+                    if (aTempList.getId() == mID) {
+                        Double tempscore = aTempList.getScore();
+                        scores.add(tempscore);
                     }
                 }
 
                 tempList = null;
                 alist = null;
             }
+
+
+            //Step 2 - average all scores
+
+            Double averageScore = null;
+            Double total = null;
+
+            for (Double score : scores) {
+                total += score;
+            }
+
+            averageScore = total / scores.size();
+
+            //Step 3 - put into finalRecs - Long = movie ID, Double = average predicted score
+
+            finalRecs.put(mID, averageScore);
         }
 
-
-        //Step 2 - average all scores
-        //Step 3 - put into finalRecs - Long1 = movie ID, Long2 = average predicted score
 
         //TODO call the age eliminator here?
 
