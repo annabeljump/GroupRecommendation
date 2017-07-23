@@ -17,7 +17,6 @@ public class CommonDenominator {
     private Map<Long, List<ScoredId>> recMap = new HashMap<>();
     private List<ScoredId> originalList = new ArrayList<>();
     private Map<Long, Long> finalRecs = new HashMap<>();
-    private Boolean isCommon = false;
     private List<ScoredId> commonRec = new ArrayList<>();
 
 
@@ -51,13 +50,15 @@ public class CommonDenominator {
 
             }
 
-            //Movie should be added to list here(?)
+            //Movie should be added to list here, after all lists examined
             if(isPresent) {
                 commonRec.add(originalList.get(i));
             }
         }
 
-        //TODO Call helper method here to assist with generating finalRec list.
+        //now call helper to update finalRecs
+
+        obtainFinalRecs();
     }
 
     /**
@@ -79,11 +80,16 @@ public class CommonDenominator {
      * Method to return the map of final recommendations
      * - this will return the map of commonly recommended movies
      * (with their average predicted rating?)
-     * @return Map of movie IDs and predicted rating
+     * does not need to return finalRecs, only update it
      */
-    public Map obtainFinalRecs(){
+    public void obtainFinalRecs(){
+        //use commonRec and unpack the scores from the user recs for those movies
+        //and then average them
 
-        return finalRecs;
+        //is this necessary, can we not return commonRecs instead?
+
+        //call the age eliminator here?
+
     }
 
     //Constructor
