@@ -84,8 +84,6 @@ public class CommonDenominator {
      * does not need to return finalRecs, only update it
      */
     public void obtainFinalRecs(){
-        //use commonRec and unpack the scores from the user recs for those movies
-        //and then average them - return the averaged rating for each common movie
 
         //Step 1 - obtain all scores and put in a data structure
             //Step 1a - get movie ID from commonRec
@@ -93,6 +91,17 @@ public class CommonDenominator {
             //Step 1c - search originalList for movie ID and get score
             //Step 1d - search ... recMap for movie ID and get scores?
                 //pull each list out and search that?
+
+        for(int i = 0; i < commonRec.size(); i++) {
+
+
+            for (Map.Entry<Long, List<ScoredId>> entry : recMap.entrySet()) {
+
+
+            }
+        }
+
+
         //Step 2 - average all scores
         //Step 3 - put into finalRecs - Long1 = movie ID, Long2 = average predicted score
 
