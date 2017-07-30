@@ -14,12 +14,23 @@ public class UserGroup implements GroupCreator {
     private List<Long> userList = new ArrayList();
     private Map<Long, List<ScoredId>> userRecs = new HashMap<>();
 
+    //Now inserting a "host" designation for the host user (for weightings)
+
+    private Long host;
+
+    public UserGroup(List<Long> users, Long h) {
+        this.userList = users;
+        this.host = h;
+    }
+
     public UserGroup(List<Long> users) {
         this.userList = users;
+        this.host = null;
     }
 
     public UserGroup() {
         this.userList = null;
+        this.host = null;
     }
 
 
@@ -44,5 +55,13 @@ public class UserGroup implements GroupCreator {
 
     public List<Long> getUserList() {
         return this.userList;
+    }
+
+    public Long getHost() {
+        return this.host;
+    }
+
+    public void setHost(Long h) {
+        this.host = h;
     }
 }
