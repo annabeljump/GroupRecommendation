@@ -14,9 +14,6 @@ public class RecMethod1 implements GroupRecGenerator {
 
     private List<Long> userList = new ArrayList();
 
-    //Step 1: Invididual Recommendations
-
-
     //Step 2: Age suitability removal - are children present?
 
 
@@ -56,7 +53,7 @@ public class RecMethod1 implements GroupRecGenerator {
 
         GroupCreator userGroup = new UserGroup(userList, hoster);
 
-        //Now get their recommendations
+        //Step 1b: Now get their recommendations
 
         userGroup.getIndividualRecs();
     }

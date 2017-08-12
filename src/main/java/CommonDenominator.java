@@ -138,9 +138,6 @@ public class CommonDenominator {
             finalRecs.put(mID, averageScore);
         }
 
-
-        //TODO call the age eliminator here?
-
     }
 
     //Constructor
