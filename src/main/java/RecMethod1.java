@@ -12,7 +12,8 @@ import java.util.Map;
  */
 public class RecMethod1 implements GroupRecGenerator {
 
-    private List<Long> userList = new ArrayList();
+    private List<Long> usersList = new ArrayList();
+    private Map<Long, List<ScoredId>> usersRecs = new HashMap<>();
 
     //Step 2: Age suitability removal - are children present?
 
@@ -38,7 +39,7 @@ public class RecMethod1 implements GroupRecGenerator {
             boolean finished = false;
             do {
                 Long user1 = Long.valueOf(user);
-                userList.add(user1);
+                usersList.add(user1);
                 System.out.println("Next user please (Q to quit):");
                 user = System.console().readLine();
                 if(user.equals("Q")){
@@ -51,11 +52,27 @@ public class RecMethod1 implements GroupRecGenerator {
         String host = System.console().readLine();
         Long hoster = Long.valueOf(host);
 
-        GroupCreator userGroup = new UserGroup(userList, hoster);
+        UserGroup usersGroup = new UserGroup(usersList, hoster);
 
-        //Step 1b: Now get their recommendations
+        //Step 1b: Now generate their recommendations
 
-        userGroup.getIndividualRecs();
+        usersGroup.getIndividualRecs();
+
+        //Step 2: Age restrictions
+
+        usersRecs = usersGroup.getUserRecs();
+
+        AgeRestrictor ages = new AgeRestrictor(usersGroup, usersRecs);
+
+        ages.retrieveMovies();
+        ages.retrieveUsers();
+        ages.checkAndRemove();
+
+        //Step 2 (i) : now we have a list of appropriate movies
+
+        List<Long> appropriate = ages.getAppropriateMovies();
+
+        //TODO now we need to put the appropriate moves into form with their recommended scores??
     }
 
 
