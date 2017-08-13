@@ -15,15 +15,6 @@ public class RecMethod1 implements GroupRecGenerator {
     private List<Long> usersList = new ArrayList();
     private Map usersRecs = new HashMap<>();
 
-    //Step 2: Age suitability removal - are children present?
-
-
-    //Step 3: Remove seen movies
-
-
-    //Step 4: Multiple recommended movies average rating + added
-
-
     //Step 5: generate ratings for all other movies - add to group profile
     //This INCLUDES WEIGHTING
 
@@ -75,13 +66,18 @@ public class RecMethod1 implements GroupRecGenerator {
 
 
         //Step 3: Remove Seen movies.
+            //Again this will need to be used later when predicted ratings returned
+
+        SeenYou iSeeYou = new SeenYou(usersGroup, usersRecs);
+
+        List notSeen = iSeeYou.getUnseenMovies();
 
 
         //Step 4: Carry out averaging of common recommended movies
 
         CommonDenominator averageCommonMovies = new CommonDenominator(usersRecs);
 
-        Map seenRatedAveraged = averageCommonMovies.allRatedAndAverage();
+        Map predictedAveraged = averageCommonMovies.allRatedAndAverage();
 
 
 
