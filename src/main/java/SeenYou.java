@@ -21,6 +21,7 @@ public class SeenYou {
     private List<Long> unseenMovies = new ArrayList();
     private Map<String, String> userRatingMap = new HashMap();
     private HashSet<Long> seenMovies = new HashSet();
+    private List<Long> seenMovieList;
 
 
     /**
@@ -78,6 +79,7 @@ public class SeenYou {
                 //Compare user IDs, make lists of movies seen.
                 //this can replace below - add movie straight to hashset??
                 //this might be unwieldy
+                //but hashset ensures no duplicate entries (once movie seen by one user, not added again if seen by another)
                 for(int j = 0; j < userList.size(); j++) {
                     String tempUser = userList.get(j).toString();
                     if (tempUser.equals(userRatings[0])) {
@@ -92,6 +94,8 @@ public class SeenYou {
             e.printStackTrace();
         }
 
+        this.seenMovieList = new ArrayList<>(seenMovies);
+
         //Now make a List of movies per user and add each movie rated to
         //the movieSeen hashset - set ensures no duplicates!
         //for(int i = 0; i < userList.size(); i++) {
@@ -103,6 +107,7 @@ public class SeenYou {
            // }
 
         }
+
 
 
     public void checkAndRemoveSeenMovies(){
