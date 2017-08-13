@@ -13,7 +13,7 @@ import java.util.Map;
 public class RecMethod1 implements GroupRecGenerator {
 
     private List<Long> usersList = new ArrayList();
-    private Map<Long, List<ScoredId>> usersRecs = new HashMap<>();
+    private Map usersRecs = new HashMap<>();
 
     //Step 2: Age suitability removal - are children present?
 
@@ -69,10 +69,19 @@ public class RecMethod1 implements GroupRecGenerator {
         ages.checkAndRemove();
 
         //Step 2 (i) : now we have a list of appropriate movies
+            //We will have to use this later, when the recommender returns the predicted ratings
 
-        List<Long> appropriate = ages.getAppropriateMovies();
+        List appropriate = ages.getAppropriateMovies();
 
-        //TODO now we need to put the appropriate moves into form with their recommended scores??
+
+        //Step 3: Carry out averaging of common recommended movies
+
+        CommonDenominator averageCommonMovies = new CommonDenominator(usersRecs);
+
+        Map seenRatedAveraged = averageCommonMovies.allRatedAndAverage();
+
+
+
     }
 
 
