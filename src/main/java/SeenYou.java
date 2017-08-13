@@ -1,5 +1,8 @@
 import org.grouplens.lenskit.scored.ScoredId;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +22,8 @@ public class SeenYou {
     private UserGroup users = new UserGroup();
     private List<Long> userList = new ArrayList<Long>();
     private List<Long> unseenMovies = new ArrayList<Long>();
+    private Map<String, String> userRatingMap = new HashMap<>();
+
 
     /**
      * Eventually this will call all methods and
@@ -54,12 +59,31 @@ public class SeenYou {
 
     /**
      * Retrieves the movie IDs of the movies a user has rated
-     * puts them in a list.
+     * puts them in a map.
      */
 
-    //TODO store the user ID as key and list of rated movies in a Map??
-
     public void retrieveRatedMovies(){
+
+        //Read in all movies a user has rated
+            //this will create a huge map - TODO - review
+        BufferedReader buff = null;
+        String br = "";
+        String split = "|";
+        String filePath = "src/ml-latest-small/ratings.csv";
+
+        try {
+            buff = new BufferedReader(new FileReader(filePath));
+            //Read file in line by line, with different fields separated
+            while((br = buff.readLine()) != null) {
+                String[] userRatings = br.split(split);
+                this.userRatingMap.put(userRatings[0], userRatings[1]);
+                userRatings = null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
     }
 
