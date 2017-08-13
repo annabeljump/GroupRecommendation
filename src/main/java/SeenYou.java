@@ -18,7 +18,6 @@ public class SeenYou {
     private List<Long> movieRecList = new ArrayList();
     private UserGroup users = new UserGroup();
     private List<Long> userList = new ArrayList();
-    private List<Long> unseenMovies = new ArrayList();
     private Map<String, String> userRatingMap = new HashMap();
     private HashSet<Long> seenMovies = new HashSet();
     private List<Long> seenMovieList;
@@ -32,7 +31,7 @@ public class SeenYou {
         retrieveMovieRecs();
         retrieveRatedMovies();
         checkAndRemoveSeenMovies();
-        return this.unseenMovies;
+        return this.movieRecList;
     }
 
     /**
@@ -96,21 +95,22 @@ public class SeenYou {
 
         this.seenMovieList = new ArrayList<>(seenMovies);
 
-        //Now make a List of movies per user and add each movie rated to
-        //the movieSeen hashset - set ensures no duplicates!
-        //for(int i = 0; i < userList.size(); i++) {
-          //  Long u = userList.get(i);
-            //String u2 = u.toString();
-           // if(userRatingMap.containsKey(u2)){
-           //     Long mov = Long.valueOf(userRatingMap.get(u2));
-           //     seenMovies.add(mov);
-           // }
-
         }
 
-
+    /**
+     * This takes the list of seen movies
+     * and removes them from the list of recommendations
+     */
 
     public void checkAndRemoveSeenMovies(){
+
+        for(int i=0; i < movieRecList.size(); i++){
+            for(int a=0; a < seenMovieList.size(); a++){
+                if(movieRecList.get(i).equals(seenMovieList.get(a))){
+                    movieRecList.remove(i);
+                }
+            }
+        }
 
     }
 

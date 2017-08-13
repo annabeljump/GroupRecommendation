@@ -100,12 +100,12 @@ public class AgeRestrictor implements AgeAppropriator {
 
         //Set the booleans according to the youngest age
         //only the lowest age need be set to true
-        if(b < 18L) {
-            under18 = true;
+        if(b < 12L) {
+            under12 = true;
         } else if(b < 15L) {
             under15 = true;
-        } else if(b < 12L) {
-            under12 = true;
+        } else if(b < 18L) {
+            under18 = true;
         }
 
         //Unfortunately, movies in movies.csv do not carry BBFC (or similar) ratings
