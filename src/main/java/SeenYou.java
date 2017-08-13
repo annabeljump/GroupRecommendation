@@ -63,7 +63,7 @@ public class SeenYou {
     public void retrieveRatedMovies(){
 
         //Read in all movies a user has rated
-            //this will create a huge map - TODO - review
+            //this will create a huge map - won't work!
         BufferedReader buff = null;
         String br = "";
         String split = "|";
@@ -74,8 +74,19 @@ public class SeenYou {
             //Read file in line by line, with different fields separated
             while((br = buff.readLine()) != null) {
                 String[] userRatings = br.split(split);
-                this.userRatingMap.put(userRatings[0], userRatings[1]);
-                userRatings = null;
+
+                //Compare user IDs, make lists of movies seen.
+                //this can replace below - add movie straight to hashset??
+                //this might be unwieldy
+                for(int j = 0; j < userList.size(); j++) {
+                    String tempUser = userList.get(j).toString();
+                    if (tempUser.equals(userRatings[0])) {
+                        Long mov = Long.valueOf(userRatings[1]);
+                        seenMovies.add(mov);
+                    }
+                }
+                    userRatings = null;
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,13 +94,16 @@ public class SeenYou {
 
         //Now make a List of movies per user and add each movie rated to
         //the movieSeen hashset - set ensures no duplicates!
-        for(int i = 0; i < userList.size(); i++) {
-            Long u = userList.get(i);
+        //for(int i = 0; i < userList.size(); i++) {
+          //  Long u = userList.get(i);
+            //String u2 = u.toString();
+           // if(userRatingMap.containsKey(u2)){
+           //     Long mov = Long.valueOf(userRatingMap.get(u2));
+           //     seenMovies.add(mov);
+           // }
 
-
-            //this.userAgeList.add(Long.parseLong(userAgeMap.get(Long.toString(u))));
         }
-    }
+
 
     public void checkAndRemoveSeenMovies(){
 
