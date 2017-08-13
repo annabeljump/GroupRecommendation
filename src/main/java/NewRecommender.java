@@ -68,29 +68,15 @@ public class NewRecommender implements Runnable {
 
     public void run() {
         LenskitConfiguration config = new LenskitConfiguration();
-        //try {
-        //    config = ConfigHelpers.load(new File("src/main/etc/LenskitConfiguration.groovy"));
-        //} catch (IOException e) {
-        //    e.printStackTrace();
-        //    throw new RuntimeException("could not load configuration", e);
-        //} catch (RecommenderConfigurationException e) {
-        //    e.printStackTrace();
-        //}
+
 
 // Use item-item CF to score items
-       // config.bind(ItemScorer.class).to(ItemItemScorer.class);
         config.bind(ItemScorer.class).to(UserUserItemScorer.class);
 // let's use personalized mean rating as the baseline/fallback predictor.
 // 2-step process:
 // First, use the user mean rating as the baseline scorer
-       // config.bind(BaselineScorer.class, ItemScorer.class)
-       //         .to(UserMeanItemScorer.class);
 // Second, use the item mean rating as the base for user means
-       // config.bind(UserMeanBaseline.class, ItemScorer.class)
-       //         .to(ItemMeanRatingItemScorer.class);
 // and normalize ratings by baseline prior to computing similarities
-       // config.bind(UserVectorNormalizer.class)
-       //         .to(BaselineSubtractingUserVectorNormalizer.class);
 
         config.bind(BaselineScorer.class, ItemScorer.class).to(UserMeanItemScorer.class);
         config.bind(UserMeanBaseline.class, ItemScorer.class).to(ItemMeanRatingItemScorer.class);
@@ -98,8 +84,6 @@ public class NewRecommender implements Runnable {
         config.within(UserVectorNormalizer.class).bind(VectorNormalizer.class).to(MeanCenteringVectorNormalizer.class);
 
         config.set(NeighborhoodSize.class).to(30);
-
-        //config.bind(EventDAO.class).to(new SimpleFileRatingDAO(new File(dataFile), ","));
 
         EventDAO dao = SimpleFileRatingDAO.create(new File(dataFile), ",");
         config.bind(EventDAO.class).to(dao);
@@ -114,10 +98,6 @@ public class NewRecommender implements Runnable {
         assert newRec != null;
 
         ItemRecommender itemRec = newRec.getItemRecommender();
-
-        //generates recommendations to users.
-        //Iterate along users list to generate for all? Next impl.
-
 
         //Insert random User to generate recs.
         List<ScoredId> actualRecs = itemRec.recommend(168, 10);

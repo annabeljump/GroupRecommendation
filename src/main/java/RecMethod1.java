@@ -1,3 +1,4 @@
+import org.grouplens.lenskit.ItemRecommender;
 import org.grouplens.lenskit.scored.ScoredId;
 
 import java.util.ArrayList;
@@ -14,6 +15,10 @@ public class RecMethod1 implements GroupRecGenerator {
 
     private List<Long> usersList = new ArrayList();
     private Map usersRecs = new HashMap<>();
+
+    //We want to pass an item recommender so that unseen movies can have ratings generated
+    //for the group.
+    private ItemRecommender rec;
 
 
     @Override
@@ -79,8 +84,28 @@ public class RecMethod1 implements GroupRecGenerator {
         //Step 5: generate ratings for all other movies - add to group profile
         //This INCLUDES WEIGHTING
 
+        //Step 5a: HashSet recommended movies?
+        //Step 5b: Remove seen movies
+        //Step 5c: remove age inappropriate movies
+        //Step 5d: generate recommendations for all remaining movies for each user
+
+        //Step 5e: amalgamate ratings using weightings
+
+
+
+        //Step 6: print out recommendations using movie name and end process recommendations.
+
 
     }
 
+    //Constructors
+    public RecMethod1(){
+        this.usersList = null;
+        this.usersRecs = null;
+        this.rec = null;
+    }
 
+    public RecMethod1(ItemRecommender itemRec){
+        this.rec = itemRec;
+    }
 }
