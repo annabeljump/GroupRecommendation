@@ -18,8 +18,18 @@ public class SeenYou {
     private List<Long> movieRecList = new ArrayList<>();
     private UserGroup users = new UserGroup();
     private List<Long> userList = new ArrayList<Long>();
+    private List<Long> unseenMovies = new ArrayList<Long>();
 
-
+    /**
+     * Eventually this will call all methods and
+     * @return list of movies that are unseen
+     */
+    public List getUnseenMovies() {
+        retrieveMovieRecs();
+        retrieveRatedMovies();
+        checkAndRemoveSeenMovies();
+        return this.unseenMovies;
+    }
 
     /**
      * Get the list of recommended movies from the Map
@@ -50,6 +60,10 @@ public class SeenYou {
     //TODO store the user ID as key and list of rated movies in a Map??
 
     public void retrieveRatedMovies(){
+
+    }
+
+    public void checkAndRemoveSeenMovies(){
 
     }
 
