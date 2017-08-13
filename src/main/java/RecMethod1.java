@@ -74,7 +74,10 @@ public class RecMethod1 implements GroupRecGenerator {
         List appropriate = ages.getAppropriateMovies();
 
 
-        //Step 3: Carry out averaging of common recommended movies
+        //Step 3: Remove Seen movies.
+
+
+        //Step 4: Carry out averaging of common recommended movies
 
         CommonDenominator averageCommonMovies = new CommonDenominator(usersRecs);
 

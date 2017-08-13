@@ -65,7 +65,6 @@ public class AgeRestrictor implements AgeAppropriator {
     @Override
     public void checkAndRemove() {
 
-        //TODO - can this reading of user file be put in UserGroup?
         BufferedReader buff = null;
         String br = "";
         String split = "|";
