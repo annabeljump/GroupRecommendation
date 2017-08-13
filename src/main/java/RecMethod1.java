@@ -15,9 +15,6 @@ public class RecMethod1 implements GroupRecGenerator {
     private List<Long> usersList = new ArrayList();
     private Map usersRecs = new HashMap<>();
 
-    //Step 5: generate ratings for all other movies - add to group profile
-    //This INCLUDES WEIGHTING
-
 
     @Override
     public void recommendMovies() {
@@ -79,6 +76,8 @@ public class RecMethod1 implements GroupRecGenerator {
 
         Map predictedAveraged = averageCommonMovies.allRatedAndAverage();
 
+        //Step 5: generate ratings for all other movies - add to group profile
+        //This INCLUDES WEIGHTING
 
 
     }
