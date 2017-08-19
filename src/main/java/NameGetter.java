@@ -1,10 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by annabeljump
@@ -12,9 +9,10 @@ import java.util.Map;
  */
 public class NameGetter {
     private List<Long> movies = new ArrayList<>();
-    private List<String> names = new ArrayList<>();
+    private Map<Long, String> names = new HashMap<>();
+    private Map<Long, String> movieNames = new HashMap<>();
 
-    public List<String> getMovieNames(){
+    public Map<Long, String> getMovieNames(){
         //Use code from age restriction to pull movie details
             //This time, only add the name of movie
         BufferedReader bff = null;
@@ -23,18 +21,27 @@ public class NameGetter {
         String moviePath = "src/ml-latest-small/movies.csv";
 
         //Read in movie details as with users above
-        //Add to map the movie ID and the genre tags
+        //Add to list only the name (which will be the second entry in the array, at 1
         try {
             bff = new BufferedReader(new FileReader(moviePath));
             while((bx = bff.readLine()) != null) {
                 String[] movieDetails = bx.split(splitter);
-                names.add(movieDetails[1]);
+                names.put(Long.parseLong(movieDetails[0]), movieDetails[1]);
                 movieDetails = null;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return names;
+
+        for(Map.Entry<Long, String> e : names.entrySet()) {
+            for(int i=0; i < movies.size(); i++) {
+                if (Objects.equals(e.getKey(), movies.get(i))) {
+                   movieNames.put(movies.get(i), e.getValue());
+                }
+            }
+        }
+
+        return movieNames;
     }
 
 

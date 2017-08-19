@@ -99,16 +99,32 @@ public class RecMethod1 implements GroupRecGenerator {
         //Need to get names of movies
 
         List<Long> movies = new ArrayList<>();
+        List<Double> ratings = new ArrayList<>();
 
         for(Map.Entry<Long, Double> entry : recommendations.entrySet()) {
             movies.add(entry.getKey());
+            ratings.add(entry.getValue());
         }
 
         NameGetter names = new NameGetter(movies);
 
+        Map<Long, String> movieNames = names.getMovieNames();
+        Map<String, Double> moviesToWatch = new HashMap<>();
+
+        for(Map.Entry<Long, Double> e : recommendations.entrySet()) {
+            for(Map.Entry<Long, String> en : movieNames.entrySet()){
+                if(e.getKey().equals(en.getKey())){
+                    moviesToWatch.put(en.getValue(), e.getValue());
+                }
+            }
+        }
+
 
         System.out.println("We recommend you should watch:");
-
+       for(Map.Entry<String, Double> t : moviesToWatch.entrySet()){
+           System.out.println("Movie: " + t.getKey());
+           System.out.println("Predicted rating: " + t.getValue());
+       }
 
     }
 
