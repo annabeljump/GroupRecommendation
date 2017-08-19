@@ -121,9 +121,35 @@ public class WeightingGenerator {
         //Get the Host.
         Long host = u.getHost();
 
-        if(childrenPresent){
-            //do something
+        //Least Misery - set a low rating threshold - if lowest rating is lower, do not add to final recs
+            //Stick scores in a list
+        List<Double> scores = new ArrayList<Double>(m.values());
+
+        Double lowScore = scores.get(0);
+        for(int i = 0; i < scores.size(); i++){
+            if(scores.get(i) < lowScore){
+                lowScore = scores.get(i);
+            }
         }
+
+        if(lowScore < 1.5){ return;}
+
+
+        //Add scores for movie to an array for averaging
+
+        //if the user is Host, double the score if it is higher than 2.5, halve if lower.
+            //this should double the impact on the averaged rating.
+
+        //if more than half the ratings are low, minus 1 to the average rating?
+
+        //if more than half the ratings are high, add 1 to the average rating?
+
+
+        if(childrenPresent){
+            //do something?? is this necessary?? Maybe just display some text explaining the ratings??
+        }
+
+        //TODO figure out how to do something with the date here.
 
     }
 
