@@ -1,10 +1,7 @@
 import org.grouplens.lenskit.ItemRecommender;
 import org.grouplens.lenskit.scored.ScoredId;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by annabeljump
@@ -85,6 +82,7 @@ public class RecMethod1 implements GroupRecGenerator {
         //This INCLUDES WEIGHTING
 
         //Step 5a: HashSet recommended movies?
+
         //Step 5b: Remove seen movies
         //Step 5c: remove age inappropriate movies
         //Step 5d: generate recommendations for all remaining movies for each user
