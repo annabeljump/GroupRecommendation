@@ -125,7 +125,7 @@ public class CommonDenominator {
             //Step 2 - average all scores
 
             Double averageScore = null;
-            Double total = null;
+            Double total = 0.0;
 
             for (Double score : scores) {
                 total += score;

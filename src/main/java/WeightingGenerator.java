@@ -15,19 +15,20 @@ public class WeightingGenerator {
     private UserGroup users;
     private List<Long> appropriateMovies;
     private List<Long> unseenMovies;
-    private Map averagedCommonRecs;
+    private Map<Long, Double> averagedCommonRecs;
     private HashSet<Long> movieList;
     private List<Long> recMovies;
-    private Boolean childrenPresent;
+    private Map<Long, Double> finalRecs;
 
     private List<List<ScoredId>> interimList = new ArrayList();
     private List<ScoredId> interimList2 = new ArrayList();
     private List<Long> movieRecList = new ArrayList();
 
     //Main method to call other methods
-    public void youHaveBeenWeighed() {
+    public Map youHaveBeenWeighed() {
         youHaveBeenMeasured();
         andYouHaveBeenFound();
+        return finalRecs;
     }
 
 
@@ -121,8 +122,9 @@ public class WeightingGenerator {
         //Get the Host.
         Long host = u.getHost();
 
+
         //Least Misery - set a low rating threshold - if lowest rating is lower, do not add to final recs
-            //Stick scores in a list
+        //Scores should be added to a list. List is only for this, as weighting needs to be done otherwise
         List<Double> scores = new ArrayList<Double>(m.values());
 
         Double lowScore = scores.get(0);
@@ -132,25 +134,84 @@ public class WeightingGenerator {
             }
         }
 
-        if(lowScore < 1.5){ return;}
+        if(lowScore <= 1.0){ return;}
 
-
-        //Add scores for movie to an array for averaging
-
+        //Now add scores to a list for averaging.
         //if the user is Host, double the score if it is higher than 2.5, halve if lower.
-            //this should double the impact on the averaged rating.
+        //this should double the impact on the averaged rating.
+
+        List<Double> avScores = new ArrayList<Double>();
+
+        for(Map.Entry<Long, Double> entry : m.entrySet()) {
+            Double sc = entry.getValue();
+            if(entry.getKey() == host){
+                if(sc > 2.5) {
+                    avScores.add(sc * 2);
+                } else {
+                    avScores.add(sc / 2);
+                }
+            } else {
+                avScores.add(sc);
+            }
+        }
+
+        //Average the scores
+        Double averageScore;
+        Double total = 0.0;
+
+        for (Double score : avScores) {
+            total += score;
+        }
+
+        averageScore = total / avScores.size();
 
         //if more than half the ratings are low, minus 1 to the average rating?
-
         //if more than half the ratings are high, add 1 to the average rating?
 
+        int no = u.getUserList().size();
 
-        if(childrenPresent){
-            //do something?? is this necessary?? Maybe just display some text explaining the ratings??
+        int highScore = 0;
+        int lowScores = 0;
+
+        for (Double score : scores) {
+            if (score < 2.0) {
+                lowScores++;
+            } else if (score > 3.0) {
+                highScore++;
+            }
+        }
+
+        if(lowScores > (no/2)){
+            averageScore = averageScore - 1.0;
+        } else if(highScore > (no/2)) {
+            averageScore = averageScore + 1.0;
+        }
+
+        //Now factor in movies which were commonly recommended.
+
+        assert !averagedCommonRecs.isEmpty();
+
+        for(Map.Entry<Long, Double> e : averagedCommonRecs.entrySet()) {
+            if(Objects.equals(e.getKey(), mov)){
+                if(e.getValue() > 3.0){
+                    averageScore = averageScore + 1.0;
+                } else if(e.getValue() < 2.0){
+                    averageScore = averageScore - 1.0;
+                }
+            }
+        }
+
+        //Make sure the average score is no higher than 5.0 or lower than 0.5
+
+        if(averageScore > 5.0){
+            averageScore = 5.0;
+        } else if(averageScore < 0.5){
+            averageScore = 0.5;
         }
 
         //TODO figure out how to do something with the date here.
 
+        finalRecs.put(mov, averageScore);
     }
 
 
@@ -178,10 +239,6 @@ public class WeightingGenerator {
 
 
     //Getters + Setters
-
-    public void setChildrenPresent(Boolean b) {
-        this.childrenPresent = b;
-    }
 
     public Map getUserRecs() {
         return userRecs;
@@ -221,5 +278,13 @@ public class WeightingGenerator {
 
     public void setAveragedCommonRecs(Map averagedCommonRecs) {
         this.averagedCommonRecs = averagedCommonRecs;
+    }
+
+    public Map<Long, Double> getFinalRecs() {
+        return finalRecs;
+    }
+
+    public void setFinalRecs(Map<Long, Double> finalRecs) {
+        this.finalRecs = finalRecs;
     }
 }
