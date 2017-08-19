@@ -12,10 +12,10 @@ public class WeightingGenerator {
 
     private Map<Long, List<ScoredId>> userRecs;
     private UserGroup users;
-    private List appropriateMovies;
-    private List unseenMovies;
+    private List<Long> appropriateMovies;
+    private List<Long> unseenMovies;
     private Map averagedCommonRecs;
-    private HashSet movieList;
+    private HashSet<Long> movieList;
 
     private List<List<ScoredId>> interimList = new ArrayList();
     private List<ScoredId> interimList2 = new ArrayList();
@@ -47,9 +47,22 @@ public class WeightingGenerator {
         //Convert list into HashSet to get rid of repeated entries
         this.movieList = new HashSet(movieRecList);
 
+        //Going to have to convert it back to iterate through it
+        List<Long> movies = new ArrayList<Long>(movieList);
+
+
+        //Remove seen movies from the set
+        for(int i = 0; i < movies.size(); i++){
+            Long mov = movies.get(i);
+            if(!unseenMovies.contains(mov)){
+                movies.remove(i);
+            }
+        }
+
+
+        //Remove age inappropriate movies from the set
     }
-    //Step 5b: Remove seen movies
-    //Step 5c: remove age inappropriate movies
+
     //Step 5d: generate recommendations for all remaining movies for each user
 
     //Step 5e: amalgamate ratings using weightings
