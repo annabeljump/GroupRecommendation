@@ -1,3 +1,4 @@
+import org.grouplens.lenskit.RatingPredictor;
 import org.grouplens.lenskit.scored.ScoredId;
 
 import java.util.*;
@@ -25,9 +26,15 @@ public class WeightingGenerator {
     //Main method to call other methods
     public void youHaveBeenWeighed() {
         youHaveBeenMeasured();
+        andYouHaveBeenFound();
     }
 
 
+    /**
+     * This method extracts the movies which have been recommended
+     * Then removes movies which have been seen
+     * And movies which are inappropriate for the ages present
+     */
     public void youHaveBeenMeasured() {
         //Make a HashSet of recommended movies to remove any repetition
 
@@ -73,12 +80,54 @@ public class WeightingGenerator {
         this.recMovies = movies;
     }
 
-    //Step 5d: generate recommendations for all remaining movies for each user
+    /**
+     * This method generates ratings for the final list of recommended movies
+     * for each user in the group, ready for weightings to be applied
+     * This method should call the weighting method because:
+     * -- Otherwise would have to use a complicated data structure to store the ratings
+     * -- This way weightings can be applied and only the final rating is stored for the movie
+     */
+    public void andYouHaveBeenFound() {
 
-    //Step 5e: amalgamate ratings using weightings
+        //Make a new recommender so that predict() method can be used
+        NewRecommender n = new NewRecommender();
+
+        List<Long> userList = users.getUserList();
+        List<Double> movieScores = new ArrayList();
+
+        for(int i = 0; i < recMovies.size(); i++){
+            Long movie = recMovies.get(i);
+            for(int j = 0; j < userList.size(); j++){
+                Double score;
+                Long user = userList.get(j);
+                score = n.predict(user, movie);
+                movieScores.add(score);
+            }
+            wanting(users, movie, movieScores);
+        }
+
+    }
+
+    /**
+     * Method to apply weightings and generate final group score for each movie
+     * Each time this is called, it adds the movie ID and score to a Map of final recommendations
+     * @param u the UserGroup for which recommendations are being made
+     * @param mov the movieID of the movie for which the scores have been generated
+     * @param m the list of scores for one movie
+     */
+    public void wanting(UserGroup u, Long mov, List<Double> m) {
+
+    }
 
 
-    //Constructors
+
+    /**
+     * Constructors below:
+     * I have not put a full constructor with all fields
+     * this is because there are two of each Map and List
+     * It is better to pass specifically using Setters
+     * so as to avoid incorrect assignments.
+     */
 
     public WeightingGenerator(){
         this.userRecs = null;
@@ -88,13 +137,6 @@ public class WeightingGenerator {
         this.averagedCommonRecs = null;
     }
 
-    /**
-     * I have not put a full constructor with all fields
-     * this is because there are two of each Map and List
-     * It is better to pass specifically using Setters
-     * so as to avoid incorrect assignments.
-     * @param us the UserGroup of users.
-     */
     public WeightingGenerator(UserGroup us){
         this.users = us;
 
