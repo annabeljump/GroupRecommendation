@@ -100,7 +100,7 @@ public class NewRecommender implements Runnable {
         ItemRecommender itemRec = newRec.getItemRecommender();
 
         //Insert random User to generate recs.
-        List<ScoredId> actualRecs = itemRec.recommend(168, 10);
+        List<ScoredId> actualRecs = itemRec.recommend(userID, 10);
 
         System.out.println("Now Printing Recommended Items:");
         for (int i = 0; i < actualRecs.size(); i++) {
@@ -145,5 +145,47 @@ public class NewRecommender implements Runnable {
 
         return actualRecs;
 
+    }
+
+    /**
+     * Tyis is a new method to predict a rating for a specific movie
+     * @param u the user ID of the user
+     * @param m the number of the movie for which the rating should be generated
+     * @return the rating user u gives movie m
+     */
+
+    public Double predict(Long u, Long m) {
+
+        Double rating;
+
+        LenskitConfiguration config = new LenskitConfiguration();
+
+        config.bind(ItemScorer.class).to(UserUserItemScorer.class);
+
+        config.bind(BaselineScorer.class, ItemScorer.class).to(UserMeanItemScorer.class);
+        config.bind(UserMeanBaseline.class, ItemScorer.class).to(ItemMeanRatingItemScorer.class);
+
+        config.within(UserVectorNormalizer.class).bind(VectorNormalizer.class).to(MeanCenteringVectorNormalizer.class);
+
+        config.set(NeighborhoodSize.class).to(30);
+
+        EventDAO dao = SimpleFileRatingDAO.create(new File(dataFile), ",");
+        config.bind(EventDAO.class).to(dao);
+
+        LenskitRecommender newRec = null;
+        try {
+            newRec = LenskitRecommender.build(config);
+        } catch (RecommenderBuildException e) {
+            e.printStackTrace();
+        }
+
+        assert newRec != null;
+
+        RatingPredictor pred = newRec.getRatingPredictor();
+        double score = pred.predict(u, m);
+
+        rating = score;
+
+        return rating;
     }
 }
