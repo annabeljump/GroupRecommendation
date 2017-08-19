@@ -12,6 +12,7 @@ public class RecMethod1 implements GroupRecGenerator {
 
     private List<Long> usersList = new ArrayList();
     private Map usersRecs = new HashMap<>();
+    private Map<Long, Double> recommendations = new HashMap<>();
 
     //We want to pass an item recommender so that unseen movies can have ratings generated
     //for the group.
@@ -41,6 +42,8 @@ public class RecMethod1 implements GroupRecGenerator {
         System.out.println("Thank you. Please enter the host's user ID:");
         String host = System.console().readLine();
         Long hoster = Long.valueOf(host);
+
+        System.out.println("Calculating...");
 
         UserGroup usersGroup = new UserGroup(usersList, hoster);
 
@@ -87,11 +90,24 @@ public class RecMethod1 implements GroupRecGenerator {
         weighter.setAveragedCommonRecs(predictedAveraged);
         weighter.setUnseenMovies(notSeen);
         weighter.setUserRecs(usersRecs);
-        weighter.setChildrenPresent(areChildrenPresent);
 
+        recommendations = weighter.youHaveBeenWeighed();
 
 
         //Step 6: print out recommendations using movie name and end process recommendations.
+
+        //Need to get names of movies
+
+        List<Long> movies = new ArrayList<>();
+
+        for(Map.Entry<Long, Double> entry : recommendations.entrySet()) {
+            movies.add(entry.getKey());
+        }
+
+        NameGetter names = new NameGetter(movies);
+
+
+        System.out.println("We recommend you should watch:");
 
 
     }

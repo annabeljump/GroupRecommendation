@@ -25,7 +25,7 @@ public class WeightingGenerator {
     private List<Long> movieRecList = new ArrayList();
 
     //Main method to call other methods
-    public Map youHaveBeenWeighed() {
+    public Map<Long, Double> youHaveBeenWeighed() {
         youHaveBeenMeasured();
         andYouHaveBeenFound();
         return finalRecs;
