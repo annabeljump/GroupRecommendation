@@ -81,13 +81,11 @@ public class RecMethod1 implements GroupRecGenerator {
         //Step 5: generate ratings for all other movies - add to group profile
         //This INCLUDES WEIGHTING
 
-        //Step 5a: HashSet recommended movies?
-
-        //Step 5b: Remove seen movies
-        //Step 5c: remove age inappropriate movies
-        //Step 5d: generate recommendations for all remaining movies for each user
-
-        //Step 5e: amalgamate ratings using weightings
+        WeightingGenerator weighter = new WeightingGenerator(usersGroup);
+        weighter.setAppropriateMovies(appropriate);
+        weighter.setAveragedCommonRecs(predictedAveraged);
+        weighter.setUnseenMovies(notSeen);
+        weighter.setUserRecs(usersRecs);
 
 
 

@@ -15,6 +15,13 @@ public class WeightingGenerator {
     private List unseenMovies;
     private Map averagedCommonRecs;
 
+    //Step 5a: HashSet recommended movies?
+
+    //Step 5b: Remove seen movies
+    //Step 5c: remove age inappropriate movies
+    //Step 5d: generate recommendations for all remaining movies for each user
+
+    //Step 5e: amalgamate ratings using weightings
 
 
     //Constructors
