@@ -16,6 +16,7 @@ public class WeightingGenerator {
     private List<Long> unseenMovies;
     private Map averagedCommonRecs;
     private HashSet<Long> movieList;
+    private List<Long> recMovies;
 
     private List<List<ScoredId>> interimList = new ArrayList();
     private List<ScoredId> interimList2 = new ArrayList();
@@ -51,7 +52,7 @@ public class WeightingGenerator {
         List<Long> movies = new ArrayList<Long>(movieList);
 
 
-        //Remove seen movies from the set
+        //Remove seen movies from the list
         for(int i = 0; i < movies.size(); i++){
             Long mov = movies.get(i);
             if(!unseenMovies.contains(mov)){
@@ -60,7 +61,16 @@ public class WeightingGenerator {
         }
 
 
-        //Remove age inappropriate movies from the set
+        //Remove age inappropriate movies from the list
+        for(int j = 0; j < movies.size(); j++){
+            Long m = movies.get(j);
+            if(!appropriateMovies.contains(j)){
+                movies.remove(j);
+            }
+        }
+
+        //Now initialise list of recommended movies (after removal of seen/inappropriate movies)
+        this.recMovies = movies;
     }
 
     //Step 5d: generate recommendations for all remaining movies for each user
