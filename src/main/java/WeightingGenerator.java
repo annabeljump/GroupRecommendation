@@ -18,6 +18,7 @@ public class WeightingGenerator {
     private Map averagedCommonRecs;
     private HashSet<Long> movieList;
     private List<Long> recMovies;
+    private Boolean childrenPresent;
 
     private List<List<ScoredId>> interimList = new ArrayList();
     private List<ScoredId> interimList2 = new ArrayList();
@@ -93,7 +94,7 @@ public class WeightingGenerator {
         NewRecommender n = new NewRecommender();
 
         List<Long> userList = users.getUserList();
-        List<Double> movieScores = new ArrayList();
+        Map<Long, Double> movieScores = new HashMap();
 
         for(int i = 0; i < recMovies.size(); i++){
             Long movie = recMovies.get(i);
@@ -101,7 +102,7 @@ public class WeightingGenerator {
                 Double score;
                 Long user = userList.get(j);
                 score = n.predict(user, movie);
-                movieScores.add(score);
+                movieScores.put(user, score);
             }
             wanting(users, movie, movieScores);
         }
@@ -115,7 +116,14 @@ public class WeightingGenerator {
      * @param mov the movieID of the movie for which the scores have been generated
      * @param m the list of scores for one movie
      */
-    public void wanting(UserGroup u, Long mov, List<Double> m) {
+    public void wanting(UserGroup u, Long mov, Map<Long, Double> m) {
+
+        //Get the Host.
+        Long host = u.getHost();
+
+        if(childrenPresent){
+            //do something
+        }
 
     }
 
@@ -144,6 +152,10 @@ public class WeightingGenerator {
 
 
     //Getters + Setters
+
+    public void setChildrenPresent(Boolean b) {
+        this.childrenPresent = b;
+    }
 
     public Map getUserRecs() {
         return userRecs;

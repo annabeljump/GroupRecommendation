@@ -25,12 +25,12 @@ public class UserGroup implements GroupCreator {
 
     public UserGroup(List<Long> users) {
         this.userList = users;
-        this.host = null;
+        this.host = 0L;
     }
 
     public UserGroup() {
         this.userList = null;
-        this.host = null;
+        this.host = 0L;
     }
 
 

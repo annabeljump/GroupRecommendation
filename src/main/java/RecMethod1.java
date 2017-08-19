@@ -62,6 +62,7 @@ public class RecMethod1 implements GroupRecGenerator {
             //We will have to use this later, when the recommender returns the predicted ratings
 
         List appropriate = ages.getAppropriateMovies();
+        Boolean areChildrenPresent = ages.isSmallChildren();
 
 
         //Step 3: Remove Seen movies.
@@ -86,6 +87,7 @@ public class RecMethod1 implements GroupRecGenerator {
         weighter.setAveragedCommonRecs(predictedAveraged);
         weighter.setUnseenMovies(notSeen);
         weighter.setUserRecs(usersRecs);
+        weighter.setChildrenPresent(areChildrenPresent);
 
 
 

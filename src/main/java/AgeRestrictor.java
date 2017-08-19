@@ -235,4 +235,11 @@ public class AgeRestrictor implements AgeAppropriator {
     public List getAllMovies() {
         return this.movieList;
     }
+
+    public Boolean isSmallChildren(){
+        if(under12){
+            return true;
+        }
+        else return false;
+    }
 }
