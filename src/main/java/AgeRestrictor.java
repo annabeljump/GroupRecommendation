@@ -244,6 +244,8 @@ public class AgeRestrictor implements AgeAppropriator {
         return this.appropriateMovies;
     }
 
+    public List getUserList() { return this.userList; }
+
     public List getAllMovies() {
         return this.movieList;
     }

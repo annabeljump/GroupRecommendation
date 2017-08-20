@@ -71,18 +71,46 @@ class AgeRestrictorTest {
 
     @Test
     void retrieveUsers() {
+        a.retrieveUsers();
+
+        //Check that there is a userList and that it is the correct size (we know how many users here)
+
+        assert a.getUserList() != null;
+
+        assert a.getUserList().size() == 4;
+
     }
 
     @Test
     void checkAndRemove() {
+        //Setting up to Check and Remove
+        a.retrieveMovies();
+        a.retrieveUsers();
+        a.checkAndRemove();
+
+        //Check that isSmallChildren evaluates to true (30L is 7 years old)
+        assert a.isSmallChildren();
+
+        //Check that the appropriate movie list is not empty.
+        assert !a.getAppropriateMovies().isEmpty();
+
+        //Now test with b
+        b.retrieveMovies();
+        b.retrieveUsers();
+        b.checkAndRemove();
+
+        //No children in this group. Check boolean.
+        assert !b.isSmallChildren();
+
+        //Check that the appropriate movie list is not empty.
+        assert !b.getAppropriateMovies().isEmpty();
+
+        //No movies should have been removed, so size should be 30
+        assert b.getAppropriateMovies().size() == 30;
     }
 
     @Test
     void getAppropriateMovies() {
-    }
-
-    @Test
-    void getAllMovies() {
     }
 
     @Test
