@@ -57,15 +57,16 @@ class AgeRestrictorTest {
 
         assert kidRecs != null;
 
-        a.retrieveMovies();
+        List one = a.retrieveMovies();
 
         assert a.test != null;
         System.out.println(a.test);
-        //List two = b.retrieveMovies();
+
+        List two = b.retrieveMovies();
 
         //movieList should have a size of 30 for b, and 40 for a (each person recc'd 10 movies)
-        //assert one.size() == 40;
-        //assert two.size() == 30;
+        assert one.size() == 40;
+        assert two.size() == 30;
     }
 
     @Test
