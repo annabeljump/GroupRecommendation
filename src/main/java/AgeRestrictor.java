@@ -1,12 +1,7 @@
 import org.grouplens.lenskit.scored.ScoredId;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -22,12 +17,12 @@ public class AgeRestrictor implements AgeAppropriator {
     private List<Long> movieList;
     public Long test = null;
     private List<Long> appropriateMovies = new ArrayList<Long>();
-    private Map<String, String> userAgeMap = new HashMap<>();
-    private List<Long> userAgeList = new ArrayList<Long>();
+    private Map<String, String> userAgeMap;
+    private List<Long> userAgeList;
     public Map<Long, String> movieRecMap = new HashMap<>();
-    private Boolean under18 = false;
-    private Boolean under15 = false;
-    private Boolean under12 = false;
+    public Boolean under18 = false;
+    public Boolean under15 = false;
+    public Boolean under12 = false;
 
     @Override
     public List retrieveMovies() {
@@ -77,28 +72,49 @@ public class AgeRestrictor implements AgeAppropriator {
     @Override
     public void checkAndRemove() {
 
-        BufferedReader buff = null;
-        String br = "";
-        String split = "|";
+        //BufferedReader buff = null;
+        //String br;
+        String splitter = "\\|";
         String filePath = "src/ml-latest-small/users.csv";
 
+        userAgeMap = new HashMap<>();
+
         try {
-            buff = new BufferedReader(new FileReader(filePath));
-            //Read file in line by line, with different fields separated
-            while((br = buff.readLine()) != null) {
-                String[] userDetails = br.split(split);
-                this.userAgeMap.put(userDetails[0], userDetails[1]);
-                userDetails = null;
+            File f = new File(filePath);
+            Scanner sc = new Scanner(f);
+
+            while(sc.hasNextLine()){
+                String line = sc.nextLine();
+                String[] details = line.split(splitter);
+                String uID = details[0];
+                String age = details[1];
+                for(int i=0; i < userList.size(); i++) {
+                    Long u = userList.get(i);
+                    if (u == Long.parseLong(details[0])) {
+                        this.userAgeMap.put(uID, age);
+                    }
+
+                }
             }
-        } catch (IOException e) {
+
+
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        userAgeList = new ArrayList<>();
 
         //Find and retrieve the ages of the users in the group
         for(int i = 0; i < userList.size(); i++) {
             Long u = userList.get(i);
-            this.userAgeList.add(Long.parseLong(userAgeMap.get(Long.toString(u))));
+            String ux = Long.toString(u);
+            String uy = userAgeMap.get(ux);
+
+            Long uz = Long.valueOf(uy);
+            this.userAgeList.add(uz);
         }
+
+
 
         Long b = 50L;
         //Check if users under 18, 15, or 12, and set appropriate booleans to true
@@ -124,34 +140,48 @@ public class AgeRestrictor implements AgeAppropriator {
         //Therefore, filtering out will be done by the genre tags on the movies
         BufferedReader bff = null;
         String bx = "";
-        String splitter = ",";
+        String splitt = ",(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)";
         String moviePath = "src/ml-latest-small/movies.csv";
-        Map<String, String> movieDetailMap = new HashMap<>();
+        Map<Long, String> movieDetailMap = new HashMap<>();
 
         //Read in movie details as with users above
         //Add to map the movie ID and the genre tags
         try {
+            int i =0;
             bff = new BufferedReader(new FileReader(moviePath));
             while((bx = bff.readLine()) != null) {
-                String[] movieDetails = bx.split(splitter);
-                movieDetailMap.put(movieDetails[0], movieDetails[2]);
-                movieDetails = null;
+                String[] movieDetails = bx.split(splitt);
+                String mID = movieDetails[0];
+                String mGenre = movieDetails[2];
+                //movieDetailMap.put(movieDetails[0], movieDetails[2]);
+                Long movieID = Long.parseLong(mID);
+                for(int j=0; j < movieList.size(); j++){
+                   if(movieList.get(j).equals(movieID)){
+                       movieRecMap.put(movieID, mGenre);
+                    }
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        for(Map.Entry<Long, String> entry : movieRecMap.entrySet()){
+            System.out.println(entry.getKey()+ " : " +entry.getValue());
+        }
+
+
         //Now go through the recommended list of movies and pull their genre details
-        //TODO Does this really need so many nested loops???
+/**
         for(int i = 0; i < movieList.size(); i++) {
-            for(Map.Entry<String, String> entry : movieDetailMap.entrySet()) {
-                if(Long.parseLong(entry.getKey()) == movieList.get(i)) {
-                    movieRecMap.put(Long.parseLong(entry.getKey()), entry.getValue());
+            for(Map.Entry<Long, String> entry : movieDetailMap.entrySet()) {
+
+                if(entry.getKey() == movieList.get(i)) {
+                    movieRecMap.put(entry.getKey(), entry.getValue());
                 }
             }
         }
 
-        String splitting = "|";
+        String splitting = "\\|";
         //No need to deal in reverse, only one (if one) will be true
         if(under12){
             //Remove all movies not tagged as "Children"
@@ -202,6 +232,7 @@ public class AgeRestrictor implements AgeAppropriator {
             }
         }
 
+
         //this now needs to turn the Map of movies back into a movieList
         //this movieList will be appropriateMovies.
 
@@ -209,7 +240,8 @@ public class AgeRestrictor implements AgeAppropriator {
             if (movieRecMap.containsKey(movieList.get(i))) {
                 appropriateMovies.add(movieList.get(i));
             }
-        }
+        } */
+
     }
 
     //Constructors
