@@ -37,7 +37,7 @@ public class NewRecommender implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(NewRecommender.class);
 
-
+    /**
     public static void main(String[] args) {
         NewRecommender hi = new NewRecommender();
         try {
@@ -49,6 +49,8 @@ public class NewRecommender implements Runnable {
             System.exit(1);
         }
     }
+
+     */
 
     private String dataFile = "src/ml-latest-small/ratings.csv";
     private List<Long> users;
