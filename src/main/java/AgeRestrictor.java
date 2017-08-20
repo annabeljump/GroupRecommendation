@@ -142,7 +142,6 @@ public class AgeRestrictor implements AgeAppropriator {
         String bx = "";
         String splitt = ",(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)";
         String moviePath = "src/ml-latest-small/movies.csv";
-        Map<Long, String> movieDetailMap = new HashMap<>();
 
         //Read in movie details as with users above
         //Add to map the movie ID and the genre tags
@@ -165,21 +164,6 @@ public class AgeRestrictor implements AgeAppropriator {
             e.printStackTrace();
         }
 
-        for(Map.Entry<Long, String> entry : movieRecMap.entrySet()){
-            System.out.println(entry.getKey()+ " : " +entry.getValue());
-        }
-
-
-        //Now go through the recommended list of movies and pull their genre details
-/**
-        for(int i = 0; i < movieList.size(); i++) {
-            for(Map.Entry<Long, String> entry : movieDetailMap.entrySet()) {
-
-                if(entry.getKey() == movieList.get(i)) {
-                    movieRecMap.put(entry.getKey(), entry.getValue());
-                }
-            }
-        }
 
         String splitting = "\\|";
         //No need to deal in reverse, only one (if one) will be true
@@ -235,7 +219,7 @@ public class AgeRestrictor implements AgeAppropriator {
 
         //this now needs to turn the Map of movies back into a movieList
         //this movieList will be appropriateMovies.
-
+/**
         for(int i = 0; i < movieList.size(); i++) {
             if (movieRecMap.containsKey(movieList.get(i))) {
                 appropriateMovies.add(movieList.get(i));
