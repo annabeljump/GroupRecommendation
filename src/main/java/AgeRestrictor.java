@@ -169,7 +169,10 @@ public class AgeRestrictor implements AgeAppropriator {
         //No need to deal in reverse, only one (if one) will be true
         if(under12){
             //Remove all movies not tagged as "Children"
-            for(Map.Entry<Long, String> entry : movieRecMap.entrySet()) {
+
+            for(Iterator<Map.Entry<Long, String>> it = movieRecMap.entrySet().iterator();
+                it.hasNext();) {
+                Map.Entry<Long, String> entry = it.next();
                 String hi = entry.getValue();
                 String[] genres = hi.split(splitting);
                 Boolean isChildren = false;
@@ -179,12 +182,16 @@ public class AgeRestrictor implements AgeAppropriator {
                     }
                 }
                 if(!isChildren){
-                    movieRecMap.remove(entry.getKey());
+                    it.remove();
                 }
+
             }
+
         } else if(under15) {
             //remove "Horror" and "Thriller"
-            for(Map.Entry<Long, String> entry : movieRecMap.entrySet()) {
+            for(Iterator<Map.Entry<Long, String>> iter = movieRecMap.entrySet().iterator();
+                    iter.hasNext();) {
+                Map.Entry<Long, String> entry = iter.next();
                 String hey = entry.getValue();
                 String[] genres = hey.split(splitting);
                 Boolean isHorror = false;
@@ -197,11 +204,13 @@ public class AgeRestrictor implements AgeAppropriator {
                     }
                 }
                 if(isHorror || isThriller){
-                    movieRecMap.remove(entry.getKey());
+                    iter.remove();
                 }
             }
         } else if (under18) {
-            for(Map.Entry<Long, String> entry : movieRecMap.entrySet()) {
+            for(Iterator<Map.Entry<Long, String>> iterate = movieRecMap.entrySet().iterator();
+                    iterate.hasNext();) {
+                Map.Entry<Long, String> entry = iterate.next();
                 String hai = entry.getValue();
                 String[] genres = hai.split(splitting);
                 Boolean isHorror = false;
@@ -211,7 +220,7 @@ public class AgeRestrictor implements AgeAppropriator {
                     }
                 }
                 if(isHorror){
-                    movieRecMap.remove(entry.getKey());
+                    iterate.remove();
                 }
             }
         }
