@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by annabeljump.
- * Class to test UserGroups
+ * Class to test UserGroups.
  */
 class UserGroupTest {
 
