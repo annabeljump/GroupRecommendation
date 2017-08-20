@@ -15,11 +15,11 @@ public class SeenYou {
     private Map<Long, List<ScoredId>> userRecs = new HashMap();
     private List<List<ScoredId>> interimList = new ArrayList();
     private List<ScoredId> interimList2 = new ArrayList();
-    private List<Long> movieRecList = new ArrayList();
-    private UserGroup users = new UserGroup();
+    private List<Long> movieRecList;
+    public Long test = null;
     private List<Long> userList = new ArrayList();
     private Map<String, String> userRatingMap = new HashMap();
-    private HashSet<Long> seenMovies = new HashSet();
+    private HashSet<Long> seenMovies;
     private List<Long> seenMovieList;
 
 
@@ -40,17 +40,23 @@ public class SeenYou {
      */
     public void retrieveMovieRecs() {
 
-        //Get the ScoredId lists out of the Map
         for(Map.Entry<Long, List<ScoredId>> entry : userRecs.entrySet()) {
-            this.interimList.add(entry.getValue());
+            Long in = entry.getKey();
+            this.interimList.add(userRecs.get(in));
         }
 
-        //FLATTEN the List<List<ScoredId>>
-        this.interimList2 = interimList.stream().flatMap(l -> l.stream()).collect((Collectors.toList()));
+        //Get the ScoredIds out of the ScoredId Lists NOT USING STREAMS
+        for(int a=0; a < interimList.size(); a++){
+            List<ScoredId> b = interimList.get(a);
+            this.interimList2.addAll(b);
+        }
+
+        movieRecList = new ArrayList<>();
 
         //Get the IDs
         for(ScoredId item : interimList2) {
-            movieRecList.add(item.getId());
+            test = item.getId();
+            movieRecList.add(test);
         }
 
     }
@@ -66,27 +72,30 @@ public class SeenYou {
             //this will create a huge map - won't work!
         BufferedReader buff = null;
         String br = "";
-        String split = "|";
+        String split = ",";
         String filePath = "src/ml-latest-small/ratings.csv";
+
+        seenMovies = new HashSet<>();
 
         try {
             buff = new BufferedReader(new FileReader(filePath));
+
             //Read file in line by line, with different fields separated
             while((br = buff.readLine()) != null) {
                 String[] userRatings = br.split(split);
 
+                Long uID = Long.parseLong(userRatings[0]);
+                Long mID = Long.parseLong(userRatings[1]);
                 //Compare user IDs, make lists of movies seen.
                 //this can replace below - add movie straight to hashset??
                 //this might be unwieldy
                 //but hashset ensures no duplicate entries (once movie seen by one user, not added again if seen by another)
                 for(int j = 0; j < userList.size(); j++) {
-                    String tempUser = userList.get(j).toString();
-                    if (tempUser.equals(userRatings[0])) {
-                        Long mov = Long.valueOf(userRatings[1]);
-                        seenMovies.add(mov);
+                    Long tempUser = userList.get(j);
+                    if (tempUser.equals(uID)) {
+                        seenMovies.add(mID);
                     }
                 }
-                    userRatings = null;
 
             }
         } catch (IOException e) {
@@ -116,17 +125,24 @@ public class SeenYou {
 
     //Constructors
     public SeenYou() {
-        this.users = null;
         this.userRecs = null;
         this.movieRecList = null;
     }
 
     public SeenYou(UserGroup u, Map r) {
-        this.users = u;
         this.userRecs = r;
         this.userList = u.getUserList();
         this.movieRecList = null;
     }
 
 
+    //Getters
+
+    public List<Long> getMovieRecList() {
+        return this.movieRecList;
+    }
+
+    public List<Long> getSeenMovieList(){
+        return this.seenMovieList;
+    }
 }
