@@ -82,22 +82,26 @@ class AgeRestrictorTest {
     }
 
     @Test
-    void checkAndRemove() {
+    void checkAndRemoveChildren() {
         //Setting up to Check and Remove
         a.retrieveMovies();
         a.retrieveUsers();
-        a.checkAndRemove();
+        List<Long> ap = a.checkAndRemove();
 
         //Check it's realised there's an under12
         assert a.under12;
 
-        /**
+
         //Check that isSmallChildren evaluates to true (30L is 7 years old)
         assert a.isSmallChildren();
 
-        //Check that the appropriate movie list is not empty.
-        assert !a.getAppropriateMovies().isEmpty();
 
+        //Check that the appropriate movie list is not empty.
+        //if (ap.isEmpty()) throw new AssertionError();
+    }
+
+    @Test
+    void checkAndRemoveNoChildren(){
         //Now test with b
         b.retrieveMovies();
         b.retrieveUsers();
@@ -111,15 +115,8 @@ class AgeRestrictorTest {
 
         //No movies should have been removed, so size should be 30
         assert b.getAppropriateMovies().size() == 30;
-         */
+
     }
 
-    @Test
-    void getAppropriateMovies() {
-    }
-
-    @Test
-    void isSmallChildren() {
-    }
 
 }

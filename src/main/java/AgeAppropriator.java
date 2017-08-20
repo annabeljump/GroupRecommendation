@@ -23,6 +23,6 @@ public interface AgeAppropriator {
      * Remove inappropriate movies,
      * dependent on age of users
      */
-    void checkAndRemove();
+    List<Long> checkAndRemove();
 
 }

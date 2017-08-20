@@ -16,7 +16,7 @@ public class AgeRestrictor implements AgeAppropriator {
     private List<ScoredId> interimList2 = new ArrayList<ScoredId>();
     private List<Long> movieList;
     public Long test = null;
-    private List<Long> appropriateMovies = new ArrayList<Long>();
+    private List<Long> appropriateMovies;
     private Map<String, String> userAgeMap;
     private List<Long> userAgeList;
     public Map<Long, String> movieRecMap = new HashMap<>();
@@ -70,7 +70,7 @@ public class AgeRestrictor implements AgeAppropriator {
      * It may need to return the movie list
      */
     @Override
-    public void checkAndRemove() {
+    public List<Long> checkAndRemove() {
 
         //BufferedReader buff = null;
         //String br;
@@ -228,13 +228,20 @@ public class AgeRestrictor implements AgeAppropriator {
 
         //this now needs to turn the Map of movies back into a movieList
         //this movieList will be appropriateMovies.
-/**
-        for(int i = 0; i < movieList.size(); i++) {
-            if (movieRecMap.containsKey(movieList.get(i))) {
-                appropriateMovies.add(movieList.get(i));
-            }
-        } */
+        appropriateMovies = new ArrayList<>();
 
+        for(int i = 0; i < movieList.size(); i++) {
+            Long mID = movieList.get(i);
+            if (movieRecMap.containsKey(mID)) {
+                appropriateMovies.add(mID);
+            }
+
+        }
+        //TODO generate new recommendations if none are suitable!!
+        if(appropriateMovies.isEmpty()){
+            System.out.println("Oh no! No Children's movies were recommended!");
+        }
+        return appropriateMovies;
     }
 
     //Constructors
