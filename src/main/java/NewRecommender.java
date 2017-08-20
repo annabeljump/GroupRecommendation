@@ -53,8 +53,9 @@ public class NewRecommender implements Runnable {
      */
 
     private String dataFile = "src/ml-latest-small/ratings.csv";
-    private List<Long> users;
+    private List<ScoredId> actualRecs;
     private Long userID;
+    private double score = 0.0;
 
 
     //Constructor
@@ -102,18 +103,23 @@ public class NewRecommender implements Runnable {
         ItemRecommender itemRec = newRec.getItemRecommender();
 
         //Insert random User to generate recs.
-        List<ScoredId> actualRecs = itemRec.recommend(userID, 10);
+        actualRecs = itemRec.recommend(userID, 10);
 
+        //I don't want this to print while running tests.
+        /**
         System.out.println("Now Printing Recommended Items:");
         for (int i = 0; i < actualRecs.size(); i++) {
             System.out.println(actualRecs.get(i));
         }
         System.out.println("Finished");
+        **/
 
         //Test Rating Predictor
         RatingPredictor pred = newRec.getRatingPredictor();
-        double score = pred.predict(userID, 17);
-        System.out.println("Now predicting rating for movie 17:" + score);
+        score = pred.predict(userID, 17);
+
+        //I don't want this to print while running tests
+        //System.out.println("Now predicting rating for movie 17:" + score);
 
     }
     public List recommend() {
@@ -143,7 +149,7 @@ public class NewRecommender implements Runnable {
 
         ItemRecommender itemRec = newRec.getItemRecommender();
 
-        List<ScoredId> actualRecs = itemRec.recommend(userID, 10);
+        actualRecs = itemRec.recommend(userID, 10);
 
         return actualRecs;
 
@@ -184,10 +190,19 @@ public class NewRecommender implements Runnable {
         assert newRec != null;
 
         RatingPredictor pred = newRec.getRatingPredictor();
-        double score = pred.predict(u, m);
+        score = pred.predict(u, m);
 
         rating = score;
 
         return rating;
+    }
+
+    //Getters
+    public List<ScoredId> getActualRecs() {
+        return this.actualRecs;
+    }
+
+    public double getScore(){
+        return this.score;
     }
 }
