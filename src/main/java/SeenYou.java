@@ -145,4 +145,5 @@ public class SeenYou {
     public List<Long> getSeenMovieList(){
         return this.seenMovieList;
     }
+
 }

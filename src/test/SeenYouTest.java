@@ -54,6 +54,15 @@ class SeenYouTest {
     @Test
     void getUnseenMovies() {
 
+        List one = a.getUnseenMovies();
+        List two = b.getUnseenMovies();
+
+        assert !one.isEmpty();
+        assert !two.isEmpty();
+
+        System.out.println(one);
+        System.out.println(two);
+
     }
 
     @Test
@@ -86,6 +95,13 @@ class SeenYouTest {
 
     @Test
     void checkAndRemoveSeenMovies() {
+
+        a.retrieveMovieRecs();
+        a.retrieveRatedMovies();
+        a.checkAndRemoveSeenMovies();
+
+        assert !a.getMovieRecList().isEmpty();
+
     }
 
 }
