@@ -1,3 +1,4 @@
+import java.util.List;
 
 /**
  * Created by annabeljump.
@@ -10,7 +11,7 @@ public interface AgeAppropriator {
      * When given a map of recommendations
      * Retrieve the movies recommended
      */
-    void retrieveMovies();
+    List retrieveMovies();
 
     /**
      * Retrieve the user IDs

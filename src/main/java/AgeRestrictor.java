@@ -1,8 +1,6 @@
-import org.grouplens.lenskit.scored.PackedScoredIdList;
 import org.grouplens.lenskit.scored.ScoredId;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +13,7 @@ import java.util.stream.Collectors;
  * Created by annabeljump
  */
 public class AgeRestrictor implements AgeAppropriator {
+
     private UserGroup users = new UserGroup();
     private Map<Long, List<ScoredId>> userRecs = new HashMap<>();
     private List<Long> userList = new ArrayList<Long>();
@@ -30,7 +29,7 @@ public class AgeRestrictor implements AgeAppropriator {
     private Boolean under12 = false;
 
     @Override
-    public void retrieveMovies() {
+    public List retrieveMovies() {
 
         //Get the ScoredId lists out of the Map
         for(Map.Entry<Long, List<ScoredId>> entry : userRecs.entrySet()) {
@@ -38,13 +37,17 @@ public class AgeRestrictor implements AgeAppropriator {
         }
 
         //FLATTEN the List<List<ScoredId>>
-        this.interimList2 = interimList.stream().flatMap(l -> l.stream()).collect((Collectors.toList()));
+        this.interimList2 = interimList.stream()
+                            .flatMap(List::stream)
+                            .collect((Collectors.toList()));
 
         //Get the IDs
         for(ScoredId item : interimList2) {
-            movieList.add(item.getId());
+            Long mov = item.getId();
+            movieList.add(mov);
         }
 
+        return this.movieList;
     }
 
     @Override
