@@ -19,7 +19,8 @@ public class AgeRestrictor implements AgeAppropriator {
     private List<Long> userList = new ArrayList<Long>();
     private List<List<ScoredId>> interimList = new ArrayList<>();
     private List<ScoredId> interimList2 = new ArrayList<ScoredId>();
-    private List<Long> movieList = new ArrayList<>();
+    private List<Long> movieList;
+    public Long test = null;
     private List<Long> appropriateMovies = new ArrayList<Long>();
     private Map<String, String> userAgeMap = new HashMap<>();
     private List<Long> userAgeList = new ArrayList<Long>();
@@ -33,18 +34,26 @@ public class AgeRestrictor implements AgeAppropriator {
 
         //Get the ScoredId lists out of the Map
         for(Map.Entry<Long, List<ScoredId>> entry : userRecs.entrySet()) {
-            this.interimList.add(entry.getValue());
+            Long in = entry.getKey();
+            this.interimList.add(userRecs.get(in));
         }
 
+        //this does not work
         //FLATTEN the List<List<ScoredId>>
-        this.interimList2 = interimList.stream()
-                            .flatMap(List::stream)
-                            .collect((Collectors.toList()));
+        //this.interimList2 = interimList.stream().flatMap(List::stream).collect((Collectors.toList()));
+
+        //Get the ScoredIds out of the ScoredId Lists NOT USING STREAMS
+        for(int a=0; a < interimList.size(); a++){
+            List<ScoredId> b = interimList.get(a);
+            this.interimList2.addAll(b);
+        }
+
+        movieList = new ArrayList<>();
 
         //Get the IDs
         for(ScoredId item : interimList2) {
-            Long mov = item.getId();
-            movieList.add(mov);
+            test = item.getId();
+            movieList.add(test);
         }
 
         return this.movieList;

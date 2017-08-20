@@ -37,9 +37,9 @@ public class NewRecommender implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(NewRecommender.class);
 
-    /**
+
     public static void main(String[] args) {
-        NewRecommender hi = new NewRecommender();
+        NewRecommender hi = new NewRecommender(2L);
         try {
             hi.run();
         } catch (RuntimeException e) {
@@ -50,7 +50,6 @@ public class NewRecommender implements Runnable {
         }
     }
 
-     */
 
     private String dataFile = "src/ml-latest-small/ratings.csv";
     private List<ScoredId> actualRecs;
@@ -106,13 +105,16 @@ public class NewRecommender implements Runnable {
         actualRecs = itemRec.recommend(userID, 10);
 
         //I don't want this to print while running tests.
-        /**
+
         System.out.println("Now Printing Recommended Items:");
-        for (int i = 0; i < actualRecs.size(); i++) {
-            System.out.println(actualRecs.get(i));
+        for(ScoredId item : actualRecs){
+            System.out.format("\t%d\t%.2f\n", item.getId(), item.getScore());
         }
+        //for (int i = 0; i < actualRecs.size(); i++) {
+         //   System.out.println(actualRecs.get(i));
+       // }
         System.out.println("Finished");
-        **/
+
 
         //Test Rating Predictor
         RatingPredictor pred = newRec.getRatingPredictor();
