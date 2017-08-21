@@ -27,7 +27,7 @@ public class SeenYou {
      * Eventually this will call all methods and
      * @return list of movies that are unseen
      */
-    public List getUnseenMovies() {
+    public List<Long> getUnseenMovies() {
         retrieveMovieRecs();
         retrieveRatedMovies();
         checkAndRemoveSeenMovies();

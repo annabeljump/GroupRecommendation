@@ -73,7 +73,7 @@ public class RecMethod1 implements GroupRecGenerator {
 
         SeenYou iSeeYou = new SeenYou(usersGroup, usersRecs);
 
-        List notSeen = iSeeYou.getUnseenMovies();
+        List<Long> notSeen = iSeeYou.getUnseenMovies();
 
 
         //Step 4: Carry out averaging of common recommended movies
