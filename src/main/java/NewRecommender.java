@@ -101,8 +101,10 @@ public class NewRecommender implements Runnable {
 
         ItemRecommender itemRec = newRec.getItemRecommender();
 
+
+        //NOTE: 10 ITEMS IS NOT ENOUGH TO GENERATE COMMON RECOMMENDATIONS
         //Insert random User to generate recs.
-        actualRecs = itemRec.recommend(userID, 30);
+        actualRecs = itemRec.recommend(userID, 20);
 
         //I don't want this to print while running tests.
 
@@ -150,6 +152,9 @@ public class NewRecommender implements Runnable {
         assert newRec != null;
 
         ItemRecommender itemRec = newRec.getItemRecommender();
+
+
+        //NOTE: 10 ITEMS IS NOT ENOUGH TO GENERATE COMMON RECOMMENDATIONS
 
         actualRecs = itemRec.recommend(userID, 20);
 

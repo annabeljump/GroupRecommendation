@@ -49,8 +49,18 @@ class CommonDenominatorTest {
         kids = null;
     }
 
+    /**
+     * I have refactored the class so that the only method call needed is
+     * allRatedAndAverage() and each method calls the next.
+     * I have done this after all tests below have passed.
+     */
     @Test
     void allRatedAndAverage() {
+        a.allRatedAndAverage();
+        b.allRatedAndAverage();
+
+        assert !a.getFinalRecs().isEmpty();
+        assert !b.getFinalRecs().isEmpty();
     }
 
     @Test
@@ -67,7 +77,7 @@ class CommonDenominatorTest {
         assert !b.getCommonRec().isEmpty();
 
         assert !a.getCommonRec().isEmpty();
-        //Cannot test obtainFinalRecs separately
+
     }
 
     @Test
@@ -79,6 +89,16 @@ class CommonDenominatorTest {
 
         assert !one.isEmpty();
     }
+
+    @Test
+    void obtainFinalRecs(){
+        a.begin();
+        a.isAllRecommended();
+        a.obtainFinalRecs();
+
+        System.out.println(a.getFinalRecs());
+    }
+
 
 
 }

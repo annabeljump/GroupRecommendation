@@ -26,7 +26,6 @@ public class CommonDenominator {
      */
     public Map allRatedAndAverage() {
         begin();
-        isAllRecommended();
 
         return finalRecs;
     }
@@ -69,15 +68,14 @@ public class CommonDenominator {
             }
         }
 
-        System.out.println(commonRec);
+        //Commenting out as was used for testing purposes.
+        //System.out.println(commonRec);
 
         //What if no items in common were recommended?
         //TODO deal with this in each recmethod
        // if(!commonRec.isEmpty()) {
-            //now call helper to update finalRecs
 
-           // obtainFinalRecs();
-       // } else return;
+        obtainFinalRecs();
     }
 
     /**
@@ -102,8 +100,12 @@ public class CommonDenominator {
         for(int i=0; i < l.size(); i++) {
             ScoredId it = (ScoredId) l.get(i);
             ScoredId item = (ScoredId) list.get(i);
-            System.out.println((it.getId()) + " ; " + item.getId());
+
+            //commented out as was for testing purposes.
+            //System.out.println((it.getId()) + " ; " + item.getId());
         }
+
+        isAllRecommended();
     }
 
     /**
@@ -153,6 +155,7 @@ public class CommonDenominator {
                 total += score;
             }
 
+
             averageScore = total / scores.size();
 
             //Step 3 - put into finalRecs - Long = movie ID, Double = average predicted score
@@ -172,4 +175,6 @@ public class CommonDenominator {
     public List<ScoredId> getOriginalList() { return this.originalList; }
 
     public List<ScoredId> getCommonRec() { return this.commonRec; }
+
+    public Map<Long, Double> getFinalRecs() { return this.finalRecs;}
 }
