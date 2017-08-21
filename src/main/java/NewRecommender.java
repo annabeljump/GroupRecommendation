@@ -102,7 +102,7 @@ public class NewRecommender implements Runnable {
         ItemRecommender itemRec = newRec.getItemRecommender();
 
         //Insert random User to generate recs.
-        actualRecs = itemRec.recommend(userID, 10);
+        actualRecs = itemRec.recommend(userID, 30);
 
         //I don't want this to print while running tests.
 
@@ -151,7 +151,7 @@ public class NewRecommender implements Runnable {
 
         ItemRecommender itemRec = newRec.getItemRecommender();
 
-        actualRecs = itemRec.recommend(userID, 10);
+        actualRecs = itemRec.recommend(userID, 20);
 
         return actualRecs;
 

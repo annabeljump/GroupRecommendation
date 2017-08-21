@@ -2,10 +2,7 @@ import org.grouplens.lenskit.scored.PackedScoredIdList;
 import org.grouplens.lenskit.scored.ScoredId;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by annabeljump
@@ -43,23 +40,44 @@ public class CommonDenominator {
         for(int i = 0; i < originalList.size(); i++) {
             Boolean isPresent = true;
 
+            ScoredId sc = originalList.get(i);
+
+            long m = sc.getId();
+
             //Check if it is present in all other lists
             for(Map.Entry<Long, List<ScoredId>> entry : recMap.entrySet()) {
-                if(!entry.getValue().contains(originalList.get(i))) {
-                    isPresent = false;
+                List<ScoredId> sco = entry.getValue();
+
+                HashSet moovies = new HashSet<>();
+
+                for(int j=0; j < sco.size(); j++) {
+                    ScoredId mov = sco.get(j);
+
+                    long moo = mov.getId();
+
+                    moovies.add(moo);
                 }
 
+                if(!moovies.contains(m)){
+                    isPresent = false;
+                }
             }
 
             //Movie should be added to list here, after all lists examined
             if(isPresent) {
-                commonRec.add(originalList.get(i));
+                commonRec.add(sc);
             }
         }
 
-        //now call helper to update finalRecs
+        System.out.println(commonRec);
 
-        obtainFinalRecs();
+        //What if no items in common were recommended?
+        //TODO deal with this in each recmethod
+       // if(!commonRec.isEmpty()) {
+            //now call helper to update finalRecs
+
+           // obtainFinalRecs();
+       // } else return;
     }
 
     /**
@@ -76,6 +94,16 @@ public class CommonDenominator {
 
         //Remove that list from the map
         recMap.remove(u);
+
+        Map.Entry<Long, List<ScoredId>> e = recMap.entrySet().iterator().next();
+
+        List l = e.getValue();
+
+        for(int i=0; i < l.size(); i++) {
+            ScoredId it = (ScoredId) l.get(i);
+            ScoredId item = (ScoredId) list.get(i);
+            System.out.println((it.getId()) + " ; " + item.getId());
+        }
     }
 
     /**
@@ -98,16 +126,12 @@ public class CommonDenominator {
             Long mID = aCommonRec.getId();
             Double score1 = aCommonRec.getScore();
 
-            ArrayList<Double> scores = null;
+            ArrayList<Double> scores = new ArrayList<>();
             scores.add(score1);
 
             for (Map.Entry<Long, List<ScoredId>> entry : recMap.entrySet()) {
 
-                List<ScoredId> tempList;
-
-                List alist = entry.getValue();
-
-                tempList = alist;
+                List<ScoredId> tempList = entry.getValue();
 
                 for (ScoredId aTempList : tempList) {
 
@@ -117,14 +141,12 @@ public class CommonDenominator {
                     }
                 }
 
-                tempList = null;
-                alist = null;
             }
 
 
             //Step 2 - average all scores
 
-            Double averageScore = null;
+            Double averageScore;
             Double total = 0.0;
 
             for (Double score : scores) {
@@ -144,4 +166,10 @@ public class CommonDenominator {
     public CommonDenominator(Map m) {
         this.recMap = m;
     }
+
+    //Getters
+
+    public List<ScoredId> getOriginalList() { return this.originalList; }
+
+    public List<ScoredId> getCommonRec() { return this.commonRec; }
 }
