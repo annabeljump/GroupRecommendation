@@ -17,17 +17,17 @@ public class NameGetter {
             //This time, only add the name of movie
         BufferedReader bff = null;
         String bx = "";
-        String splitter = ",";
+        String splitter = ",(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)";
         String moviePath = "src/ml-latest-small/movies.csv";
 
-        //Read in movie details as with users above
+        //Read in movie details
         //Add to list only the name (which will be the second entry in the array, at 1
         try {
             bff = new BufferedReader(new FileReader(moviePath));
             while((bx = bff.readLine()) != null) {
                 String[] movieDetails = bx.split(splitter);
                 names.put(Long.parseLong(movieDetails[0]), movieDetails[1]);
-                movieDetails = null;
+
             }
         } catch (IOException e) {
             e.printStackTrace();
