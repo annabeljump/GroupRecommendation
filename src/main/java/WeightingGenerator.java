@@ -19,6 +19,7 @@ public class WeightingGenerator {
     private HashSet<Long> movieList;
     private List<Long> recMovies;
     private Map<Long, Double> finalRecs;
+    private Long test = null;
 
     private List<List<ScoredId>> interimList = new ArrayList();
     private List<ScoredId> interimList2 = new ArrayList();
@@ -42,20 +43,28 @@ public class WeightingGenerator {
 
         //Extract info from map of recommendations using method from other classes
         //Get the ScoredId lists out of the Map
+        //Get the ScoredId lists out of the Map
         for(Map.Entry<Long, List<ScoredId>> entry : userRecs.entrySet()) {
-            this.interimList.add(entry.getValue());
+            Long in = entry.getKey();
+            this.interimList.add(userRecs.get(in));
         }
 
-        //FLATTEN the List<List<ScoredId>>
-        this.interimList2 = interimList.stream().flatMap(l -> l.stream()).collect((Collectors.toList()));
+        //Get the ScoredIds out of the ScoredId Lists NOT USING STREAMS
+        for(int a=0; a < interimList.size(); a++){
+            List<ScoredId> b = interimList.get(a);
+            this.interimList2.addAll(b);
+        }
+
+        movieList = new HashSet<>();
 
         //Get the IDs
         for(ScoredId item : interimList2) {
-            movieRecList.add(item.getId());
+            test = item.getId();
+            movieList.add(test);
         }
 
         //Convert list into HashSet to get rid of repeated entries
-        this.movieList = new HashSet(movieRecList);
+        //this.movieList = new HashSet(movieRecList);
 
         //Going to have to convert it back to iterate through it
         List<Long> movies = new ArrayList<Long>(movieList);
@@ -202,12 +211,13 @@ public class WeightingGenerator {
         }
 
         //Make sure the average score is no higher than 5.0 or lower than 0.5
+        //THIS NEEDS REVIEWING - ratings seem to be higher than 5
 
-        if(averageScore > 5.0){
-            averageScore = 5.0;
-        } else if(averageScore < 0.5){
-            averageScore = 0.5;
-        }
+        //if(averageScore > 5.0){
+        //    averageScore = 5.0;
+        //} else if(averageScore < 0.5){
+        //    averageScore = 0.5;
+        //}
 
         //TODO figure out how to do something with the date here.
 
@@ -222,6 +232,7 @@ public class WeightingGenerator {
      * this is because there are two of each Map and List
      * It is better to pass specifically using Setters
      * so as to avoid incorrect assignments.
+     *
      */
 
     public WeightingGenerator(){
