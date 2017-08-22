@@ -82,7 +82,7 @@ public class WeightingGenerator {
         //Remove age inappropriate movies from the list
         for(int j = 0; j < movies.size(); j++){
             Long m = movies.get(j);
-            if(!appropriateMovies.contains(j)){
+            if(!appropriateMovies.contains(m)){
                 movies.remove(j);
             }
         }
@@ -90,6 +90,8 @@ public class WeightingGenerator {
         //Now initialise list of recommended movies (after removal of seen/inappropriate movies)
         this.recMovies = movies;
     }
+
+    //TODO these take a long time!
 
     /**
      * This method generates ratings for the final list of recommended movies
@@ -103,6 +105,7 @@ public class WeightingGenerator {
         //Make a new recommender so that predict() method can be used
         NewRecommender n = new NewRecommender();
 
+        finalRecs = new HashMap<>();
         List<Long> userList = users.getUserList();
         Map<Long, Double> movieScores = new HashMap();
 
@@ -211,7 +214,7 @@ public class WeightingGenerator {
         }
 
         //Make sure the average score is no higher than 5.0 or lower than 0.5
-        //THIS NEEDS REVIEWING - ratings seem to be higher than 5
+        //TODO THIS NEEDS REVIEWING - ratings seem to be higher than 5
 
         //if(averageScore > 5.0){
         //    averageScore = 5.0;
@@ -220,6 +223,8 @@ public class WeightingGenerator {
         //}
 
         //TODO figure out how to do something with the date here.
+
+
 
         finalRecs.put(mov, averageScore);
     }
@@ -266,6 +271,8 @@ public class WeightingGenerator {
     public void setUsers(UserGroup users) {
         this.users = users;
     }
+
+    public List getRecMovies() { return this.recMovies; }
 
     public List getAppropriateMovies() {
         return appropriateMovies;

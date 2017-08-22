@@ -70,20 +70,36 @@ class WeightingGeneratorTest {
         common = null;
     }
 
-    @Test
-    void youHaveBeenWeighed() {
-    }
 
     @Test
     void youHaveBeenMeasured() {
+
+        weight.youHaveBeenMeasured();
+
+        assert !weight.getRecMovies().isEmpty();
+
+        System.out.println(weight.getRecMovies());
     }
 
     @Test
     void andYouHaveBeenFound() {
+        weight.youHaveBeenMeasured();
+        weight.andYouHaveBeenFound();
+
+      //wanting() must be tested within here, as method variables are passed to it,
+        //and it is called from within andYouHaveBeenFound()
+
     }
 
     @Test
-    void wanting() {
+    void youHaveBeenWeighed() {
+        //Test this last since it calls the other methods
+
+        weight.youHaveBeenWeighed();
+
+        assert !weight.getFinalRecs().isEmpty();
+
+        System.out.println(weight.getFinalRecs());
     }
 
 
