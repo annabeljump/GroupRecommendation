@@ -14,6 +14,8 @@ public class RecMethod1 implements GroupRecGenerator {
     private Map usersRecs = new HashMap<>();
     private Map<Long, Double> recommendations = new HashMap<>();
 
+    private UserGroup usersGroup;
+
     //We want to pass an item recommender so that unseen movies can have ratings generated
     //for the group.
     private ItemRecommender rec;
@@ -24,36 +26,7 @@ public class RecMethod1 implements GroupRecGenerator {
 
         //Step 1a: Put all users in the group into a UserGroup
 
-        System.out.println("Please enter the user IDs of the users in your group (press Q when done):");
-        String user = System.console().readLine();
-        if(!user.equals("Q")) {
-            boolean finished = false;
-            do {
-                Long user1 = Long.valueOf(user);
-                usersList.add(user1);
-                System.out.println("Next user please (Q to quit):");
-                user = System.console().readLine();
-                if(user.equals("Q")){
-                    finished = true;
-                }
-            } while (!finished);
-        }
-
-        System.out.println("Thank you. Please enter the host's user ID:");
-        String host = System.console().readLine();
-        Long hoster = Long.valueOf(host);
-
-        System.out.println("Calculating...");
-
-        UserGroup usersGroup = new UserGroup(usersList, hoster);
-
-        //Step 1b: Now generate their recommendations
-
-        usersGroup.getIndividualRecs();
-
-        //Step 2: Age restrictions
-
-        usersRecs = usersGroup.getUserRecs();
+        createUserGroup();
 
         AgeRestrictor ages = new AgeRestrictor(usersGroup, usersRecs);
 
@@ -65,7 +38,7 @@ public class RecMethod1 implements GroupRecGenerator {
             //We will have to use this later, when the recommender returns the predicted ratings
 
         List appropriate = ages.getAppropriateMovies();
-        Boolean areChildrenPresent = ages.isSmallChildren();
+       // Boolean areChildrenPresent = ages.isSmallChildren();
 
 
         //Step 3: Remove Seen movies.
@@ -126,6 +99,40 @@ public class RecMethod1 implements GroupRecGenerator {
            System.out.println("Predicted rating: " + t.getValue());
        }
 
+    }
+
+    public void createUserGroup() {
+
+        System.out.println("Please enter the user IDs of the users in your group (press Q when done):");
+        String user = System.console().readLine();
+        if(!user.equals("Q")) {
+            boolean finished = false;
+            do {
+                Long user1 = Long.valueOf(user);
+                usersList.add(user1);
+                System.out.println("Next user please (Q to quit):");
+                user = System.console().readLine();
+                if(user.equals("Q")){
+                    finished = true;
+                }
+            } while (!finished);
+        }
+
+        System.out.println("Thank you. Please enter the host's user ID:");
+        String host = System.console().readLine();
+        Long hoster = Long.valueOf(host);
+
+        System.out.println("Calculating...");
+
+        usersGroup = new UserGroup(usersList, hoster);
+
+        //Step 1b: Now generate their recommendations
+
+        usersGroup.getIndividualRecs();
+
+        //Step 2: Age restrictions
+
+        usersRecs = usersGroup.getUserRecs();
     }
 
     //Constructors
