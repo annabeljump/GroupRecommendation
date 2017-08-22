@@ -15,6 +15,10 @@ public class RecMethod1 implements GroupRecGenerator {
     private Map<Long, Double> recommendations = new HashMap<>();
 
     private UserGroup usersGroup;
+    private List appropriate;
+    private List notSeen;
+    private Map predictedAveraged;
+    private Map<String, Double> moviesToWatch;
 
     //We want to pass an item recommender so that unseen movies can have ratings generated
     //for the group.
@@ -28,76 +32,28 @@ public class RecMethod1 implements GroupRecGenerator {
 
         createUserGroup();
 
-        AgeRestrictor ages = new AgeRestrictor(usersGroup, usersRecs);
 
-        ages.retrieveMovies();
-        ages.retrieveUsers();
-        ages.checkAndRemove();
+        //Step 2: Generate list of appropriate movies
 
-        //Step 2 (i) : now we have a list of appropriate movies
-            //We will have to use this later, when the recommender returns the predicted ratings
-
-        List appropriate = ages.getAppropriateMovies();
-       // Boolean areChildrenPresent = ages.isSmallChildren();
+        ageFilter();
 
 
         //Step 3: Remove Seen movies.
-            //Again this will need to be used later when predicted ratings returned
 
-        SeenYou iSeeYou = new SeenYou(usersGroup, usersRecs);
-
-        List<Long> notSeen = iSeeYou.getUnseenMovies();
-
+        iCanSeeYou();
 
         //Step 4: Carry out averaging of common recommended movies
 
-        CommonDenominator averageCommonMovies = new CommonDenominator(usersRecs);
-
-        Map predictedAveraged = averageCommonMovies.allRatedAndAverage();
+        uncommonNumerator();
 
         //Step 5: generate ratings for all other movies - add to group profile
         //This INCLUDES WEIGHTING
 
-        WeightingGenerator weighter = new WeightingGenerator(usersGroup);
-        weighter.setAppropriateMovies(appropriate);
-        weighter.setAveragedCommonRecs(predictedAveraged);
-        weighter.setUnseenMovies(notSeen);
-        weighter.setUserRecs(usersRecs);
-
-        recommendations = weighter.youHaveBeenWeighed();
-
+        geoffreyChaucer();
 
         //Step 6: print out recommendations using movie name and end process recommendations.
 
-        //Need to get names of movies
-
-        List<Long> movies = new ArrayList<>();
-        List<Double> ratings = new ArrayList<>();
-
-        for(Map.Entry<Long, Double> entry : recommendations.entrySet()) {
-            movies.add(entry.getKey());
-            ratings.add(entry.getValue());
-        }
-
-        NameGetter names = new NameGetter(movies);
-
-        Map<Long, String> movieNames = names.getMovieNames();
-        Map<String, Double> moviesToWatch = new HashMap<>();
-
-        for(Map.Entry<Long, Double> e : recommendations.entrySet()) {
-            for(Map.Entry<Long, String> en : movieNames.entrySet()){
-                if(e.getKey().equals(en.getKey())){
-                    moviesToWatch.put(en.getValue(), e.getValue());
-                }
-            }
-        }
-
-
-        System.out.println("We recommend you should watch:");
-       for(Map.Entry<String, Double> t : moviesToWatch.entrySet()){
-           System.out.println("Movie: " + t.getKey());
-           System.out.println("Predicted rating: " + t.getValue());
-       }
+        sirWilliam();
 
     }
 
@@ -133,6 +89,81 @@ public class RecMethod1 implements GroupRecGenerator {
         //Step 2: Age restrictions
 
         usersRecs = usersGroup.getUserRecs();
+    }
+
+    public void ageFilter(){
+        AgeRestrictor ages = new AgeRestrictor(usersGroup, usersRecs);
+
+        ages.retrieveMovies();
+        ages.retrieveUsers();
+        ages.checkAndRemove();
+
+        //Step 2 (i) : now we have a list of appropriate movies
+        //We will have to use this later, when the recommender returns the predicted ratings
+
+        appropriate = ages.getAppropriateMovies();
+        // Boolean areChildrenPresent = ages.isSmallChildren();
+    }
+
+    public void iCanSeeYou() {
+
+        SeenYou iSeeYou = new SeenYou(usersGroup, usersRecs);
+
+        notSeen = iSeeYou.getUnseenMovies();
+
+    }
+
+    public void uncommonNumerator() {
+        CommonDenominator averageCommonMovies = new CommonDenominator(usersRecs);
+
+        predictedAveraged = averageCommonMovies.allRatedAndAverage();
+
+    }
+
+    public void geoffreyChaucer() {
+
+        WeightingGenerator weighter = new WeightingGenerator(usersGroup);
+        weighter.setAppropriateMovies(appropriate);
+        weighter.setAveragedCommonRecs(predictedAveraged);
+        weighter.setUnseenMovies(notSeen);
+        weighter.setUserRecs(usersRecs);
+
+        recommendations = weighter.youHaveBeenWeighed();
+
+
+    }
+
+    public void sirWilliam() {
+
+        List<Long> movies = new ArrayList<>();
+        List<Double> ratings = new ArrayList<>();
+
+        for(Map.Entry<Long, Double> entry : recommendations.entrySet()) {
+            movies.add(entry.getKey());
+            ratings.add(entry.getValue());
+        }
+
+        NameGetter names = new NameGetter(movies);
+
+        Map<Long, String> movieNames = names.getMovieNames();
+        moviesToWatch = new HashMap<>();
+
+        for(Map.Entry<Long, Double> e : recommendations.entrySet()) {
+            for(Map.Entry<Long, String> en : movieNames.entrySet()){
+                if(e.getKey().equals(en.getKey())){
+                    moviesToWatch.put(en.getValue(), e.getValue());
+                }
+            }
+        }
+
+
+        System.out.println("We recommend you should watch:");
+        for(Map.Entry<String, Double> t : moviesToWatch.entrySet()){
+            System.out.println("Movie: " + t.getKey());
+            System.out.println("Predicted rating: " + t.getValue());
+        }
+
+
     }
 
     //Constructors
