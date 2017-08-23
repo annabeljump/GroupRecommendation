@@ -73,14 +73,18 @@ public class RecMethod1 implements GroupRecGenerator {
         usersList = new ArrayList<>();
 
         System.out.println("Please enter the user IDs of the users in your group (press Q when done):");
-        String user = System.console().readLine();
+
+        Scanner scanner = new Scanner(System.in);
+
+        String user = scanner.nextLine();
+
         if(!user.equals("Q")) {
             boolean finished = false;
             do {
                 Long user1 = Long.valueOf(user);
                 usersList.add(user1);
                 System.out.println("Next user please (Q to quit):");
-                user = System.console().readLine();
+                user = scanner.nextLine();
                 if(user.equals("Q")){
                     finished = true;
                 }
@@ -88,7 +92,7 @@ public class RecMethod1 implements GroupRecGenerator {
         }
 
         System.out.println("Thank you. Please enter the host's user ID:");
-        String host = System.console().readLine();
+        String host = scanner.nextLine();
         Long hoster = Long.valueOf(host);
 
         System.out.println("Calculating...");
