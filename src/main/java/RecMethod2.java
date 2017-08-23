@@ -5,7 +5,7 @@
  */
 public class RecMethod2 implements GroupRecGenerator{
     @Override
-    public void recommendMovies(UserGroup u) {
+    public void recommendMovies() {
 
     //Step 1: Create group profile - INCLUDING WEIGHTINGS
        //Commonly rated movies

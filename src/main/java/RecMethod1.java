@@ -31,17 +31,17 @@ public class RecMethod1 implements GroupRecGenerator {
 
 
     @Override
-    public void recommendMovies(UserGroup u) {
+    public void recommendMovies() {
 
         //Step 1a: Put all users in the group into a UserGroup
 
-       // createUserGroup();
+        createUserGroup();
 
-        usersGroup = u;
+       // usersGroup = u;
 
-        usersGroup.getIndividualRecs();
+       // usersGroup.getIndividualRecs();
 
-        usersRecs = usersGroup.getUserRecs();
+       // usersRecs = usersGroup.getUserRecs();
 
 
         //Step 2: Generate list of appropriate movies
