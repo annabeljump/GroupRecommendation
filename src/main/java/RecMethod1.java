@@ -10,9 +10,9 @@ import java.util.*;
  */
 public class RecMethod1 implements GroupRecGenerator {
 
-    private List<Long> usersList = new ArrayList();
-    private Map usersRecs = new HashMap<>();
-    private Map<Long, Double> recommendations = new HashMap<>();
+    private List<Long> usersList;
+    private Map usersRecs;
+    private Map<Long, Double> recommendations;
 
     private UserGroup usersGroup;
     private List appropriate;
@@ -20,17 +20,28 @@ public class RecMethod1 implements GroupRecGenerator {
     private Map predictedAveraged;
     private Map<String, Double> moviesToWatch;
 
+    private AgeRestrictor ages;
+    private SeenYou iSeeYou;
+    private CommonDenominator averageCommonMovies;
+    private WeightingGenerator weighter;
+
     //We want to pass an item recommender so that unseen movies can have ratings generated
     //for the group.
     private ItemRecommender rec;
 
 
     @Override
-    public void recommendMovies() {
+    public void recommendMovies(UserGroup u) {
 
         //Step 1a: Put all users in the group into a UserGroup
 
-        createUserGroup();
+       // createUserGroup();
+
+        usersGroup = u;
+
+        usersGroup.getIndividualRecs();
+
+        usersRecs = usersGroup.getUserRecs();
 
 
         //Step 2: Generate list of appropriate movies
@@ -58,6 +69,8 @@ public class RecMethod1 implements GroupRecGenerator {
     }
 
     public void createUserGroup() {
+
+        usersList = new ArrayList<>();
 
         System.out.println("Please enter the user IDs of the users in your group (press Q when done):");
         String user = System.console().readLine();
@@ -88,11 +101,13 @@ public class RecMethod1 implements GroupRecGenerator {
 
         //Step 2: Age restrictions
 
+        usersRecs = new HashMap<>();
+
         usersRecs = usersGroup.getUserRecs();
     }
 
     public void ageFilter(){
-        AgeRestrictor ages = new AgeRestrictor(usersGroup, usersRecs);
+        ages = new AgeRestrictor(usersGroup, usersRecs);
 
         ages.retrieveMovies();
         ages.retrieveUsers();
@@ -101,20 +116,26 @@ public class RecMethod1 implements GroupRecGenerator {
         //Step 2 (i) : now we have a list of appropriate movies
         //We will have to use this later, when the recommender returns the predicted ratings
 
+        appropriate = new ArrayList<>();
+
         appropriate = ages.getAppropriateMovies();
         // Boolean areChildrenPresent = ages.isSmallChildren();
     }
 
     public void iCanSeeYou() {
 
-        SeenYou iSeeYou = new SeenYou(usersGroup, usersRecs);
+        iSeeYou = new SeenYou(usersGroup, usersRecs);
+
+        notSeen = new ArrayList<>();
 
         notSeen = iSeeYou.getUnseenMovies();
 
     }
 
     public void uncommonNumerator() {
-        CommonDenominator averageCommonMovies = new CommonDenominator(usersRecs);
+        averageCommonMovies = new CommonDenominator(usersRecs);
+
+        predictedAveraged = new HashMap<>();
 
         predictedAveraged = averageCommonMovies.allRatedAndAverage();
 
@@ -122,11 +143,13 @@ public class RecMethod1 implements GroupRecGenerator {
 
     public void geoffreyChaucer() {
 
-        WeightingGenerator weighter = new WeightingGenerator(usersGroup);
+        weighter = new WeightingGenerator(usersGroup);
         weighter.setAppropriateMovies(appropriate);
         weighter.setAveragedCommonRecs(predictedAveraged);
         weighter.setUnseenMovies(notSeen);
         weighter.setUserRecs(usersRecs);
+
+        recommendations = new HashMap<>();
 
         recommendations = weighter.youHaveBeenWeighed();
 

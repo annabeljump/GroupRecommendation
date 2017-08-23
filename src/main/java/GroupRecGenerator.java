@@ -4,6 +4,6 @@
  */
 public interface GroupRecGenerator {
 
-    void recommendMovies();
+    void recommendMovies(UserGroup u);
 
 }
