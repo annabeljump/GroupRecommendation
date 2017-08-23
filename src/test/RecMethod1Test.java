@@ -44,28 +44,5 @@ class RecMethod1Test {
         hello.recommendMovies(users);
     }
 
-    @Test
-    void createUserGroup() {
-    }
-
-    @Test
-    void ageFilter() {
-    }
-
-    @Test
-    void iCanSeeYou() {
-    }
-
-    @Test
-    void uncommonNumerator() {
-    }
-
-    @Test
-    void geoffreyChaucer() {
-    }
-
-    @Test
-    void sirWilliam() {
-    }
 
 }
