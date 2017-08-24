@@ -8,8 +8,8 @@ public class RecMethod2 implements GroupRecGenerator{
     public void recommendMovies() {
 
     //Step 1: Create group profile - INCLUDING WEIGHTINGS
-        //Step 1a: Pull rated movies for each user into a map *user, list*
-        //Step 1b: check for common ratings + average scores *commonDenominator*
+        //Step 1a: Pull rated movies for each user into a map *user, list* - DONE
+        //Step 1b: check for common ratings + average scores *commonDenominator???*
         //Step 1c: check for ratings below a certain threshold + exaggerate
         //Step 1d: count high ratings + if over half, exaggerate
         //Step 1e: count low ratings, same as 1d

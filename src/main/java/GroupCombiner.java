@@ -1,12 +1,7 @@
 import org.grouplens.lenskit.scored.ScoredId;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 /**
  * Created by annabeljump.
@@ -29,59 +24,90 @@ public class GroupCombiner implements GroupCreator {
     public void getIndividualRecs() {
 
         //Read in from the ratings.csv file
-            //Add ratings for users in Group to a map
-            //There will need to be a map within a map
+        //Add ratings for users in Group to a map
+        //There will need to be a map within a map
 
-        BufferedReader bff = null;
-        String bx = "";
         String splitter = ","; //Don't need lengthy regex here, no commas within quotes
-        String ratePath = "src/ml-latest-small/ratings.csv";
 
-        Map<Long, String> currentRatings = new HashMap<>();
+        Map<Long, List<String>> currentRatings = new HashMap<>();
         userRates = new HashMap<>();
 
-        //First parse all ratings, add to map. String consists of movie ID and rating
+        String filePath = "src/ml-latest-small/ratings.csv";
+
         try {
-            bff = new BufferedReader(new FileReader(ratePath));
-            while((bx = bff.readLine()) != null) {
-                String[] ratingDetails = bx.split(splitter);
-                Long uID = Long.valueOf(ratingDetails[0]);
-                String movrat = ratingDetails[1]+","+ratingDetails[2];
-                currentRatings.put(uID, movrat);
+            File f = new File(filePath);
+            Scanner sc = new Scanner(f);
+
+            List<String> l = new ArrayList<>();
+
+            Long u = 1L;
+
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine();
+                String[] details = line.split(splitter);
+                Long uID = Long.valueOf(details[0]);
+                String movrat = details[1] + "," + details[2];
+                if(Objects.equals(u, uID)) {
+                    l.add(movrat);
+                } else {
+                    currentRatings.put(u, l);
+                    l.clear();
+                    u = uID;
+                    l.add(movrat);
+                }
             }
-        } catch (IOException e) {
+
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        /**
+         try {
+         bff = new BufferedReader(new FileReader(ratePath));
+         while((bx = bff.readLine()) != null) {
+         String[] ratingDetails = bx.split(splitter);
+         Long uID = Long.valueOf(ratingDetails[0]);
+         String movrat = ratingDetails[1]+","+ratingDetails[2];
+         currentRatings.put(uID, movrat);
+         }
+         } catch (IOException e) {
+         e.printStackTrace();
+         }
+         */
 
         Map<Long, Double> thisUserRatings = new HashMap<>();
 
         //Now cycle through users and the map of ratings to retrieve only those for the group
-        for(int i=0; i < userList.size(); i++) {
+        for (int i = 0; i < userList.size(); i++) {
             Long currentUser = userList.get(i);
-            for(Map.Entry<Long, String> entry : currentRatings.entrySet()){
-                if(entry.getKey() == currentUser){
-                    String br = entry.getValue();
-                    String[] again = br.split(splitter);
-                    Long mID = Long.valueOf(again[0]);
-                    Double score = Double.parseDouble(again[1]);
-                    thisUserRatings.put(mID, score);
+            for (Map.Entry<Long, List<String>> entry : currentRatings.entrySet()) {
+                Long userID = entry.getKey();
+                List<String> br = entry.getValue();
+                if (Objects.equals(userID, currentUser)) {
+                    for(int j=0; j < br.size(); j++) {
+                        String[] again = br.get(j).split(",");
+                        Long mID = Long.valueOf(again[0]);
+                        Double score = Double.parseDouble(again[1]);
+                        thisUserRatings.put(mID, score);
+                    }
                 }
             }
             //Assuming there are ratings, put them in the map
-            if(!thisUserRatings.isEmpty()){
+  //          if (!thisUserRatings.isEmpty()) {
                 userRates.put(currentUser, thisUserRatings);
-            } else {
-                System.out.println("Uh oh! Was user " + currentUser + " already registered?");
-                System.out.println("If so, something went wrong!");
-                System.out.println("Really sorry, we are going to have to start again!");
-                error = true;
-                break;
-            }
+  //          } else {
+  //              System.out.println("Uh oh! Was user " + currentUser + " already registered?");
+ //               System.out.println("If so, something went wrong!");
+ //               System.out.println("Really sorry, we are going to have to start again!");
+//                error = true;
+ //               break;
+ //           }
         }
 
     }
 
-    //Constructors
+
+        //Constructors
 
     public GroupCombiner(List<Long> users, Long h) {
         this.userList = users;
