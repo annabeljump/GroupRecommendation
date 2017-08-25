@@ -34,13 +34,38 @@ public class GroupCombiner implements GroupCreator {
 
         String filePath = "src/ml-latest-small/ratings.csv";
 
+        List<Long> l = new ArrayList<>();
+        List<String> t = new ArrayList<>();
+        List<List<String>> tester = new ArrayList<>();
+
+
         try {
             File f = new File(filePath);
             Scanner sc = new Scanner(f);
 
-            List<String> l = new ArrayList<>();
 
             Long u = 1L;
+           Boolean finished = false;
+
+            while ((sc.hasNextLine()) && !finished){
+                String line = sc.nextLine();
+                String[] li = line.split(splitter);
+                Long uID = Long.valueOf(li[0]);
+                String st = li[1] + " , " + li[2];
+                if(u.equals(uID)) {
+                    t.add(st);
+                } else {
+                    tester.add(t);
+                    t.clear(); //THIS SEEMS TO BE THE PROBLEM
+                    u = uID;
+                    if(uID.equals(3L)) {
+                        finished = true;
+                    }
+                }
+            }
+
+            /**
+             *  I really cannot see why this doesn't work.
 
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
@@ -56,10 +81,15 @@ public class GroupCombiner implements GroupCreator {
                     l.add(movrat);
                 }
             }
+             */
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+
+        System.out.println(t);
+        System.out.println(tester.get(1));
 
         /**
          try {
@@ -75,6 +105,9 @@ public class GroupCombiner implements GroupCreator {
          }
          */
 
+        /**
+         *  This clearly doesn't work and I am not sure why
+         *
         Map<Long, Double> thisUserRatings = new HashMap<>();
 
         //Now cycle through users and the map of ratings to retrieve only those for the group
@@ -92,9 +125,11 @@ public class GroupCombiner implements GroupCreator {
                     }
                 }
             }
+
+         */
             //Assuming there are ratings, put them in the map
   //          if (!thisUserRatings.isEmpty()) {
-                userRates.put(currentUser, thisUserRatings);
+                //userRates.put(currentUser, thisUserRatings);
   //          } else {
   //              System.out.println("Uh oh! Was user " + currentUser + " already registered?");
  //               System.out.println("If so, something went wrong!");
@@ -102,7 +137,9 @@ public class GroupCombiner implements GroupCreator {
 //                error = true;
  //               break;
  //           }
-        }
+
+
+        //}
 
     }
 

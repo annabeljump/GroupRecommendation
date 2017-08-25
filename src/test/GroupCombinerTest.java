@@ -26,10 +26,7 @@ class GroupCombinerTest {
     @Test
     void getIndividualRecs() {
         g.getIndividualRecs();
-        Map<Long, Map<Long, Double>> blah = g.getUserRatings();
-        for(Map.Entry<Long, Map<Long, Double>> e : blah.entrySet()) {
-            System.out.println(e);
-        }
+
 
 
     }
