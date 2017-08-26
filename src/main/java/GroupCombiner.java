@@ -12,6 +12,7 @@ public class GroupCombiner implements GroupCreator {
     private Long host;
 
     private List<Long> movieList;
+    private List<Long> otherMovies;
     private Map<Long, Double> averagedRatings;
 
 
@@ -78,7 +79,7 @@ public class GroupCombiner implements GroupCreator {
                if (userID.equals(currentUser)) {
                     for (int j = 0; j < br.size(); j++) {
                         String blah = br.get(j);
-                        String[] again = br.get(j).split(",");
+                        String[] again = blah.split(",");
                         Long mID = Long.parseLong(again[0]);
                         Double score = Double.parseDouble(again[1]);
                         thisUserRatings.put(mID, score);
@@ -91,6 +92,8 @@ public class GroupCombiner implements GroupCreator {
         }
 
         averageRatings();
+
+        addBack();
     }
 
 
@@ -103,6 +106,8 @@ public class GroupCombiner implements GroupCreator {
         averagedRatings = new HashMap<>();
 
         movieList = new ArrayList<>();
+
+        otherMovies = new ArrayList<>();
 
         Map<Long, Double> userMap;
 
@@ -133,6 +138,8 @@ public class GroupCombiner implements GroupCreator {
 
             if(isPresent) {
                 movieList.add(m);
+            } else {
+                otherMovies.add(m);
             }
         }
 
@@ -198,8 +205,38 @@ public class GroupCombiner implements GroupCreator {
             }
 
             averagedRatings.put(aCommonRec, averageScore);
+        }
+    }
 
+    /**
+     * There will be ratings rated by only one user
+     * These ratings should be added back to the group ratings
+     * Host weighting should be applied here
+     */
+    public void addBack() {
 
+        for(Long movie : otherMovies){
+            for (Map.Entry<Long, Map<Long, Double>> dentry : userRates.entrySet()) {
+
+                Map<Long, Double> internalMap = dentry.getValue();
+
+                Long h = dentry.getKey();
+
+                for (Map.Entry<Long, Double> inEntry : internalMap.entrySet()) {
+                    Double sc = inEntry.getValue();
+                    Long mID = inEntry.getKey();
+
+                    if (movie.equals(mID) && h.equals(host)) {
+                        if (sc < 2.5) {
+                            averagedRatings.put(mID, (sc - 1));
+                        } else if (sc > 2.5) {
+                            averagedRatings.put(mID, (sc + 1));
+                        }
+                    } else if (movie.equals(mID)) {
+                        averagedRatings.put(mID, sc);
+                    }
+                }
+            }
         }
     }
 
