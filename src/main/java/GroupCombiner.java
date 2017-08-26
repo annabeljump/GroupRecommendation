@@ -43,11 +43,10 @@ public class GroupCombiner implements GroupCreator {
             File f = new File(filePath);
             Scanner sc = new Scanner(f);
 
-
             Long u = 1L;
-           Boolean finished = false;
+            Boolean finished = false;
 
-            while ((sc.hasNextLine()) && !finished){
+            while (sc.hasNextLine()){
                 String line = sc.nextLine();
                 String[] li = line.split(splitter);
                 Long uID = Long.valueOf(li[0]);
@@ -55,13 +54,12 @@ public class GroupCombiner implements GroupCreator {
                 if(u.equals(uID)) {
                     t.add(st);
                 } else {
-                    tester.add(t);
-                    t.clear(); //THIS SEEMS TO BE THE PROBLEM
+                    tester.add(new ArrayList<>(t));
                     u = uID;
-                    if(uID.equals(3L)) {
-                        finished = true;
-                    }
+                    t.clear();
+                    t.add(st);
                 }
+
             }
 
             /**
