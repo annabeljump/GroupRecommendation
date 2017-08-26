@@ -33,6 +33,8 @@ class GroupCombinerTest {
 
         assert !g.getMovieList().isEmpty();
 
+        assert !g.getAveragedRatings().isEmpty();
+
     }
 
 }

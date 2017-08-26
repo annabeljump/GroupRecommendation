@@ -232,6 +232,8 @@ public class GroupCombiner implements GroupCreator {
         return this.userList;
     }
 
+    public Map<Long, Double> getAveragedRatings() { return this.averagedRatings; }
+
     public List<Long> getMovieList() {return this.movieList; }
 
     public Long getHost() {
