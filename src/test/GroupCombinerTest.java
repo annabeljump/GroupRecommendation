@@ -29,6 +29,7 @@ class GroupCombinerTest {
 
         assert !g.getUserRatings().isEmpty();
 
+        assertEquals(g.getUserRatings().size(), 2);
     }
 
 }

@@ -43,7 +43,6 @@ public class GroupCombiner implements GroupCreator {
             Scanner sc = new Scanner(f);
 
             Long u = 1L;
-            Boolean finished = false;
 
             while (sc.hasNextLine()){
                 String line = sc.nextLine();
@@ -66,10 +65,6 @@ public class GroupCombiner implements GroupCreator {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-
-        //System.out.println(t);
-        //System.out.println(tester.get(1));
 
 
 
