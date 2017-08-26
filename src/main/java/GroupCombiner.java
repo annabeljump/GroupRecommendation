@@ -36,7 +36,6 @@ public class GroupCombiner implements GroupCreator {
 
         List<Long> l = new ArrayList<>();
         List<String> t = new ArrayList<>();
-        List<List<String>> tester = new ArrayList<>();
 
 
         try {
@@ -50,11 +49,11 @@ public class GroupCombiner implements GroupCreator {
                 String line = sc.nextLine();
                 String[] li = line.split(splitter);
                 Long uID = Long.valueOf(li[0]);
-                String st = li[1] + " , " + li[2];
+                String st = li[1] + "," + li[2];
                 if(u.equals(uID)) {
                     t.add(st);
                 } else {
-                    tester.add(new ArrayList<>(t));
+                    currentRatings.put(uID, new ArrayList<>(t));
                     u = uID;
                     t.clear();
                     t.add(st);
@@ -62,82 +61,43 @@ public class GroupCombiner implements GroupCreator {
 
             }
 
-            /**
-             *  I really cannot see why this doesn't work.
 
-            while (sc.hasNextLine()) {
-                String line = sc.nextLine();
-                String[] details = line.split(splitter);
-                Long uID = Long.valueOf(details[0]);
-                String movrat = details[1] + "," + details[2];
-                if(Objects.equals(u, uID)) {
-                    l.add(movrat);
-                } else {
-                    currentRatings.put(u, l);
-                    l.clear();
-                    u = uID;
-                    l.add(movrat);
-                }
-            }
-             */
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
 
-        System.out.println(t);
-        System.out.println(tester.get(1));
+        //System.out.println(t);
+        //System.out.println(tester.get(1));
 
-        /**
-         try {
-         bff = new BufferedReader(new FileReader(ratePath));
-         while((bx = bff.readLine()) != null) {
-         String[] ratingDetails = bx.split(splitter);
-         Long uID = Long.valueOf(ratingDetails[0]);
-         String movrat = ratingDetails[1]+","+ratingDetails[2];
-         currentRatings.put(uID, movrat);
-         }
-         } catch (IOException e) {
-         e.printStackTrace();
-         }
-         */
 
-        /**
-         *  This clearly doesn't work and I am not sure why
-         *
+
         Map<Long, Double> thisUserRatings = new HashMap<>();
+        Long currentUser;
+        Long userID;
+        List<String> br;
 
         //Now cycle through users and the map of ratings to retrieve only those for the group
         for (int i = 0; i < userList.size(); i++) {
-            Long currentUser = userList.get(i);
+            currentUser = userList.get(i);
             for (Map.Entry<Long, List<String>> entry : currentRatings.entrySet()) {
-                Long userID = entry.getKey();
-                List<String> br = entry.getValue();
-                if (Objects.equals(userID, currentUser)) {
-                    for(int j=0; j < br.size(); j++) {
+                userID = entry.getKey();
+                br = entry.getValue();
+               if (userID.equals(currentUser)) {
+                    for (int j = 0; j < br.size(); j++) {
+                        String blah = br.get(j);
                         String[] again = br.get(j).split(",");
-                        Long mID = Long.valueOf(again[0]);
+                        Long mID = Long.parseLong(again[0]);
                         Double score = Double.parseDouble(again[1]);
                         thisUserRatings.put(mID, score);
                     }
                 }
+
             }
-
-         */
-            //Assuming there are ratings, put them in the map
-  //          if (!thisUserRatings.isEmpty()) {
-                //userRates.put(currentUser, thisUserRatings);
-  //          } else {
-  //              System.out.println("Uh oh! Was user " + currentUser + " already registered?");
- //               System.out.println("If so, something went wrong!");
- //               System.out.println("Really sorry, we are going to have to start again!");
-//                error = true;
- //               break;
- //           }
-
-
-        //}
+            userRates.put(currentUser, new HashMap<>(thisUserRatings));
+            thisUserRatings.clear();
+        }
 
     }
 

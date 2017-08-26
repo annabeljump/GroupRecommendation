@@ -27,7 +27,7 @@ class GroupCombinerTest {
     void getIndividualRecs() {
         g.getIndividualRecs();
 
-
+        assert !g.getUserRatings().isEmpty();
 
     }
 
