@@ -86,24 +86,11 @@ public class CommonDenominator {
         //Pull out first list of recommendations
         Map.Entry<Long, List<ScoredId>> entry = recMap.entrySet().iterator().next();
         List list = entry.getValue();
-        //TODO do we want to add u's list back to recMap after checking in isAllRecommended() ?
         Long u = entry.getKey();
         this.originalList = list;
 
         //Remove that list from the map
         recMap.remove(u);
-
-        Map.Entry<Long, List<ScoredId>> e = recMap.entrySet().iterator().next();
-
-        List l = e.getValue();
-
-        for(int i=0; i < l.size(); i++) {
-            ScoredId it = (ScoredId) l.get(i);
-            ScoredId item = (ScoredId) list.get(i);
-
-            //commented out as was for testing purposes.
-            //System.out.println((it.getId()) + " ; " + item.getId());
-        }
 
         isAllRecommended();
     }

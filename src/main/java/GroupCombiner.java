@@ -1,5 +1,3 @@
-import org.grouplens.lenskit.scored.ScoredId;
-
 import java.io.*;
 import java.util.*;
 
@@ -13,7 +11,7 @@ public class GroupCombiner implements GroupCreator {
     private Map<Long, Map<Long, Double>> userRates;
     private Long host;
 
-    public Boolean error = false;
+    private List<Long> movieList;
 
 
     /**
@@ -60,13 +58,9 @@ public class GroupCombiner implements GroupCreator {
 
             }
 
-
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-
 
         Map<Long, Double> thisUserRatings = new HashMap<>();
         Long currentUser;
@@ -94,6 +88,58 @@ public class GroupCombiner implements GroupCreator {
             thisUserRatings.clear();
         }
 
+        weightProfile();
+    }
+
+    /**
+     * Method to generate weighted user profile
+     * - will average ratings of common movies
+     * - then will apply weightings based on hosts etc
+     */
+    public void weightProfile() {
+        //First, call method to average common ratings
+        averageRatings();
+    }
+
+    /**
+     * This borrows code from CommonDenominator (as it essentially does the same thing)
+     */
+    public void averageRatings() {
+        Map<Long, Double> userMap;
+        userList = new ArrayList<>();
+
+        Map.Entry<Long, Map<Long, Double>> entry = userRates.entrySet().iterator().next();
+        Map map = entry.getValue();
+        Long u = entry.getKey();
+        userMap = map;
+
+        for(Map.Entry<Long, Double> e : userMap.entrySet()) {
+            Boolean isPresent = true;
+
+            Long m = e.getKey();
+
+            HashSet movies = new HashSet<>();
+
+            //Check if it is present in all other lists
+            for (Map.Entry<Long, Map<Long, Double>> ent : userRates.entrySet()) {
+                Map<Long, Double> sco = ent.getValue();
+
+
+                for (Map.Entry<Long, Double> longDoubleEntry : sco.entrySet()) {
+                    Long mID = longDoubleEntry.getKey();
+
+                    movies.add(mID);
+                }
+
+                if (!movies.contains(m)) {
+                    isPresent = false;
+                }
+            }
+
+            if(isPresent) {
+                movieList.add(m);
+            }
+        }
     }
 
 
