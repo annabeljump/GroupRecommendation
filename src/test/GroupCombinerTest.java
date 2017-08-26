@@ -30,6 +30,9 @@ class GroupCombinerTest {
         assert !g.getUserRatings().isEmpty();
 
         assertEquals(g.getUserRatings().size(), 2);
+
+        assert !g.getMovieList().isEmpty();
+
     }
 
 }

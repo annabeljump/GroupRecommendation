@@ -105,25 +105,24 @@ public class GroupCombiner implements GroupCreator {
      * This borrows code from CommonDenominator (as it essentially does the same thing)
      */
     public void averageRatings() {
+
+        movieList = new ArrayList<>();
+
         Map<Long, Double> userMap;
-        userList = new ArrayList<>();
 
         Map.Entry<Long, Map<Long, Double>> entry = userRates.entrySet().iterator().next();
-        Map map = entry.getValue();
-        Long u = entry.getKey();
-        userMap = map;
+        userMap = entry.getValue();
 
         for(Map.Entry<Long, Double> e : userMap.entrySet()) {
             Boolean isPresent = true;
 
             Long m = e.getKey();
 
-            HashSet movies = new HashSet<>();
-
             //Check if it is present in all other lists
             for (Map.Entry<Long, Map<Long, Double>> ent : userRates.entrySet()) {
                 Map<Long, Double> sco = ent.getValue();
 
+                HashSet movies = new HashSet<>();
 
                 for (Map.Entry<Long, Double> longDoubleEntry : sco.entrySet()) {
                     Long mID = longDoubleEntry.getKey();
@@ -140,6 +139,8 @@ public class GroupCombiner implements GroupCreator {
                 movieList.add(m);
             }
         }
+
+
     }
 
 
@@ -169,6 +170,8 @@ public class GroupCombiner implements GroupCreator {
     public List<Long> getUserList() {
         return this.userList;
     }
+
+    public List<Long> getMovieList() {return this.movieList; }
 
     public Long getHost() {
         return this.host;
