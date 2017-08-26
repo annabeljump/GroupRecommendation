@@ -12,6 +12,7 @@ public class GroupCombiner implements GroupCreator {
     private Long host;
 
     private List<Long> movieList;
+    private Map<Long, Double> averagedRatings;
 
 
     /**
@@ -106,6 +107,8 @@ public class GroupCombiner implements GroupCreator {
      */
     public void averageRatings() {
 
+        averagedRatings = new HashMap<>();
+
         movieList = new ArrayList<>();
 
         Map<Long, Double> userMap;
@@ -140,7 +143,35 @@ public class GroupCombiner implements GroupCreator {
             }
         }
 
+        for (Long aCommonRec : movieList) {
+            Long mID = aCommonRec;
 
+            ArrayList<Double> scores = new ArrayList<>();
+
+            for (Map.Entry<Long, Map<Long, Double>> dentry : userRates.entrySet()) {
+
+                Map<Long, Double> internalMap = dentry.getValue();
+
+                for(Map.Entry<Long, Double> inEntry : internalMap.entrySet()) {
+
+                    if(inEntry.getKey().equals(mID)){
+                        scores.add(inEntry.getValue());
+                    }
+                }
+            }
+
+            Double averageScore = 0.0;
+            Double total = 0.0;
+
+            for (Double score : scores) {
+                total += score;
+            }
+
+
+            averageScore = total / scores.size();
+
+            averagedRatings.put(mID, averageScore);
+        }
     }
 
 
