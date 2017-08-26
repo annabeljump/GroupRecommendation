@@ -15,6 +15,7 @@ public class GroupCombiner implements GroupCreator {
     private Map<Long, Double> averagedRatings;
 
 
+
     /**
      * This generator does not generate recommendations using the recommender
      * At this point the GroupCombiner retrieves the ratings for the users in the group
@@ -89,23 +90,15 @@ public class GroupCombiner implements GroupCreator {
             thisUserRatings.clear();
         }
 
-        weightProfile();
-    }
-
-    /**
-     * Method to generate weighted user profile
-     * - will average ratings of common movies
-     * - then will apply weightings based on hosts etc
-     */
-    public void weightProfile() {
-        //First, call method to average common ratings
         averageRatings();
     }
 
+
     /**
      * This borrows code from CommonDenominator (as it essentially does the same thing)
+     * As well as WeightingGenerator, as here is where the weighting is done
      */
-    public void averageRatings() {
+    private void averageRatings() {
 
         averagedRatings = new HashMap<>();
 
@@ -144,23 +137,38 @@ public class GroupCombiner implements GroupCreator {
         }
 
         for (Long aCommonRec : movieList) {
-            Long mID = aCommonRec;
 
-            ArrayList<Double> scores = new ArrayList<>();
+            List<Double> scores = new ArrayList<>();
+
+            Boolean isHost = false;
 
             for (Map.Entry<Long, Map<Long, Double>> dentry : userRates.entrySet()) {
+
+                if(dentry.getKey().equals(host)) {
+                    isHost = true;
+                }
 
                 Map<Long, Double> internalMap = dentry.getValue();
 
                 for(Map.Entry<Long, Double> inEntry : internalMap.entrySet()) {
+                    Double sc = inEntry.getValue();
 
-                    if(inEntry.getKey().equals(mID)){
-                        scores.add(inEntry.getValue());
-                    }
+                    if((inEntry.getKey().equals(aCommonRec)) && isHost){
+                            if(sc > 2.5) {
+                                scores.add(sc * 2);
+                            } else {
+                                scores.add(sc / 2);
+                            }
+                        } else if(inEntry.getKey().equals(aCommonRec)) {
+                            scores.add(sc);
+                        }
+                }
+                if(isHost) {
+                    isHost = false;
                 }
             }
 
-            Double averageScore = 0.0;
+            Double averageScore;
             Double total = 0.0;
 
             for (Double score : scores) {
@@ -170,9 +178,31 @@ public class GroupCombiner implements GroupCreator {
 
             averageScore = total / scores.size();
 
-            averagedRatings.put(mID, averageScore);
+            int no = userList.size();
+
+            int highScore = 0;
+            int lowScores = 0;
+
+            for (Double score : scores) {
+                if (score < 2.0) {
+                    lowScores++;
+                } else if (score > 3.0) {
+                    highScore++;
+                }
+            }
+
+            if(lowScores > (no/2)){
+                averageScore = averageScore - 1.0;
+            } else if(highScore > (no/2)) {
+                averageScore = averageScore + 1.0;
+            }
+
+            averagedRatings.put(aCommonRec, averageScore);
+
+
         }
     }
+
 
 
         //Constructors
