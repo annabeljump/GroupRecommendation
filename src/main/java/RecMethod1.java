@@ -1,6 +1,7 @@
 import org.grouplens.lenskit.ItemRecommender;
 import org.grouplens.lenskit.scored.ScoredId;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -187,7 +188,7 @@ public class RecMethod1 implements GroupRecGenerator {
         System.out.println("We recommend you should watch:");
         for(Map.Entry<String, Double> t : moviesToWatch.entrySet()){
             System.out.println("Movie: " + t.getKey());
-            System.out.println("Predicted rating: " + t.getValue());
+            System.out.println("Predicted rating: " + String.format("%.02f", t.getValue()) + " /10");
         }
 
 

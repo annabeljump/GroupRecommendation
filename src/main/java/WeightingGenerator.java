@@ -188,15 +188,15 @@ public class WeightingGenerator {
         for (Double score : scores) {
             if (score < 2.0) {
                 lowScores++;
-            } else if (score > 5.0) {
+            } else if (score > 7.0) {
                 highScore++;
             }
         }
 
         if(lowScores > (no/2)){
-            averageScore = averageScore - 1.0;
+            averageScore = averageScore - 2.0;
         } else if(highScore > (no/2)) {
-            averageScore = averageScore + 1.0;
+            averageScore = averageScore + 2.0;
         }
 
         //Now factor in movies which were commonly recommended.
@@ -213,12 +213,12 @@ public class WeightingGenerator {
             }
         }
 
-        //Make sure the average score is no higher than 10.0 or lower than 0.5
+        //Make sure the average score is no higher than 10.0 or lower than 0.0
 
         if(averageScore > 10.0){
             averageScore = 10.0;
         } else if(averageScore < 0.0){
-            averageScore = 0.5;
+            averageScore = 0.0;
         }
 
         //TODO figure out how to do something with the date here.

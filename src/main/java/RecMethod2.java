@@ -86,7 +86,7 @@ public class RecMethod2 implements GroupRecGenerator{
         System.out.println("We recommend you should watch:");
         for(Map.Entry<String, Double> t : moviesToWatch.entrySet()){
             System.out.println("Movie: " + t.getKey());
-            System.out.println("Predicted rating: " + t.getValue());
+            System.out.println("Predicted rating: " + String.format("%.02f", t.getValue()) + " /10");
         }
 
     }
