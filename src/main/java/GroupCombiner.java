@@ -14,6 +14,7 @@ public class GroupCombiner implements GroupCreator {
     private List<Long> movieList;
     private List<Long> otherMovies;
     private Map<Long, Double> averagedRatings;
+    private Map<Long, Double> unCommonRatings;
 
 
 
@@ -215,6 +216,8 @@ public class GroupCombiner implements GroupCreator {
      */
     public void addBack() {
 
+        unCommonRatings = new HashMap<>();
+
         for(Long movie : otherMovies){
             for (Map.Entry<Long, Map<Long, Double>> dentry : userRates.entrySet()) {
 
@@ -228,12 +231,15 @@ public class GroupCombiner implements GroupCreator {
 
                     if (movie.equals(mID) && h.equals(host)) {
                         if (sc < 2.5) {
-                            averagedRatings.put(mID, (sc - 1));
+                            averagedRatings.put(mID, (sc - 1.0));
+                            unCommonRatings.put(mID, (sc- 1.0));
                         } else if (sc > 2.5) {
-                            averagedRatings.put(mID, (sc + 1));
+                            averagedRatings.put(mID, (sc + 1.0));
+                            unCommonRatings.put(mID, (sc+1.0));
                         }
                     } else if (movie.equals(mID)) {
                         averagedRatings.put(mID, sc);
+                        unCommonRatings.put(mID, sc);
                     }
                 }
             }
@@ -272,6 +278,10 @@ public class GroupCombiner implements GroupCreator {
     public Map<Long, Double> getAveragedRatings() { return this.averagedRatings; }
 
     public List<Long> getMovieList() {return this.movieList; }
+
+    public List<Long> getOtherMovies() { return this.otherMovies;}
+
+    public Map<Long, Double> getUnCommonRatings() { return this.unCommonRatings; }
 
     public Long getHost() {
         return this.host;
