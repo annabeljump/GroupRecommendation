@@ -1,26 +1,90 @@
+import org.grouplens.lenskit.scored.ScoredId;
+
+import java.io.IOException;
+import java.util.*;
+
 /**
  * Created by annabeljump
  * Class to build and run the Second
  * of Two group recommendation methods
  */
 public class RecMethod2 implements GroupRecGenerator{
+
+
+    private List<Long> userList;
+    private List<ScoredId> recommendations;
+    private List appropriate;
+    private Map<Long, Double> ratings;
+    private Long iD;
+
+    private GroupCombiner group;
+    private AgeRestrictor age;
+    private UserWriter writer;
+
+
+
     @Override
     public void recommendMovies() {
 
-    //Step 1: Create group profile - INCLUDING WEIGHTINGS
-        //Step 1a: Pull rated movies for each user into a map *user, list* - DONE
-        //Step 1b: check for common ratings + average scores *commonDenominator???* - DONE
-        //Step 1c: check for ratings below a certain threshold + exaggerate - DONE
-        //Step 1d: count high ratings + if over half, exaggerate - DONE
-        //Step 1e: count low ratings, same as 1d - DONE
-        //Step 1f: host weighting - DONE
+    //Step 1: Create group profile + write out to ratings.csv
 
+        createGroup();
 
+    ///Step 2: Recommend
 
-    //Step 2: Remove age in appropriate movies ---- this should be done with list of recommendations!
+        NewRecommender morrison = new NewRecommender(iD);
 
+        recommendations = morrison.recommend();
 
-    ///Step 3: Recommend
+    }
+
+    public void createGroup() {
+        userList = new ArrayList<>();
+
+        System.out.println("Please enter the user IDs of the users in your group (press Q when done):");
+
+        Scanner scanner = new Scanner(System.in);
+
+        String user = scanner.nextLine();
+
+        if(!user.equals("Q")) {
+            boolean finished = false;
+            do {
+                Long user1 = Long.valueOf(user);
+                userList.add(user1);
+                System.out.println("Next user please (Q to quit):");
+                user = scanner.nextLine();
+                if(user.equals("Q")){
+                    finished = true;
+                }
+            } while (!finished);
+        }
+
+        System.out.println("Thank you. Please enter the host's user ID:");
+        String host = scanner.nextLine();
+        Long hoster = Long.valueOf(host);
+
+        System.out.println("Calculating...");
+
+        group = new GroupCombiner(userList, hoster);
+
+        group.getIndividualRecs();
+
+        ratings = new HashMap<>();
+
+        ratings = group.getAveragedRatings();
+
+        writer = new UserWriter(group, ratings);
+
+        writer.readLastUser();
+
+        iD = writer.getGroupID();
+
+        try {
+            writer.writeGroupRatings();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }
