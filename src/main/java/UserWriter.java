@@ -63,4 +63,8 @@ public class UserWriter {
         this.ratings = r;
     }
 
+    //Getters
+
+    public Long getGroupID() { return this.groupID; }
+
 }
