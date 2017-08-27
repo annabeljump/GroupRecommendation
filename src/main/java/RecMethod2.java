@@ -13,9 +13,10 @@ public class RecMethod2 implements GroupRecGenerator{
 
     private List<Long> userList;
     private List<ScoredId> recommendations;
-    private List<Long> movieList;
-    private List appropriate;
+    private List<Long> appropriate;
+    private List<Long> movies;
     private Map<Long, Double> ratings;
+    private Map<String, Double> moviesToWatch;
     private Long iD;
 
     private GroupCombiner group;
@@ -41,7 +42,7 @@ public class RecMethod2 implements GroupRecGenerator{
 
         age = new GroupAges(group, recommendations);
 
-        movieList = new ArrayList<>();
+        List<Long> movieList = new ArrayList<>();
 
         movieList = age.retrieveMovies();
 
@@ -59,14 +60,32 @@ public class RecMethod2 implements GroupRecGenerator{
             if(!appropriate.contains(mID)){
                 recommendations.remove(i);
             } else if(appropriate.contains(mID)){
-
+                movies.add(mID);
             }
         }
 
     //Step 4: Get names and print recommendations!
 
-        //Get movie IDs
+        NameGetter names = new NameGetter(movies);
+        Map<Long, String> movieNames = names.getMovieNames();
+        moviesToWatch = new HashMap<>();
 
+        for(int j=0; j < recommendations.size(); j++) {
+            ScoredId recs = recommendations.get(j);
+            Long mov = recs.getId();
+            Double score = recs.getScore();
+            for(Map.Entry<Long, String> en : movieNames.entrySet()){
+                if(mov.equals(en.getKey())){
+                    moviesToWatch.put(en.getValue(), score);
+                }
+            }
+        }
+
+        System.out.println("We recommend you should watch:");
+        for(Map.Entry<String, Double> t : moviesToWatch.entrySet()){
+            System.out.println("Movie: " + t.getKey());
+            System.out.println("Predicted rating: " + t.getValue());
+        }
 
     }
 
