@@ -30,7 +30,7 @@ public class RecMethod2 implements GroupRecGenerator{
 
         createGroup();
 
-    ///Step 2: Recommend
+    //Step 2: Recommend
 
         NewRecommender morrison = new NewRecommender(iD);
 
