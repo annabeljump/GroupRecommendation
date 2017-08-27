@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -14,7 +15,7 @@ public class UserWriter {
     private Long groupID = 0L;
     private Map<Long, Double> ratings = new HashMap<>();
 
-    private String filePath = "src/ml-latest-small/ratings.csv";
+    private String filePath = "src/ml-latest-small/ratings2.csv";
 
     private static final String COMMA_DELIMITER = ",";
 
@@ -51,8 +52,30 @@ public class UserWriter {
 
     }
 
+    /**
+     * Method to write out the group's combined ratings to ratings.csv
+     * (currently ratings2.csv for testing purposes)
+     * @throws IOException
+     */
     public void writeGroupRatings() throws IOException {
 
+        try {
+
+            String iD = this.groupID.toString();
+
+            FileWriter writer = new FileWriter(filePath, true);
+
+            writer.append(NEW_LINE_SEPARATOR);
+
+            for(Map.Entry<Long, Double> entry : ratings.entrySet()){
+                String movie = entry.getKey().toString();
+                String rate = entry.getValue().toString();
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
     }
