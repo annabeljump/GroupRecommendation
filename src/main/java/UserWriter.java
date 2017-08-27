@@ -59,11 +59,13 @@ public class UserWriter {
      */
     public void writeGroupRatings() throws IOException {
 
+        FileWriter writer = new FileWriter(filePath, true);
+
         try {
 
             String iD = this.groupID.toString();
 
-            FileWriter writer = new FileWriter(filePath, true);
+
 
             writer.append(NEW_LINE_SEPARATOR);
 
@@ -71,10 +73,23 @@ public class UserWriter {
                 String movie = entry.getKey().toString();
                 String rate = entry.getValue().toString();
 
+                writer.append(iD);
+                writer.append(COMMA_DELIMITER);
+                writer.append(movie);
+                writer.append(COMMA_DELIMITER);
+                writer.append(rate);
+                writer.append(NEW_LINE_SEPARATOR);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                writer.flush();
+                writer.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
 
 
