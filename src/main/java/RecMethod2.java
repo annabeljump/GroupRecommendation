@@ -119,6 +119,7 @@ public class RecMethod2 implements GroupRecGenerator{
         Long hoster = Long.valueOf(host);
 
         System.out.println("Calculating...");
+        System.out.println();
 
         group = new GroupCombiner(userList, hoster);
 
