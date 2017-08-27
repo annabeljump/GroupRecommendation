@@ -146,7 +146,7 @@ public class WeightingGenerator {
             }
         }
 
-        if(lowScore <= 1.0){ return;}
+        if(lowScore <= 2.0){ return;}
 
         //Now add scores to a list for averaging.
         //if the user is Host, double the score if it is higher than 2.5, halve if lower.
@@ -157,7 +157,7 @@ public class WeightingGenerator {
         for(Map.Entry<Long, Double> entry : m.entrySet()) {
             Double sc = entry.getValue();
             if(entry.getKey() == host){
-                if(sc > 2.5) {
+                if(sc > 5.0) {
                     avScores.add(sc * 2);
                 } else {
                     avScores.add(sc / 2);
@@ -188,7 +188,7 @@ public class WeightingGenerator {
         for (Double score : scores) {
             if (score < 2.0) {
                 lowScores++;
-            } else if (score > 3.0) {
+            } else if (score > 5.0) {
                 highScore++;
             }
         }
@@ -213,14 +213,13 @@ public class WeightingGenerator {
             }
         }
 
-        //Make sure the average score is no higher than 5.0 or lower than 0.5
-        //TODO THIS NEEDS REVIEWING - ratings seem to be higher than 5
+        //Make sure the average score is no higher than 10.0 or lower than 0.5
 
-        //if(averageScore > 5.0){
-        //    averageScore = 5.0;
-        //} else if(averageScore < 0.5){
-        //    averageScore = 0.5;
-        //}
+        if(averageScore > 10.0){
+            averageScore = 10.0;
+        } else if(averageScore < 0.0){
+            averageScore = 0.5;
+        }
 
         //TODO figure out how to do something with the date here.
 

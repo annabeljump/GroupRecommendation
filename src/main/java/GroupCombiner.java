@@ -205,6 +205,15 @@ public class GroupCombiner implements GroupCreator {
                 averageScore = averageScore + 1.0;
             }
 
+            //Need to make sure there are no ratings over 5
+            //and no ratings below 0
+
+            if(averageScore > 5.0){
+                averageScore = 5.0;
+            } else if (averageScore < 0.0){
+                averageScore = 0.0;
+            }
+
             averagedRatings.put(aCommonRec, averageScore);
         }
     }
