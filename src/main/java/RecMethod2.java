@@ -52,6 +52,8 @@ public class RecMethod2 implements GroupRecGenerator{
 
         appropriate = age.checkAndRemove();
 
+        movies = new ArrayList<>();
+
         //Now iterate through recommendation list and remove those movies not on the appropriate list
 
         for(int i=0; i < recommendations.size(); i++) {

@@ -49,7 +49,7 @@ public class GroupCombiner implements GroupCreator {
             while (sc.hasNextLine()){
                 String line = sc.nextLine();
                 String[] li = line.split(splitter);
-                Long uID = Long.valueOf(li[0]);
+                Long uID = Long.parseLong(li[0]);
                 String st = li[1] + "," + li[2];
                 if(u.equals(uID)) {
                     t.add(st);
