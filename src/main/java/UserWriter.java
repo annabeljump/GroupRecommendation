@@ -15,7 +15,7 @@ public class UserWriter {
     private Long groupID = 0L;
     private Map<Long, Double> ratings = new HashMap<>();
 
-    private String filePath = "src/ml-latest-small/ratings2.csv";
+    private String filePath = "src/ml-latest-small/ratings.csv";
 
     private static final String COMMA_DELIMITER = ",";
 
