@@ -205,9 +205,9 @@ public class WeightingGenerator {
 
         for(Map.Entry<Long, Double> e : averagedCommonRecs.entrySet()) {
             if(Objects.equals(e.getKey(), mov)){
-                if(e.getValue() > 3.0){
+                if(e.getValue() > 5.0){
                     averageScore = averageScore + 1.0;
-                } else if(e.getValue() < 2.0){
+                } else if(e.getValue() < 2.5){
                     averageScore = averageScore - 1.0;
                 }
             }
