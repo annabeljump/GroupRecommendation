@@ -66,19 +66,17 @@ public class UserWriter {
             String iD = this.groupID.toString();
 
 
-
-            writer.append(NEW_LINE_SEPARATOR);
-
             for(Map.Entry<Long, Double> entry : ratings.entrySet()){
                 String movie = entry.getKey().toString();
                 String rate = entry.getValue().toString();
 
+                writer.append(NEW_LINE_SEPARATOR);
                 writer.append(iD);
                 writer.append(COMMA_DELIMITER);
                 writer.append(movie);
                 writer.append(COMMA_DELIMITER);
                 writer.append(rate);
-                writer.append(NEW_LINE_SEPARATOR);
+
             }
 
         } catch (Exception e) {
