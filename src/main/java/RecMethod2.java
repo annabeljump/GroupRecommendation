@@ -13,12 +13,13 @@ public class RecMethod2 implements GroupRecGenerator{
 
     private List<Long> userList;
     private List<ScoredId> recommendations;
+    private List<Long> movieList;
     private List appropriate;
     private Map<Long, Double> ratings;
     private Long iD;
 
     private GroupCombiner group;
-    private AgeRestrictor age;
+    private GroupAges age;
     private UserWriter writer;
 
 
@@ -35,6 +36,37 @@ public class RecMethod2 implements GroupRecGenerator{
         NewRecommender morrison = new NewRecommender(iD);
 
         recommendations = morrison.recommend();
+
+    //Step 3: filter ages
+
+        age = new GroupAges(group, recommendations);
+
+        movieList = new ArrayList<>();
+
+        movieList = age.retrieveMovies();
+
+        age.retrieveUsers();
+
+        appropriate = new ArrayList();
+
+        appropriate = age.checkAndRemove();
+
+        //Now iterate through recommendation list and remove those movies not on the appropriate list
+
+        for(int i=0; i < recommendations.size(); i++) {
+            ScoredId rec = recommendations.get(i);
+            Long mID = rec.getId();
+            if(!appropriate.contains(mID)){
+                recommendations.remove(i);
+            } else if(appropriate.contains(mID)){
+
+            }
+        }
+
+    //Step 4: Get names and print recommendations!
+
+        //Get movie IDs
+
 
     }
 
