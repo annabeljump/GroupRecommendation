@@ -12,7 +12,7 @@ public class GroupAges implements AgeAppropriator {
 
     private GroupCombiner group;
     private List<Long> userList;
-    private List<ScoredId> recommendations = new ArrayList<>();
+    private List<ScoredId> recommendations;
     private List<Long> movieList;
 
     private List<Long> userAgeList;
@@ -132,7 +132,8 @@ public class GroupAges implements AgeAppropriator {
                 String mGenre = movieDetails[2];
                 Long movieID = Long.parseLong(mID);
                 for (int j = 0; j < movieList.size(); j++) {
-                    if (movieList.get(j).equals(movieID)) {
+                    Long m = movieList.get(j);
+                    if (m.equals(movieID)) {
                         movieTagMap.put(movieID, mGenre);
                     }
                 }
@@ -140,6 +141,8 @@ public class GroupAges implements AgeAppropriator {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
 
 
         String splitting = "\\|";

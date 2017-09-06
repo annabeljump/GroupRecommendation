@@ -13,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class GroupCombinerTest {
 
-    List<Long> users = new ArrayList<>(Arrays.asList(3L, 5L, 324L));
-    Long h = 5L;
+    List<Long> users = new ArrayList<>(Arrays.asList(4L, 19L, 73L, 105L));
+    Long h = 4L;
 
     GroupCombiner g;
 
@@ -29,14 +29,24 @@ class GroupCombinerTest {
 
         assert !g.getUserRatings().isEmpty();
 
-        //assertEquals(g.getUserRatings().size(), 2);
+        assertEquals(g.getUserRatings().size(), 4);
+
+        Map<Long, Map<Long, Double>> ratings = g.getUserRatings();
+
+        Map<Long, Double> rate = ratings.get(4L);
+
+        //System.out.println(rate);
+
+        assert !rate.isEmpty();
 
         assert !g.getMovieList().isEmpty();
 
+        //System.out.println(g.getMovieList().size());
+
         assert !g.getAveragedRatings().isEmpty();
 
-        System.out.println(g.getAveragedRatings());
-        System.out.println(g.getUnCommonRatings());
+        //System.out.println(g.getAveragedRatings());
+        //System.out.println(g.getUnCommonRatings());
 
     }
 

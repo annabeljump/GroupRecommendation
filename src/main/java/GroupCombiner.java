@@ -7,7 +7,7 @@ import java.util.*;
  */
 public class GroupCombiner implements GroupCreator {
 
-    private List<Long> userList = new ArrayList();
+    private List<Long> userList;
     private Map<Long, Map<Long, Double>> userRates;
     private Long host;
 
@@ -29,40 +29,37 @@ public class GroupCombiner implements GroupCreator {
         //Add ratings for users in Group to a map
         //There will need to be a map within a map
 
-        String splitter = ","; //Don't need lengthy regex here, no commas within quotes
 
         Map<Long, List<String>> currentRatings = new HashMap<>();
         userRates = new HashMap<>();
 
         String filePath = "src/ml-latest-small/ratings.csv";
+        BufferedReader bff = null;
+        String bx = "";
 
-        List<Long> l = new ArrayList<>();
+        String splitter = ","; //Don't need lengthy regex here, no commas within quotes
+
         List<String> t = new ArrayList<>();
 
 
         try {
-            File f = new File(filePath);
-            Scanner sc = new Scanner(f);
-
-            Long u = 1L;
-
-            while (sc.hasNextLine()){
-                String line = sc.nextLine();
-                String[] li = line.split(splitter);
+            Long u = 105L;
+            bff = new BufferedReader(new FileReader(filePath));
+            while((bx = bff.readLine()) != null) {
+                String[] li = bx.split(splitter);
                 Long uID = Long.parseLong(li[0]);
                 String st = li[1] + "," + li[2];
-                if(u.equals(uID)) {
+                if(u==uID) {
                     t.add(st);
                 } else {
-                    currentRatings.put(uID, new ArrayList<>(t));
+                    currentRatings.put(u, new ArrayList<>(t));
                     u = uID;
                     t.clear();
                     t.add(st);
                 }
+            } currentRatings.put(u, new ArrayList<>(t));
 
-            }
-
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -77,7 +74,7 @@ public class GroupCombiner implements GroupCreator {
             for (Map.Entry<Long, List<String>> entry : currentRatings.entrySet()) {
                 userID = entry.getKey();
                 br = entry.getValue();
-               if (userID.equals(currentUser)) {
+               if (userID == currentUser) {
                     for (int j = 0; j < br.size(); j++) {
                         String blah = br.get(j);
                         String[] again = blah.split(",");
@@ -86,13 +83,13 @@ public class GroupCombiner implements GroupCreator {
                         thisUserRatings.put(mID, score);
                     }
                 }
-
             }
             userRates.put(currentUser, new HashMap<>(thisUserRatings));
             thisUserRatings.clear();
         }
 
-        averageRatings();
+
+        averageRatings(userRates);
 
         addBack();
     }
@@ -102,7 +99,7 @@ public class GroupCombiner implements GroupCreator {
      * This borrows code from CommonDenominator (as it essentially does the same thing)
      * As well as WeightingGenerator, as here is where the weighting is done
      */
-    private void averageRatings() {
+    private void averageRatings(Map<Long, Map<Long, Double>> rat) {
 
         averagedRatings = new HashMap<>();
 
@@ -110,21 +107,27 @@ public class GroupCombiner implements GroupCreator {
 
         otherMovies = new ArrayList<>();
 
+        Map<Long, Map<Long, Double>> internalRatings = new HashMap<>(rat);
+
         Map<Long, Double> userMap;
 
-        Map.Entry<Long, Map<Long, Double>> entry = userRates.entrySet().iterator().next();
+        Map.Entry<Long, Map<Long, Double>> entry = internalRatings.entrySet().iterator().next();
+
         userMap = entry.getValue();
 
+        internalRatings.remove(entry.getKey());
+
         for(Map.Entry<Long, Double> e : userMap.entrySet()) {
+
             Boolean isPresent = true;
 
             Long m = e.getKey();
 
-            //Check if it is present in all other lists
-            for (Map.Entry<Long, Map<Long, Double>> ent : userRates.entrySet()) {
-                Map<Long, Double> sco = ent.getValue();
+            HashSet<Long> movies = new HashSet<>();
 
-                HashSet movies = new HashSet<>();
+            //Check if it is present in other lists
+            for (Map.Entry<Long, Map<Long, Double>> ent : internalRatings.entrySet()) {
+                Map<Long, Double> sco = ent.getValue();
 
                 for (Map.Entry<Long, Double> longDoubleEntry : sco.entrySet()) {
                     Long mID = longDoubleEntry.getKey();
@@ -132,17 +135,22 @@ public class GroupCombiner implements GroupCreator {
                     movies.add(mID);
                 }
 
-                if (!movies.contains(m)) {
-                    isPresent = false;
-                }
+            }
+
+            if (!movies.contains(m)) {
+                isPresent = false;
             }
 
             if(isPresent) {
                 movieList.add(m);
+
             } else {
                 otherMovies.add(m);
             }
+
         }
+
+        internalRatings.put(entry.getKey(), entry.getValue());
 
         for (Long aCommonRec : movieList) {
 
@@ -150,9 +158,10 @@ public class GroupCombiner implements GroupCreator {
 
             Boolean isHost = false;
 
-            for (Map.Entry<Long, Map<Long, Double>> dentry : userRates.entrySet()) {
+            for (Map.Entry<Long, Map<Long, Double>> dentry : internalRatings.entrySet()) {
+                Long h = dentry.getKey();
 
-                if(dentry.getKey().equals(host)) {
+                if(h == host) {
                     isHost = true;
                 }
 
@@ -161,13 +170,18 @@ public class GroupCombiner implements GroupCreator {
                 for(Map.Entry<Long, Double> inEntry : internalMap.entrySet()) {
                     Double sc = inEntry.getValue();
 
-                    if((inEntry.getKey().equals(aCommonRec)) && isHost){
+                    Long ho = inEntry.getKey();
+
+                    if((ho == aCommonRec) && isHost){
                             if(sc > 2.5) {
-                                scores.add(sc * 2);
+                                Double hostscore = sc * 2;
+                                scores.add(hostscore);
                             } else {
-                                scores.add(sc / 2);
+                                Double badscore = sc / 2;
+                                scores.add(badscore);
                             }
-                        } else if(inEntry.getKey().equals(aCommonRec)) {
+
+                        } else if((ho == aCommonRec) && !isHost){
                             scores.add(sc);
                         }
                 }
@@ -240,13 +254,30 @@ public class GroupCombiner implements GroupCreator {
 
                     if (movie.equals(mID) && h.equals(host)) {
                         if (sc < 2.5) {
-                            averagedRatings.put(mID, (sc - 1.0));
-                            unCommonRatings.put(mID, (sc- 1.0));
+                            Double score = sc-1.0;
+                            if(score > 5.0){
+                                score = 5.0;
+                            } else if (score < 0.0) {
+                                score = 0.0;
+                            }
+                            averagedRatings.put(mID, (score));
+                            unCommonRatings.put(mID, (score));
                         } else if (sc > 2.5) {
-                            averagedRatings.put(mID, (sc + 1.0));
-                            unCommonRatings.put(mID, (sc+1.0));
+                            Double score = sc-1.0;
+                            if(score > 5.0){
+                                score = 5.0;
+                            } else if (score < 0.0) {
+                                score = 0.0;
+                            }
+                            averagedRatings.put(mID, score);
+                            unCommonRatings.put(mID, score);
                         }
                     } else if (movie.equals(mID)) {
+                        if(sc > 5.0){
+                            sc = 5.0;
+                        } else if (sc < 0.0) {
+                            sc = 0.0;
+                        }
                         averagedRatings.put(mID, sc);
                         unCommonRatings.put(mID, sc);
                     }

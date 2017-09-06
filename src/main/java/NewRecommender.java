@@ -12,6 +12,7 @@ import org.grouplens.lenskit.core.LenskitRecommender;
 //import org.grouplens.lenskit.core.RecommenderConfigurationException;
 import org.grouplens.lenskit.data.dao.EventDAO;
 import org.grouplens.lenskit.data.dao.SimpleFileRatingDAO;
+import org.grouplens.lenskit.data.pref.PreferenceDomain;
 import org.grouplens.lenskit.knn.NeighborhoodSize;
 import org.grouplens.lenskit.knn.item.ItemItemScorer;
 import org.grouplens.lenskit.knn.user.UserUserItemScorer;
@@ -63,7 +64,7 @@ public class NewRecommender implements Runnable {
     }
 
 
-    //New constructor so that recommendations can be generated for unspecified user
+    //New constructor so that recommendations can be generated for specified user
     public NewRecommender(Long user) {
         this.userID = user;
     }
@@ -104,7 +105,7 @@ public class NewRecommender implements Runnable {
 
         //NOTE: 10 ITEMS IS NOT ENOUGH TO GENERATE COMMON RECOMMENDATIONS
         //Insert random User to generate recs.
-        actualRecs = itemRec.recommend(userID, 20);
+        actualRecs = itemRec.recommend(userID, 10);
 
         //I don't want this to print while running tests.
 
@@ -131,6 +132,7 @@ public class NewRecommender implements Runnable {
 
         config.bind(ItemScorer.class).to(UserUserItemScorer.class);
 
+        config.bind(PreferenceDomain.class).to(new PreferenceDomain(1, 5, 1.0));
 
         config.bind(BaselineScorer.class, ItemScorer.class).to(UserMeanItemScorer.class);
         config.bind(UserMeanBaseline.class, ItemScorer.class).to(ItemMeanRatingItemScorer.class);
@@ -156,7 +158,7 @@ public class NewRecommender implements Runnable {
 
         //NOTE: 10 ITEMS IS NOT ENOUGH TO GENERATE COMMON RECOMMENDATIONS
 
-        actualRecs = itemRec.recommend(userID, 20);
+        actualRecs = itemRec.recommend(userID, 10);
 
         return actualRecs;
 

@@ -69,6 +69,16 @@ public class RecMethod1 implements GroupRecGenerator {
 
     }
 
+    public double predictRating(Long movie) {
+        NewRecommender newsies = new NewRecommender();
+        double score = 0.0;
+        for(int i=0; i < usersList.size(); i++){
+            score += newsies.predict(usersList.get(i), movie);
+        }
+        double scored = score / usersList.size();
+        return scored;
+    }
+
     public void createUserGroup() {
 
         usersList = new ArrayList<>();
@@ -189,7 +199,7 @@ public class RecMethod1 implements GroupRecGenerator {
         System.out.println("We recommend you should watch:");
         for(Map.Entry<String, Double> t : moviesToWatch.entrySet()){
             System.out.println("Movie: " + t.getKey());
-            System.out.println("Predicted rating: " + String.format("%.02f", t.getValue()) + " /10");
+            System.out.println("Predicted rating: " + String.format("%.02f", t.getValue()));
             System.out.println();
         }
 

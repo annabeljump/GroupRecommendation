@@ -71,13 +71,13 @@ class AgeRestrictorTest {
 
     @Test
     void retrieveUsers() {
-        a.retrieveUsers();
+        b.retrieveUsers();
 
         //Check that there is a userList and that it is the correct size (we know how many users here)
 
-        assert a.getUserList() != null;
+        assert b.getUserList() != null;
 
-        assert a.getUserList().size() == 4;
+        assert b.getUserList().size() == 3;
 
     }
 

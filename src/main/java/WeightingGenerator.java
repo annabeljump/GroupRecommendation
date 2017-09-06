@@ -115,6 +115,9 @@ public class WeightingGenerator {
                 Double score;
                 Long user = userList.get(j);
                 score = n.predict(user, movie);
+                if(score > 5.0) {
+                    score = 5.0;
+                }
                 movieScores.put(user, score);
             }
             wanting(users, movie, movieScores);
@@ -146,7 +149,7 @@ public class WeightingGenerator {
             }
         }
 
-        if(lowScore <= 2.0){ return;}
+        if(lowScore <= 1.5){ return;}
 
         //Now add scores to a list for averaging.
         //if the user is Host, double the score if it is higher than 2.5, halve if lower.
@@ -157,7 +160,7 @@ public class WeightingGenerator {
         for(Map.Entry<Long, Double> entry : m.entrySet()) {
             Double sc = entry.getValue();
             if(entry.getKey() == host){
-                if(sc > 5.0) {
+                if(sc > 2.5) {
                     avScores.add(sc * 2);
                 } else {
                     avScores.add(sc / 2);
@@ -188,7 +191,7 @@ public class WeightingGenerator {
         for (Double score : scores) {
             if (score < 2.0) {
                 lowScores++;
-            } else if (score > 7.0) {
+            } else if (score > 4.0) {
                 highScore++;
             }
         }
@@ -205,24 +208,21 @@ public class WeightingGenerator {
 
         for(Map.Entry<Long, Double> e : averagedCommonRecs.entrySet()) {
             if(Objects.equals(e.getKey(), mov)){
-                if(e.getValue() > 5.0){
+                if(e.getValue() > 3.5){
                     averageScore = averageScore + 1.0;
-                } else if(e.getValue() < 2.5){
+                } else if(e.getValue() < 2.0){
                     averageScore = averageScore - 1.0;
                 }
             }
         }
 
-        //Make sure the average score is no higher than 10.0 or lower than 0.0
+        //Make sure the average score is no higher than 5.0 or lower than 0.0
 
-        if(averageScore > 10.0){
-            averageScore = 10.0;
+        if(averageScore > 5.0){
+            averageScore = 5.0;
         } else if(averageScore < 0.0){
             averageScore = 0.0;
         }
-
-        //TODO figure out how to do something with the date here.
-
 
 
         finalRecs.put(mov, averageScore);
