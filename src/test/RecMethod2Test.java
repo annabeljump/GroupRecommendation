@@ -36,7 +36,7 @@ class RecMethod2Test {
 
     @Test
     void recommendMovies() {
-      //  hello.recommendMovies();
+       hello.recommendMovies();
     }
 
     @Test

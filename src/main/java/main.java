@@ -19,6 +19,10 @@ public class main {
 
        System.out.println();
 
+       NewRecommender test = new NewRecommender(129L);
+
+       System.out.println(test.recommend());
+
       // double pred = gr.predictRating(10L);
 
      //  System.out.println(pred);

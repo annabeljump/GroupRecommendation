@@ -43,13 +43,13 @@ public class GroupCombiner implements GroupCreator {
 
 
         try {
-            Long u = 105L;
+            Long u = 1L;
             bff = new BufferedReader(new FileReader(filePath));
             while((bx = bff.readLine()) != null) {
                 String[] li = bx.split(splitter);
                 Long uID = Long.parseLong(li[0]);
                 String st = li[1] + "," + li[2];
-                if(u==uID) {
+                if(u.equals(uID)) {
                     t.add(st);
                 } else {
                     currentRatings.put(u, new ArrayList<>(t));
@@ -74,7 +74,7 @@ public class GroupCombiner implements GroupCreator {
             for (Map.Entry<Long, List<String>> entry : currentRatings.entrySet()) {
                 userID = entry.getKey();
                 br = entry.getValue();
-               if (userID == currentUser) {
+               if (userID.equals(currentUser)) {
                     for (int j = 0; j < br.size(); j++) {
                         String blah = br.get(j);
                         String[] again = blah.split(",");
@@ -87,7 +87,6 @@ public class GroupCombiner implements GroupCreator {
             userRates.put(currentUser, new HashMap<>(thisUserRatings));
             thisUserRatings.clear();
         }
-
 
         averageRatings(userRates);
 

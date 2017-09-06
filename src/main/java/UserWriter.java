@@ -1,7 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -54,12 +51,12 @@ public class UserWriter {
 
     /**
      * Method to write out the group's combined ratings to ratings.csv
-     * (currently ratings2.csv for testing purposes)
      * @throws IOException
      */
     public void writeGroupRatings() throws IOException {
 
         FileWriter writer = new FileWriter(filePath, true);
+
 
         try {
 
@@ -71,11 +68,11 @@ public class UserWriter {
                 String rate = entry.getValue().toString();
 
                 writer.append(NEW_LINE_SEPARATOR);
-                writer.append(iD);
-                writer.append(COMMA_DELIMITER);
-                writer.append(movie);
-                writer.append(COMMA_DELIMITER);
-                writer.append(rate);
+                writer.write(iD);
+                writer.write(COMMA_DELIMITER);
+                writer.write(movie);
+                writer.write(COMMA_DELIMITER);
+                writer.write(rate);
 
             }
 

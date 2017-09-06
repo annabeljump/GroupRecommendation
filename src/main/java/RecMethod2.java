@@ -51,6 +51,8 @@ public class RecMethod2 implements GroupRecGenerator{
 
         scoredIdList.addAll(recommendations);
 
+
+
     //Step 3: filter ages
 
         age = new GroupAges(group, scoredIdList);

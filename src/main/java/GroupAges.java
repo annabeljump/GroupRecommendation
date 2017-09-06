@@ -62,7 +62,6 @@ public class GroupAges implements AgeAppropriator {
 
         String splitter = "\\|";
         String filePath = "src/ml-latest-small/users.csv";
-
         try {
             File f = new File(filePath);
             Scanner sc = new Scanner(f);
@@ -79,6 +78,8 @@ public class GroupAges implements AgeAppropriator {
                     }
                 }
             }
+
+            System.out.println(userAgeList);
 
 
         } catch (FileNotFoundException e) {
@@ -104,6 +105,7 @@ public class GroupAges implements AgeAppropriator {
         } else if(b < 18L) {
             under18 = true;
         }
+
     }
 
     /**
@@ -143,6 +145,7 @@ public class GroupAges implements AgeAppropriator {
         }
 
 
+        System.out.println(movieTagMap);
 
 
         String splitting = "\\|";
