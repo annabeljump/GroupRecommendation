@@ -79,7 +79,8 @@ public class GroupAges implements AgeAppropriator {
                 }
             }
 
-            System.out.println(userAgeList);
+            System.out.println();
+            System.out.println("User ages: " + userAgeList);
 
 
         } catch (FileNotFoundException e) {
@@ -144,9 +145,9 @@ public class GroupAges implements AgeAppropriator {
             e.printStackTrace();
         }
 
-
+        System.out.println();
         System.out.println(movieTagMap);
-
+        System.out.println();
 
         String splitting = "\\|";
         if (under12) {

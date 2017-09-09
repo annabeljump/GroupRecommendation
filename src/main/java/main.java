@@ -13,15 +13,15 @@ public class main {
 
     public static void main(String[] args) {
 
-       RecMethod2 gr = new RecMethod2();
+       RecMethod1 gr = new RecMethod1();
 
        gr.recommendMovies();
 
        System.out.println();
+//*/
+       //NewRecommender test = new NewRecommender(129L);
 
-       NewRecommender test = new NewRecommender(129L);
-
-       System.out.println(test.recommend());
+       //System.out.println(test.recommend());
 
       // double pred = gr.predictRating(10L);
 
@@ -44,7 +44,7 @@ public class main {
 
 
         System.out.println();
-/*
+
         double s = test.predict(187L, 60074L);
 
         System.out.println("60074 : " + String.format("%.02f", s));
@@ -103,7 +103,7 @@ public class main {
                 } while (!intFinished);
             }
         } while (!finished);
-*/
+//*/
     }
 
 

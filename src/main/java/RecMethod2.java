@@ -79,9 +79,28 @@ public class RecMethod2 implements GroupRecGenerator{
                 scoredIdList.remove(a);
 
             } else if(appropriate.contains(mID)){
-                movies.add(mID);
+                double low = 5.0;
+
+                for (Long users : userList) {
+                    NewRecommender pred = new NewRecommender();
+
+                    double score = pred.predict(users, mID);
+
+                    if(score < low){
+                        low = score;
+                    }
+
+                }
+
+                if(low < 1.5){
+                    scoredIdList.remove(a);
+                } else {
+                    movies.add(mID);
+                }
             }
         }
+
+
 
     //Step 4: Get names and print recommendations!
 

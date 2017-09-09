@@ -158,14 +158,14 @@ public class NewRecommender implements Runnable {
 
         //NOTE: 10 ITEMS IS NOT ENOUGH TO GENERATE COMMON RECOMMENDATIONS
 
-        actualRecs = itemRec.recommend(userID, 10);
+        actualRecs = itemRec.recommend(userID, 30);
 
         return actualRecs;
 
     }
 
     /**
-     * Tyis is a new method to predict a rating for a specific movie
+     * This is a new method to predict a rating for a specific movie
      * @param u the user ID of the user
      * @param m the number of the movie for which the rating should be generated
      * @return the rating user u gives movie m

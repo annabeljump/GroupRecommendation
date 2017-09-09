@@ -241,6 +241,7 @@ public class GroupCombiner implements GroupCreator {
         unCommonRatings = new HashMap<>();
 
         for(Long movie : otherMovies){
+
             for (Map.Entry<Long, Map<Long, Double>> dentry : userRates.entrySet()) {
 
                 Map<Long, Double> internalMap = dentry.getValue();
@@ -251,34 +252,54 @@ public class GroupCombiner implements GroupCreator {
                     Double sc = inEntry.getValue();
                     Long mID = inEntry.getKey();
 
-                    if (movie.equals(mID) && h.equals(host)) {
-                        if (sc < 2.5) {
-                            Double score = sc-1.0;
-                            if(score > 5.0){
-                                score = 5.0;
-                            } else if (score < 0.0) {
-                                score = 0.0;
+                    if(mID.equals(movie)) {
+                        //ADDING THIS TO IMPROVE RATINGS GENERATED - TESTS SHOW LOW SCORES MAKE IT THROUGH
+                        NewRecommender testChecker = new NewRecommender();
+
+                        double lowScore = 5.0;
+
+                        for (Long users : userList) {
+                            double currentscore = testChecker.predict(users, mID);
+                            if (currentscore < lowScore) {
+                                lowScore = currentscore;
                             }
-                            averagedRatings.put(mID, (score));
-                            unCommonRatings.put(mID, (score));
-                        } else if (sc > 2.5) {
-                            Double score = sc-1.0;
-                            if(score > 5.0){
-                                score = 5.0;
-                            } else if (score < 0.0) {
-                                score = 0.0;
+                        }
+
+                        if (lowScore < 1.0) {
+                            return;
+                        } else if(lowScore < 2.5){
+                            averagedRatings.put(mID, 0.5);
+                        } else {
+                            if (h.equals(host)) {
+                                if (sc < 2.5) {
+                                    Double score = sc - 1.0;
+                                    if (score > 5.0) {
+                                        score = 5.0;
+                                    } else if (score < 0.0) {
+                                        score = 0.0;
+                                    }
+                                    averagedRatings.put(mID, (score));
+                                    unCommonRatings.put(mID, (score));
+                                } else if (sc > 2.5) {
+                                    Double score = sc - 1.0;
+                                    if (score > 5.0) {
+                                        score = 5.0;
+                                    } else if (score < 0.0) {
+                                        score = 0.0;
+                                    }
+                                    averagedRatings.put(mID, score);
+                                    unCommonRatings.put(mID, score);
+                                }
+                            } else {
+                                if (sc > 5.0) {
+                                    sc = 5.0;
+                                } else if (sc < 0.0) {
+                                    sc = 0.0;
+                                }
+                                averagedRatings.put(mID, sc);
+                                unCommonRatings.put(mID, sc);
                             }
-                            averagedRatings.put(mID, score);
-                            unCommonRatings.put(mID, score);
                         }
-                    } else if (movie.equals(mID)) {
-                        if(sc > 5.0){
-                            sc = 5.0;
-                        } else if (sc < 0.0) {
-                            sc = 0.0;
-                        }
-                        averagedRatings.put(mID, sc);
-                        unCommonRatings.put(mID, sc);
                     }
                 }
             }

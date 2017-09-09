@@ -6,4 +6,6 @@ public interface GroupRecGenerator {
 
     void recommendMovies();
 
+    double predictRating(Long movie);
+
 }
