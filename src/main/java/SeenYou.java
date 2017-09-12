@@ -24,7 +24,7 @@ public class SeenYou {
 
 
     /**
-     * Eventually this will call all methods and
+     * Calls all methods and
      * @return list of movies that are unseen
      */
     public List<Long> getUnseenMovies() {

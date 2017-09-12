@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 /**
  * Created by annabeljump
+ * Class to filter out age inappropriate movies
+ * For Method 1
  */
 public class AgeRestrictor implements AgeAppropriator {
 
@@ -24,6 +26,10 @@ public class AgeRestrictor implements AgeAppropriator {
     public Boolean under15 = false;
     public Boolean under12 = false;
 
+    /**
+     * See Interface
+     * @return list of movies recommended to users
+     */
     @Override
     public List retrieveMovies() {
 
@@ -54,6 +60,10 @@ public class AgeRestrictor implements AgeAppropriator {
         return this.movieList;
     }
 
+    /**
+     * Class to obtain the list of users from the group
+     * @throws NullPointerException
+     */
     @Override
     public void retrieveUsers() throws NullPointerException {
         if(users != null) {
@@ -67,7 +77,7 @@ public class AgeRestrictor implements AgeAppropriator {
      * Obtains User Ages
      * Obtains Movie Genres
      * Filters appropriately
-     * It may need to return the movie list
+     * @return the filtered movie list
      */
     @Override
     public List<Long> checkAndRemove() {
@@ -237,7 +247,6 @@ public class AgeRestrictor implements AgeAppropriator {
             }
 
         }
-        //TODO generate new recommendations if none are suitable!!
         if(appropriateMovies.isEmpty()){
             System.out.println("Oh no! No Children's movies were recommended!");
         }

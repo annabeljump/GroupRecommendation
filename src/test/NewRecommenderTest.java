@@ -49,7 +49,7 @@ class NewRecommenderTest {
         assert recs != null;
         assert !recs.isEmpty();
 
-        //Make sure there are 10 recommendations TODO CHANGE IF CHANGE NUMBER OF RECS
+        //Make sure there are 10 recommendations
         assert recs.size() == 10;
 
     }

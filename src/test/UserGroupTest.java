@@ -55,7 +55,7 @@ class UserGroupTest {
         //There should be 3 key-value pairs, as 3 users
        assert u.getUserRecs().size() == 3;
 
-        //Each list of ScoredId should have a size of 10 (TODO CHANGE TEST IF NUMBER OF RECS CHANGED)
+        //Each list of ScoredId should have a size of 10 
         List<ScoredId> l = (List<ScoredId>)u.getUserRecs().get(5L);
        assert l.size() == 10;
     }

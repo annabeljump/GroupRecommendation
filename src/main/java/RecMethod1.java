@@ -31,6 +31,11 @@ public class RecMethod1 implements GroupRecGenerator {
     private ItemRecommender rec;
 
 
+    /**
+     * This method does most of the work in generating recommendations.
+     * It calls the other helper methods as necessary and instantiates the different
+     * recommender classes.
+     */
     @Override
     public void recommendMovies() {
 
@@ -69,6 +74,11 @@ public class RecMethod1 implements GroupRecGenerator {
 
     }
 
+    /**
+     * Predicts a rating for a specific movie for the group of users
+     * @param movie ID
+     * @return predicted rating for the group
+     */
     public double predictRating(Long movie) {
         NewRecommender newsies = new NewRecommender();
         double score = 0.0;
@@ -79,6 +89,7 @@ public class RecMethod1 implements GroupRecGenerator {
         return scored;
     }
 
+    //Helper method to creat user group
     public void createUserGroup() {
 
         usersList = new ArrayList<>();
@@ -122,6 +133,7 @@ public class RecMethod1 implements GroupRecGenerator {
         usersRecs = usersGroup.getUserRecs();
     }
 
+    //Helper method to apply the age filters
     public void ageFilter(){
         ages = new AgeRestrictor(usersGroup, usersRecs);
 
@@ -138,6 +150,7 @@ public class RecMethod1 implements GroupRecGenerator {
         // Boolean areChildrenPresent = ages.isSmallChildren();
     }
 
+    //Helper method to filter seen movies
     public void iCanSeeYou() {
 
         iSeeYou = new SeenYou(usersGroup, usersRecs);
@@ -148,6 +161,7 @@ public class RecMethod1 implements GroupRecGenerator {
 
     }
 
+    //Helper method to apply common ratings filter
     public void uncommonNumerator() {
         averageCommonMovies = new CommonDenominator(usersRecs);
 
@@ -157,6 +171,7 @@ public class RecMethod1 implements GroupRecGenerator {
 
     }
 
+    //Helper method to apply the weightings to the recommendations
     public void geoffreyChaucer() {
 
         weighter = new WeightingGenerator(usersGroup);
@@ -172,6 +187,7 @@ public class RecMethod1 implements GroupRecGenerator {
 
     }
 
+    //Helper method to retrieve movie names and display recommendations
     public void sirWilliam() {
 
         List<Long> movies = new ArrayList<>();

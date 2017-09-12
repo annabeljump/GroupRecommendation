@@ -18,22 +18,6 @@ public class UserGroup implements GroupCreator {
 
     private Long host;
 
-    public UserGroup(List<Long> users, Long h) {
-        this.userList = users;
-        this.host = h;
-    }
-
-    public UserGroup(List<Long> users) {
-        this.userList = users;
-        this.host = 0L;
-    }
-
-    public UserGroup() {
-        this.userList = null;
-        this.host = 0L;
-    }
-
-
     /**
      * getInvididualRecs to generate recommendations for users
      * individually, stored in a Map with the user IDs as the
@@ -68,5 +52,21 @@ public class UserGroup implements GroupCreator {
 
     public void setHost(Long h) {
         this.host = h;
+    }
+
+    //Constructors
+    public UserGroup(List<Long> users, Long h) {
+        this.userList = users;
+        this.host = h;
+    }
+
+    public UserGroup(List<Long> users) {
+        this.userList = users;
+        this.host = 0L;
+    }
+
+    public UserGroup() {
+        this.userList = null;
+        this.host = 0L;
     }
 }

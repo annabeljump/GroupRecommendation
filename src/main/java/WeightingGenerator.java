@@ -63,10 +63,6 @@ public class WeightingGenerator {
             movieList.add(test);
         }
 
-        //Convert list into HashSet to get rid of repeated entries
-        //this.movieList = new HashSet(movieRecList);
-
-        //Going to have to convert it back to iterate through it
         List<Long> movies = new ArrayList<Long>(movieList);
 
 
@@ -91,7 +87,6 @@ public class WeightingGenerator {
         this.recMovies = movies;
     }
 
-    //TODO these take a long time!
 
     /**
      * This method generates ratings for the final list of recommended movies

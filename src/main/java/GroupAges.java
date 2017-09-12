@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  * Created by annabeljump.
- * Age filter for RecMethod2
+ * Age filter for Method 2
  */
 
 public class GroupAges implements AgeAppropriator {
@@ -218,7 +218,7 @@ public class GroupAges implements AgeAppropriator {
                 }
 
             }
-            //TODO generate new recommendations if none are suitable!!
+
             if (appropriateMovieList.isEmpty()) {
                 System.out.println("Oh no! No Children's movies were recommended!");
             }

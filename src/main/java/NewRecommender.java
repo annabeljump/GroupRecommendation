@@ -34,10 +34,13 @@ import java.util.List;
  * New attempt at building the base recommender for
  * group recommendation plugin to be built on top.
  */
+
+
 public class NewRecommender implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(NewRecommender.class);
 
+    //Commented out as main method to be run elsewhere
         /**
     public static void main(String[] args) {
         NewRecommender hi = new NewRecommender(2L);
@@ -69,17 +72,16 @@ public class NewRecommender implements Runnable {
         this.userID = user;
     }
 
+    /**
+     * This is the first method for the recommender class
+     * It is not used other than for testing.
+     */
     public void run() {
         LenskitConfiguration config = new LenskitConfiguration();
 
 
-// Use item-item CF to score items
+
         config.bind(ItemScorer.class).to(UserUserItemScorer.class);
-// let's use personalized mean rating as the baseline/fallback predictor.
-// 2-step process:
-// First, use the user mean rating as the baseline scorer
-// Second, use the item mean rating as the base for user means
-// and normalize ratings by baseline prior to computing similarities
 
         config.bind(BaselineScorer.class, ItemScorer.class).to(UserMeanItemScorer.class);
         config.bind(UserMeanBaseline.class, ItemScorer.class).to(ItemMeanRatingItemScorer.class);
@@ -103,7 +105,6 @@ public class NewRecommender implements Runnable {
         ItemRecommender itemRec = newRec.getItemRecommender();
 
 
-        //NOTE: 10 ITEMS IS NOT ENOUGH TO GENERATE COMMON RECOMMENDATIONS
         //Insert random User to generate recs.
         actualRecs = itemRec.recommend(userID, 10);
 
@@ -127,6 +128,13 @@ public class NewRecommender implements Runnable {
         //System.out.println("Now predicting rating for movie 17:" + score);
 
     }
+
+    /**
+     * This method is used throughout Methods 1 and 2 for group recommendation
+     * It generates the recommendations for the users
+     * @return a list of ScoredIds for the recommendations
+     */
+
     public List recommend() {
         LenskitConfiguration config = new LenskitConfiguration();
 
@@ -156,9 +164,7 @@ public class NewRecommender implements Runnable {
         ItemRecommender itemRec = newRec.getItemRecommender();
 
 
-        //NOTE: 10 ITEMS IS NOT ENOUGH TO GENERATE COMMON RECOMMENDATIONS
-
-        actualRecs = itemRec.recommend(userID, 30);
+        actualRecs = itemRec.recommend(userID, 10);
 
         return actualRecs;
 

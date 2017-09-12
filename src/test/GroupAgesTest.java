@@ -12,9 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Created by annabeljump.
  * Test class for GroupAges
- *
- *
- * Not really sure how to test this separately... need to check RecMethod2 works as there is the recommendation info
  */
 class GroupAgesTest {
     private List<Long> l = new ArrayList<>(Arrays.asList(2L, 5L, 23L, 30L));
@@ -35,6 +32,10 @@ class GroupAgesTest {
         kids.getIndividualRecs();
         users.getIndividualRecs();
     }
+
+    /**
+     * I could not test this class via JUnit and had to rely on manual testing
+     */
 
     @Test
     void retrieveMovies() {

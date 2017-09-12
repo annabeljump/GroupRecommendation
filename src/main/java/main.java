@@ -13,11 +13,17 @@ public class main {
 
     public static void main(String[] args) {
 
-       RecMethod1 gr = new RecMethod1();
+       GroupRecGenerator gr = new RecMethod1();
 
        gr.recommendMovies();
 
        System.out.println();
+
+       /**
+        * The below code was used for testing and evaluating the recommender
+        * and is not necessary for the function of the group recommender.
+        * It has therefore been commented out, but remains for reference.
+        */
 //*/
        //NewRecommender test = new NewRecommender(129L);
 
@@ -28,7 +34,7 @@ public class main {
      //  System.out.println(pred);
 /*
         //This is to test the basic individual recommender for relevance
-        NewRecommender test = new NewRecommender(187L);
+        NewRecommender test = new NewRecommender(7L);
 
         List<ScoredId> testList = test.recommend();
         for(int i=0; i < testList.size(); i++) {
@@ -43,6 +49,7 @@ public class main {
         }
 
 
+        /*
         System.out.println();
 
         double s = test.predict(187L, 60074L);

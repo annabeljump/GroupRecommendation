@@ -25,6 +25,12 @@ public class RecMethod2 implements GroupRecGenerator{
     private UserWriter writer;
 
 
+    /**
+     * Predicts group rating for single movie
+     * recommendMovies() must be run first, or
+     * the group ID will not have been generated
+     */
+
     public double predictRating(Long movie) {
         NewRecommender morrison = new NewRecommender(iD);
 
@@ -32,6 +38,9 @@ public class RecMethod2 implements GroupRecGenerator{
 
     }
 
+    /**
+     * Main method dealing with recommendation of movies
+     */
     @Override
     public void recommendMovies() {
 
@@ -133,6 +142,7 @@ public class RecMethod2 implements GroupRecGenerator{
 
     }
 
+    //Helper method to create the user group
     public void createGroup() {
         userList = new ArrayList<>();
 

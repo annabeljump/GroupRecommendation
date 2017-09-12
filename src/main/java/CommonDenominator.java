@@ -71,10 +71,6 @@ public class CommonDenominator {
         //Commenting out as was used for testing purposes.
         //System.out.println(commonRec);
 
-        //What if no items in common were recommended?
-        //TODO deal with this in each recmethod
-       // if(!commonRec.isEmpty()) {
-
         obtainFinalRecs();
     }
 
